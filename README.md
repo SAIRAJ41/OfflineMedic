@@ -417,17 +417,6 @@ dependencies:
 
 ---
 
-## Team
-
-| Member | Role |
-|---|---|
-| SAIRAJ41 (Lead) | AI, Gemma 4, LiteRT, GitHub management |
-| Member 2 | Flutter UI, all screens |
-| Member 3 | Emergency system, offline maps |
-| Member 4 | Voice input, drug checker, demo video |
-
----
-
 ## Prize Tracks
 
 | Track | Prize | Qualification |
