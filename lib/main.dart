@@ -16,7 +16,7 @@ class OfflineMedicApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFF0A1628),
       ),
-      home: const HomeScreen(),
+      home: const HomeDashboard(data: dummyDashboardData),
     );
   }
 }
