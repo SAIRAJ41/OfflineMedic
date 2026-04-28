@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../emergency/emergency_screen.dart';
+import '../drug/drug_checker_screen.dart';
+import '../facilities/offline_map_screen.dart';
 
 const _bgDeep = Color(0xFF0A1628);
 const _card = Color(0xFF112240);
@@ -226,7 +229,56 @@ class TriageScreen extends StatelessWidget {
     ],
   ),
 ),
+const SizedBox(height: 18),
 
+Row(
+  children: [
+    Expanded(
+      child: _MiniAction(
+        label: "Emergency",
+        icon: Icons.call,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const EmergencyScreen(),
+            ),
+          );
+        },
+      ),
+    ),
+    const SizedBox(width: 10),
+    Expanded(
+      child: _MiniAction(
+        label: "Drugs",
+        icon: Icons.medication,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const DrugCheckerScreen(),
+            ),
+          );
+        },
+      ),
+    ),
+    const SizedBox(width: 10),
+    Expanded(
+      child: _MiniAction(
+        label: "Map",
+        icon: Icons.map,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const OfflineMapScreen(),
+            ),
+          );
+        },
+      ),
+    ),
+  ],
+),
               const Spacer(),
 
               /// CTA BUTTON
@@ -239,6 +291,43 @@ class TriageScreen extends StatelessWidget {
               const SizedBox(height: 20),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MiniAction extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _MiniAction({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF112240),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: Colors.white70, size: 20),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: const TextStyle(color: Colors.white70, fontSize: 12),
+            ),
+          ],
         ),
       ),
     );
@@ -325,3 +414,4 @@ class _PrimaryButton extends StatelessWidget {
     );
   }
 }
+

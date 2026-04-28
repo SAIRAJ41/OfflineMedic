@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../triage/triage_screen.dart';
+import 'voice_input_screen.dart';
+import '../processing/processing_screen.dart';
+import 'camera_input_screen.dart';
+import 'text_input_screen.dart';
 
 const _bgDeep = Color(0xFF0A1628);
 const _card = Color(0xFF112240);
@@ -94,7 +98,7 @@ _InputCard(
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const TriageScreen(severity: Severity.urgent),
+        builder: (_) => const CameraInputScreen(),
       ),
     );
   },
@@ -108,13 +112,13 @@ _InputCard(
   subtitle: "English/Hindi/Marathi",
   color: _green,
   onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const TriageScreen(severity: Severity.moderate),
-      ),
-    );
-  },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const VoiceInputScreen(),
+    ),
+  );
+},
 ),
 
 const SizedBox(height: 12),
@@ -128,7 +132,7 @@ _InputCard(
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const TriageScreen(severity: Severity.safe),
+        builder: (_) => const TextInputScreen(),
       ),
     );
   },
