@@ -189,7 +189,7 @@ class TriageScreen extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 55),
+              const SizedBox(height: 30),
 
               /// AI EXPLANATION
               Container(
@@ -229,7 +229,7 @@ class TriageScreen extends StatelessWidget {
     ],
   ),
 ),
-const SizedBox(height: 18),
+const SizedBox(height: 50),
 
 Row(
   children: [

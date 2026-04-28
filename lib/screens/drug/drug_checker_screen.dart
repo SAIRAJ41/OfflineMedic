@@ -11,9 +11,9 @@ class DrugCheckerScreen extends StatelessWidget {
         child: Column(
           children: [
 
-            /// 🔵 HEADER STRIP
+            /// 🔵 HEADER STRIP + BACK BUTTON
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
               decoration: const BoxDecoration(
                 color: Color(0xFF1F4A75),
                 borderRadius: BorderRadius.vertical(
@@ -21,12 +21,21 @@ class DrugCheckerScreen extends StatelessWidget {
                 ),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "OfflineMedic",
-                    style: TextStyle(color: Colors.white),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    "Drug Checker",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -48,141 +57,154 @@ class DrugCheckerScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(18),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
 
-                    /// TITLE
-                    const Text(
-                      "Drug Checker",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
+                    /// 🔝 TOP CONTENT GROUPED
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+
+                        /// TITLE
+                        const Text(
+                          "Drug Checker",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+
+                        const SizedBox(height: 4),
+
+                        const Text(
+                          "OpenFDA database — offline",
+                          style: TextStyle(color: Colors.white54),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        /// 📦 SCANNED DRUG CARD
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF112240),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.white12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                "📷 Scanned from label",
+                                style: TextStyle(color: Colors.white54),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                "Metformin 500mg + Ibuprofen 400mg",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 14),
+
+                        /// 🔄 PROCESSING STATUS
+                        // TODO (TEAMMATE - AI ENGINE):
+// Replace static text with actual AI output
+// Input: scanned drugs / typed drugs
+// Output:
+// - interaction risk
+// - explanation
+// - severity
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(Icons.circle, color: Colors.green, size: 10),
+                              SizedBox(width: 8),
+                              Text(
+                                "AI checking interactions...",
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        /// ⚠️ INTERACTION FOUND
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.18),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "⚠ Interaction Found",
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 6),
+                              Text(
+                                "Ibuprofen may reduce Metformin effectiveness and increase kidney stress in diabetic patients.",
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 14),
+
+                        /// ✅ DOSAGE SAFE
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.18),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "✓ Dosage Check: Safe",
+                                style: TextStyle(
+                                  color: Colors.greenAccent,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 6),
+                              Text(
+                                "Both doses within WHO safe range for adult patient (60kg).",
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
 
-                    const SizedBox(height: 4),
-
-                    const Text(
-                      "OpenFDA database — offline",
-                      style: TextStyle(color: Colors.white54),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    /// 📦 SCANNED DRUG CARD
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF112240),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "📷 Scanned from label",
-                            style: TextStyle(color: Colors.white54),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            "Metformin 500mg + Ibuprofen 400mg",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      // TODO (TEAMMATE):
-                      // Replace with OCR / user input drugs
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    /// 🔄 PROCESSING STATUS
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.circle, color: Colors.green, size: 10),
-                          SizedBox(width: 8),
-                          Text(
-                            "AI checking interactions...",
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    /// ⚠️ INTERACTION FOUND
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.18),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "⚠ Interaction Found",
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            "Ibuprofen may reduce Metformin effectiveness and increase kidney stress in diabetic patients.",
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ],
-                      ),
-                      // TODO (TEAMMATE):
-                      // Replace with real interaction output
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    /// ✅ DOSAGE SAFE
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.18),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "✓ Dosage Check: Safe",
-                            style: TextStyle(
-                              color: Colors.greenAccent,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            "Both doses within WHO safe range for adult patient (60kg).",
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ],
-                      ),
-                      // TODO (TEAMMATE):
-                      // Replace with dosage validation logic
-                    ),
-
+                    /// 🔻 PUSH CONTENT DOWN
                     const Spacer(),
 
-                    /// 🔘 ACTION BUTTONS
+                    /// 🔽 ACTION BUTTONS
                     Row(
                       children: [
                         Expanded(
@@ -190,10 +212,7 @@ class DrugCheckerScreen extends StatelessWidget {
                             label: "Read",
                             icon: Icons.volume_up,
                             color: const Color(0xFF30D988),
-                            onTap: () {
-                              // TODO (TEAMMATE):
-                              // Text-to-speech output
-                            },
+                            onTap: () {},
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -202,10 +221,7 @@ class DrugCheckerScreen extends StatelessWidget {
                             label: "Save",
                             icon: Icons.save,
                             color: const Color(0xFF2E7DD1),
-                            onTap: () {
-                              // TODO (TEAMMATE):
-                              // Save to local DB
-                            },
+                            onTap: () {},
                           ),
                         ),
                       ],

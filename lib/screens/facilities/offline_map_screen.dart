@@ -11,9 +11,9 @@ class OfflineMapScreen extends StatelessWidget {
         child: Column(
           children: [
 
-            /// 🔵 HEADER
+            /// 🔵 HEADER + BACK BUTTON
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
               decoration: const BoxDecoration(
                 color: Color(0xFF1F4A75),
                 borderRadius: BorderRadius.vertical(
@@ -21,10 +21,21 @@ class OfflineMapScreen extends StatelessWidget {
                 ),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("OfflineMedic",
-                      style: TextStyle(color: Colors.white)),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    "Nearby Facilities",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -46,70 +57,86 @@ class OfflineMapScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(18),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
 
-                    const Text(
-                      "Nearby Facilities",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
+                    /// 🔝 TOP CONTENT (MAP + INFO)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
 
-                    const SizedBox(height: 4),
+                        const SizedBox(height: 10),
 
-                    const Text(
-                      "Offline map + cached data",
-                      style: TextStyle(color: Colors.white54),
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    /// 🗺 MAP CARD
-                    Container(
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF112240),
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: Colors.white12),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Offline Map Loading...",
+                        const Text(
+                          "Offline map + cached data",
                           style: TextStyle(color: Colors.white54),
                         ),
-                      ),
-                      // TODO (TEAMMATE):
-                      // Replace with OpenStreetMap / offline map SDK
+
+                        const SizedBox(height: 18),
+
+                        /// 🗺 MAP CARD
+                        Container(
+                          width: double.infinity,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF112240),
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(color: Colors.white12),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Offline Map Loading...",
+                              style: TextStyle(color: Colors.white54),
+                            ),
+                          ),
+
+                          // TODO (TEAMMATE - MAP INTEGRATION):
+                          // 1. Replace this container with actual map widget
+                          // 2. Use OpenStreetMap / Mapbox / offline tiles
+                          // 3. Load cached map tiles for offline usage
+                          // 4. Center map on user's GPS location
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        const Text(
+                          "Nearest facilities",
+                          style: TextStyle(color: Colors.white70),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        /// LIST (STATIC NOW → DYNAMIC LATER)
+                        const _FacilityItem(
+                          name: "Dhangaon PHC",
+                          distance: "2.3 km",
+                        ),
+                        const _FacilityItem(
+                          name: "Pune Civil Hospital",
+                          distance: "18 km",
+                        ),
+                        const _FacilityItem(
+                          name: "Dr. Rathi Clinic",
+                          distance: "4.1 km",
+                        ),
+
+                        // TODO (TEAMMATE - DATA INTEGRATION):
+                        // Replace static list with:
+                        // - GPS-based nearest hospitals
+                        // - Offline cached DB (SQLite / JSON)
+                        // - Sort by distance dynamically
+                      ],
                     ),
 
-                    const SizedBox(height: 18),
+                    /// 🔻 PUSH CONTENT DOWN (FOR BALANCE LIKE SKELETON)
+                    const Spacer(),
 
-                    const Text(
-                      "Nearest facilities",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    /// LIST
-                    const _FacilityItem(
-                      name: "Dhangaon PHC",
-                      distance: "2.3 km",
-                    ),
-                    const _FacilityItem(
-                      name: "Pune Civil Hospital",
-                      distance: "18 km",
-                    ),
-                    const _FacilityItem(
-                      name: "Dr. Rathi Clinic",
-                      distance: "4.1 km",
-                    ),
-
-                    // TODO (TEAMMATE):
-                    // Replace with dynamic list from location + DB
+                    /// 🔽 FUTURE ACTION AREA (OPTIONAL EXTENSION)
+                    // TODO (TEAMMATE - OPTIONAL):
+                    // Add:
+                    // - "Navigate" button (open maps intent)
+                    // - "Call hospital" primary CTA
+                    // - Directions preview
                   ],
                 ),
               ),
@@ -157,8 +184,9 @@ class _FacilityItem extends StatelessWidget {
 
           GestureDetector(
             onTap: () {
-              // TODO (TEAMMATE):
-              // Call hospital number
+              // TODO (TEAMMATE - CALL INTEGRATION):
+              // Use url_launcher:
+              // launchUrl(Uri.parse("tel:<hospital_number>"))
             },
             child: const Icon(Icons.call, color: Colors.redAccent),
           ),

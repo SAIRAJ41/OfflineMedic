@@ -50,10 +50,25 @@ class TextInputScreen extends StatelessWidget {
                   maxLines: 5,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
-                    hintText: "Enter symptoms...",
+                    hintText: "Describe symptoms (e.g. fever, headache, nausea)",
                     hintStyle: TextStyle(color: Colors.white54),
                     border: InputBorder.none,
                   ),
+                ),
+
+                // TODO (TEAMMATE - INPUT CAPTURE):
+                // Capture user-entered symptoms from controller.text
+                // Pass this string to AI / rule engine
+              ),
+
+              const SizedBox(height: 10),
+
+              /// EXAMPLE GUIDANCE (MEDICAL SAFE WORDING)
+              const Text(
+                "Example: fever for 2 days, headache, mild dizziness",
+                style: TextStyle(
+                  color: Colors.white38,
+                  fontSize: 12,
                 ),
               ),
 
@@ -62,10 +77,13 @@ class TextInputScreen extends StatelessWidget {
               /// SUBMIT BUTTON
               GestureDetector(
                 onTap: () {
-                  // TODO (TEAMMATE):
-                  // 1. Get controller.text
-                  // 2. Send to AI processing
-                  // 3. Navigate to ProcessingScreen
+                  // TODO (TEAMMATE - PROCESSING PIPELINE):
+                  // 1. Read input → controller.text
+                  // 2. Validate / clean text
+                  // 3. Send to AI model or backend
+                  // 4. Receive structured result (severity, advice, etc.)
+
+                  if (controller.text.trim().isEmpty) return;
 
                   Navigator.pushReplacement(
                     context,
