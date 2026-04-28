@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../input/input_screen.dart';
 
 // ─────────────────────────────────────────────
 // DATA MODELS
@@ -170,10 +171,17 @@ class HomeDashboard extends StatelessWidget {
               const Spacer(),
 
               _PrimaryButton(
-                label: 'Start New Assessment',
-                icon: Icons.add_circle_outline_rounded,
-                onTap: () {},
-              ),
+  label: 'Start New Assessment',
+  icon: Icons.add_circle_outline_rounded,
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const InputScreen(),
+      ),
+    );
+  },
+),
 
               const SizedBox(height: 48),
             ],
