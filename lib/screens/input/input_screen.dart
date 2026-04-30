@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import '../triage/triage_screen.dart';
-import 'voice_input_screen.dart';
-import '../processing/processing_screen.dart';
-import 'camera_input_screen.dart';
-import 'text_input_screen.dart';
-
-const _bgDeep = Color(0xFF0A1628);
-const _card = Color(0xFF112240);
-
-const _blue = Color(0xFF2E7DD1);
-const _green = Color(0xFF30D988);
-const _purple = Color(0xFF9B5DE5);
+import '../../services/gemma_service.dart';
+import '../../models/triage_result.dart';
+import '../map/map_screen.dart';
+import '../home/home_screen.dart';
 
 class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
@@ -20,284 +12,312 @@ class InputScreen extends StatefulWidget {
 }
 
 class _InputScreenState extends State<InputScreen> {
-  String selectedLang = "English";
+  final TextEditingController controller = TextEditingController();
+
+  bool isLoading = false;
+  TriageResult? result;
+  int selectedInput = 2; // 0=upload, 1=speak, 2=type
+
+  void analyze() async {
+    if (controller.text.trim().isEmpty) return;
+
+    setState(() => isLoading = true);
+
+    final res = await GemmaService.analyze(controller.text);
+
+    setState(() {
+      result = res;
+      isLoading = false;
+    });
+
+    /// TODO (TEAMMATE):
+    /// Combine:
+    /// - Text input
+    /// - Voice (Whisper → voice_service.dart)
+    /// - Image (camera)
+  }
+
+  Color severityColor(String level) {
+    switch (level) {
+      case "URGENT":
+        return Colors.red;
+      case "MODERATE":
+        return Colors.orange;
+      default:
+        return Colors.green;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgDeep,
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              const SizedBox(height: 14),
-
               /// HEADER
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  ),
-                  const SizedBox(width: 6),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const Row(
                     children: [
+                      Icon(Icons.medical_services, color: Colors.blue),
+                      SizedBox(width: 8),
                       Text(
-                        "New Assessment",
+                        "Medical Assistant",
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.blue,
                         ),
                       ),
-                      Text(
-                        "Choose input method",
-                        style: TextStyle(color: Colors.white60, fontSize: 12),
-                      ),
                     ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.history),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const HomeScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 28),
 
-              /// CONTEXT
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _card,
-                  borderRadius: BorderRadius.circular(14),
+              /// INPUT OPTIONS 
+              Row(
+                children: [
+                  _inputCard(0, Icons.upload_file, "Upload", "Upload image"),
+                  const SizedBox(width: 12),
+                  _inputCard(1, Icons.mic, "Speak", "Tap to record"),
+                  const SizedBox(width: 12),
+                  _inputCard(2, Icons.keyboard, "Type", "Enter symptoms"),
+                ],
+              ),
+
+              const SizedBox(height: 28),
+
+              /// 🔁 SWITCHED CONTENT BASED ON MODE
+
+              if (selectedInput == 2) ...[
+                /// TYPE MODE
+                const Text(
+                  "CURRENT DESCRIPTION",
+                  style: TextStyle(
+                    fontSize: 10,
+                    letterSpacing: 1.5,
+                    color: Color(0xFF727784),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                child: const Row(
-                  children: [
-                    Icon(Icons.health_and_safety, color: Colors.white70),
-                    SizedBox(width: 10),
-                    Expanded(
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFC2C6D4)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: TextField(
+                    controller: controller,
+                    maxLines: 6,
+                    decoration: const InputDecoration(
+                      hintText: "Enter symptoms...",
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.all(18),
+                    ),
+                  ),
+                ),
+              ],
+
+              if (selectedInput == 1) ...[
+                /// SPEAK MODE (MOCK UI)
+                Container(
+                  height: 120,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFC2C6D4)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Center(
+                    child: Text("Voice input will appear here"),
+                  ),
+                ),
+
+                /// TODO (TEAMMATE):
+                /// Integrate Whisper here
+              ],
+
+              if (selectedInput == 0) ...[
+                /// UPLOAD MODE (MOCK UI)
+                Container(
+                  height: 120,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFC2C6D4)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Center(
+                    child: Text("Image upload preview here"),
+                  ),
+                ),
+
+                /// TODO (TEAMMATE):
+                /// Integrate camera/gallery here
+              ],
+
+              const SizedBox(height: 28),
+
+              /// ANALYZE BUTTON
+              GestureDetector(
+                onTap: isLoading ? null : analyze,
+                child: Container(
+                  height: 72,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF003F87),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Analyze Now",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              if (isLoading)
+                const Center(child: Text("Analyzing...")),
+
+              if (result != null && !isLoading) ...[
+
+                /// RESULT
+                Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFE5E7EB)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Severity: ${result!.triageLevel}"),
+                      const SizedBox(height: 8),
+                      Text(result!.condition),
+                      const SizedBox(height: 8),
+                      ...result!.doNow.map((e) => Text("• $e")),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                /// 🚨 STATIC EMERGENCY BUTTON 
+                if (result!.callNow)
+                  Container(
+                    height: 78,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFB6152E),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Center(
                       child: Text(
-                        "Select how you want to assess the patient",
-                        style: TextStyle(color: Colors.white70),
+                        "Call Emergency",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                const SizedBox(height: 16),
+
+                /// ACTION BUTTONS
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 60,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const MapScreen(),
+                              ),
+                            );
+                          },
+                          child: const Text("Nearby"),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: SizedBox(
+                        height: 60,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text("Save"),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-
-              const SizedBox(height: 18),
-
-             /// OPTIONS
-_InputCard(
-  icon: Icons.camera_alt,
-  title: "Photograph",
-  subtitle: "Scan wound / medicine",
-  color: _blue,
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const CameraInputScreen(),
-      ),
-    );
-  },
-),
-
-const SizedBox(height: 12),
-
-_InputCard(
-  icon: Icons.mic,
-  title: "Speak Symptoms",
-  subtitle: "English/Hindi/Marathi",
-  color: _green,
-  onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const VoiceInputScreen(),
-    ),
-  );
-},
-),
-
-const SizedBox(height: 12),
-
-_InputCard(
-  icon: Icons.edit,
-  title: "Type Symptoms",
-  subtitle: "Manual Input",
-  color: _purple,
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const TextInputScreen(),
-      ),
-    );
-  },
-),
-
-              const Spacer(),
-
-              /// LANGUAGE SELECTOR
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: _card,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _LangChip(
-                      label: "English",
-                      active: selectedLang == "English",
-                      onTap: () => setState(() => selectedLang = "English"),
-                    ),
-                    const SizedBox(width: 8),
-                    _LangChip(
-                      label: "हिंदी",
-                      active: selectedLang == "हिंदी",
-                      onTap: () => setState(() => selectedLang = "हिंदी"),
-                    ),
-                    const SizedBox(width: 8),
-                    _LangChip(
-                      label: "मराठी",
-                      active: selectedLang == "मराठी",
-                      onTap: () => setState(() => selectedLang = "मराठी"),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 14),
+              ],
             ],
           ),
         ),
       ),
     );
   }
-}
 
-// ─────────────────────────────────────────────
-// INPUT CARD
-// ─────────────────────────────────────────────
+  
+  Widget _inputCard(int index, IconData icon, String title, String subtitle) {
+    final isActive = selectedInput == index;
 
-class _InputCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _InputCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: Container( // ✅ FIX: use Container instead of Ink
-          constraints: const BoxConstraints(
-            minHeight: 90, // 👈 bigger cards
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-          decoration: BoxDecoration(
-            color: _card,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: color.withOpacity(0.3)),
-            boxShadow: [
-              BoxShadow(
-                color: color.withOpacity(0.2),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() => selectedInput = index);
+        },
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: isActive
+                    ? const Color(0xFF003F87)
+                    : const Color(0xFFF1F5F9),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
               ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(icon, color: color, size: 28),
+              child: Icon(
+                icon,
+                size: 28,
+                color:
+                    isActive ? Colors.white : const Color(0xFF003F87),
               ),
-              const SizedBox(width: 16),
-
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: const TextStyle(color: Colors.white60),
-                    ),
-                  ],
-                ),
-              ),
-
-              const Icon(Icons.arrow_forward_ios, color: Colors.white38, size: 16),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────
-// LANGUAGE CHIP
-// ─────────────────────────────────────────────
-
-class _LangChip extends StatelessWidget {
-  final String label;
-  final bool active;
-  final VoidCallback onTap;
-
-  const _LangChip({
-    required this.label,
-    required this.active,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(
-          color: active ? _blue : Colors.white10,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: active ? Colors.white : Colors.white70,
-            fontWeight: FontWeight.w600,
-          ),
+            ),
+            const SizedBox(height: 6),
+            Text(title),
+            Text(
+              subtitle,
+              style: const TextStyle(fontSize: 10, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
