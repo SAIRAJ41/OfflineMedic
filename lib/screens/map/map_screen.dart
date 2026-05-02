@@ -8,6 +8,9 @@ class MapScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
+      /// ✅ DRAWER ADDED
+      drawer: _drawer(context),
+
       /// HEADER
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -73,12 +76,50 @@ class MapScreen extends StatelessWidget {
                 _hospitalItem("Dr. Rathi Clinic", "4.1 km"),
 
                 /// TODO (TEAMMATE - DATA SOURCE):
-                /// Replace static list with:
-                /// - GPS-based nearest hospitals
-                /// - Offline DB or API
+                /// Replace with:
+                /// - GPS nearest hospitals
+                /// - Offline DB/API
                 /// - Sort by distance
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 🔹 DRAWER
+  static Widget _drawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blue),
+            child: Text(
+              "OfflineMedic",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text("Input"),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/input'),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.dashboard),
+            title: const Text("Dashboard"),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/dashboard'),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.map),
+            title: const Text("Map"),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/map'),
           ),
         ],
       ),
@@ -100,7 +141,6 @@ class MapScreen extends StatelessWidget {
 
           const SizedBox(width: 10),
 
-          /// NAME
           Expanded(
             child: Text(
               name,
@@ -108,7 +148,6 @@ class MapScreen extends StatelessWidget {
             ),
           ),
 
-          /// DISTANCE
           Text(
             distance,
             style: const TextStyle(color: Colors.grey),
@@ -116,20 +155,16 @@ class MapScreen extends StatelessWidget {
 
           const SizedBox(width: 8),
 
-          /// CALL BUTTON
           GestureDetector(
             onTap: () {
-
-              /// TODO (TEAMMATE - CALL HOSPITAL):
+              /// TODO (TEAMMATE - CALL):
               /// launchUrl(Uri.parse("tel:<hospital_number>"))
-
             },
             child: const Icon(Icons.call, color: Colors.blue),
           ),
 
           const SizedBox(width: 6),
 
-          /// NAVIGATION ICON
           const Icon(Icons.chevron_right),
         ],
       ),
