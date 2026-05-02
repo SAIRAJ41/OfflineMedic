@@ -9,7 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.6
+
+  # 📊 Charts (Dashboard)
+  fl_chart: ^0.66.0
+
+  # 📄 PDF Export
+  pdf: ^3.10.7
+  printing: ^5.11.0
 
 dev_dependencies:
   flutter_test:
