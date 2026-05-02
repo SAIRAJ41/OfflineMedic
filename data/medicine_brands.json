@@ -1,0 +1,719 @@
+{
+  "brands": [
+    {
+      "brand_name": "Crocin",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild pain"
+    },
+    {
+      "brand_name": "Crocin Advance",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild-to-moderate pain"
+    },
+    {
+      "brand_name": "Dolo 650",
+      "generic_name": "Paracetamol 650mg",
+      "common_use": "Fever and mild-to-moderate pain"
+    },
+    {
+      "brand_name": "Calpol",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild pain"
+    },
+    {
+      "brand_name": "Metacin",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild pain"
+    },
+    {
+      "brand_name": "Paracip",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild pain"
+    },
+    {
+      "brand_name": "Pacimol",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild pain"
+    },
+    {
+      "brand_name": "Fevago",
+      "generic_name": "Paracetamol",
+      "common_use": "Fever and mild pain"
+    },
+    {
+      "brand_name": "Combiflam",
+      "generic_name": "Ibuprofen + Paracetamol",
+      "common_use": "Pain, fever and inflammation"
+    },
+    {
+      "brand_name": "Brufen",
+      "generic_name": "Ibuprofen",
+      "common_use": "Pain, fever and inflammation"
+    },
+    {
+      "brand_name": "Ibugesic Plus",
+      "generic_name": "Ibuprofen + Paracetamol",
+      "common_use": "Pain, fever and inflammation"
+    },
+    {
+      "brand_name": "Meftal",
+      "generic_name": "Mefenamic Acid",
+      "common_use": "Pain and inflammation"
+    },
+    {
+      "brand_name": "Meftal-Spas",
+      "generic_name": "Mefenamic Acid + Dicyclomine",
+      "common_use": "Menstrual or abdominal cramps; prescription use"
+    },
+    {
+      "brand_name": "Zerodol-P",
+      "generic_name": "Aceclofenac + Paracetamol",
+      "common_use": "Pain and inflammation; prescription use"
+    },
+    {
+      "brand_name": "Hifenac-P",
+      "generic_name": "Aceclofenac + Paracetamol",
+      "common_use": "Pain and inflammation; prescription use"
+    },
+    {
+      "brand_name": "Voveran",
+      "generic_name": "Diclofenac",
+      "common_use": "Pain and inflammation; prescription use"
+    },
+    {
+      "brand_name": "Disprin",
+      "generic_name": "Aspirin",
+      "common_use": "Pain relief; not for children unless doctor says"
+    },
+    {
+      "brand_name": "Ecosprin",
+      "generic_name": "Aspirin",
+      "common_use": "Antiplatelet blood thinner; prescription use"
+    },
+    {
+      "brand_name": "Colsprin",
+      "generic_name": "Aspirin",
+      "common_use": "Antiplatelet blood thinner; prescription use"
+    },
+    {
+      "brand_name": "Vicks VapoRub",
+      "generic_name": "Camphor + Menthol + Eucalyptus Oil",
+      "common_use": "Cold and nasal congestion relief"
+    },
+    {
+      "brand_name": "Cetzine",
+      "generic_name": "Cetirizine",
+      "common_use": "Allergy symptoms such as sneezing and itching"
+    },
+    {
+      "brand_name": "Okacet",
+      "generic_name": "Cetirizine",
+      "common_use": "Allergy symptoms such as sneezing and itching"
+    },
+    {
+      "brand_name": "Zyrtec",
+      "generic_name": "Cetirizine",
+      "common_use": "Allergy symptoms such as sneezing and itching"
+    },
+    {
+      "brand_name": "Levocet",
+      "generic_name": "Levocetirizine",
+      "common_use": "Allergy symptoms; may cause drowsiness"
+    },
+    {
+      "brand_name": "Allegra",
+      "generic_name": "Fexofenadine",
+      "common_use": "Allergy symptoms such as sneezing and itching"
+    },
+    {
+      "brand_name": "Avil",
+      "generic_name": "Pheniramine",
+      "common_use": "Allergic reactions; may cause drowsiness"
+    },
+    {
+      "brand_name": "Montair",
+      "generic_name": "Montelukast",
+      "common_use": "Asthma/allergy control; prescription use"
+    },
+    {
+      "brand_name": "Montair LC",
+      "generic_name": "Montelukast + Levocetirizine",
+      "common_use": "Allergy/asthma symptoms; prescription use"
+    },
+    {
+      "brand_name": "Sinarest",
+      "generic_name": "Paracetamol + Phenylephrine + Chlorpheniramine",
+      "common_use": "Cold symptoms; combination medicine"
+    },
+    {
+      "brand_name": "Cheston Cold",
+      "generic_name": "Cetirizine + Paracetamol + Phenylephrine",
+      "common_use": "Cold symptoms; combination medicine"
+    },
+    {
+      "brand_name": "Wikoryl",
+      "generic_name": "Paracetamol + Phenylephrine + Chlorpheniramine",
+      "common_use": "Cold symptoms; combination medicine"
+    },
+    {
+      "brand_name": "Benadryl",
+      "generic_name": "Diphenhydramine-based cough/cold formulation",
+      "common_use": "Cough/cold symptoms; check exact label"
+    },
+    {
+      "brand_name": "Ascoril",
+      "generic_name": "Ambroxol + Guaifenesin + Levosalbutamol",
+      "common_use": "Cough with mucus; prescription use"
+    },
+    {
+      "brand_name": "Alex",
+      "generic_name": "Dextromethorphan-based cough formulation",
+      "common_use": "Dry cough; check exact label"
+    },
+    {
+      "brand_name": "Corex",
+      "generic_name": "Cough formulation; composition varies",
+      "common_use": "Cough; prescription use and label verification needed"
+    },
+    {
+      "brand_name": "Digene",
+      "generic_name": "Antacid",
+      "common_use": "Acidity and indigestion"
+    },
+    {
+      "brand_name": "Gelusil",
+      "generic_name": "Aluminium Hydroxide + Magnesium Hydroxide + Simethicone",
+      "common_use": "Acidity, gas and indigestion"
+    },
+    {
+      "brand_name": "Eno",
+      "generic_name": "Sodium Bicarbonate + Citric Acid",
+      "common_use": "Acidity and indigestion"
+    },
+    {
+      "brand_name": "Omez",
+      "generic_name": "Omeprazole",
+      "common_use": "Acidity/GERD; often prescription use"
+    },
+    {
+      "brand_name": "Pantocid",
+      "generic_name": "Pantoprazole",
+      "common_use": "Acidity/GERD; often prescription use"
+    },
+    {
+      "brand_name": "Pan-D",
+      "generic_name": "Pantoprazole + Domperidone",
+      "common_use": "Acidity with nausea/reflux; prescription use"
+    },
+    {
+      "brand_name": "Rantac",
+      "generic_name": "Ranitidine",
+      "common_use": "Acidity medicine; availability/restrictions vary by country"
+    },
+    {
+      "brand_name": "Domstal",
+      "generic_name": "Domperidone",
+      "common_use": "Nausea/vomiting; prescription use"
+    },
+    {
+      "brand_name": "Emeset",
+      "generic_name": "Ondansetron",
+      "common_use": "Nausea/vomiting; prescription use"
+    },
+    {
+      "brand_name": "ORS",
+      "generic_name": "Oral Rehydration Salts",
+      "common_use": "Dehydration and diarrhea"
+    },
+    {
+      "brand_name": "Electral",
+      "generic_name": "Oral Rehydration Salts",
+      "common_use": "Dehydration and diarrhea"
+    },
+    {
+      "brand_name": "Imodium",
+      "generic_name": "Loperamide",
+      "common_use": "Diarrhea symptom control; avoid in some infections"
+    },
+    {
+      "brand_name": "Enterogermina",
+      "generic_name": "Bacillus Clausii",
+      "common_use": "Probiotic for gut flora support"
+    },
+    {
+      "brand_name": "Sporolac",
+      "generic_name": "Lactic Acid Bacillus",
+      "common_use": "Probiotic for gut flora support"
+    },
+    {
+      "brand_name": "Cremaffin",
+      "generic_name": "Liquid Paraffin + Milk of Magnesia",
+      "common_use": "Constipation relief"
+    },
+    {
+      "brand_name": "Dulcolax",
+      "generic_name": "Bisacodyl",
+      "common_use": "Constipation relief"
+    },
+    {
+      "brand_name": "Looz",
+      "generic_name": "Lactulose",
+      "common_use": "Constipation; often prescription use"
+    },
+    {
+      "brand_name": "Augmentin",
+      "generic_name": "Amoxicillin + Clavulanic Acid",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Clavam",
+      "generic_name": "Amoxicillin + Clavulanic Acid",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Mox",
+      "generic_name": "Amoxicillin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Almox",
+      "generic_name": "Amoxicillin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Azee",
+      "generic_name": "Azithromycin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Azithral",
+      "generic_name": "Azithromycin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Zithromax",
+      "generic_name": "Azithromycin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Taxim-O",
+      "generic_name": "Cefixime",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Cefix",
+      "generic_name": "Cefixime",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Cepodem",
+      "generic_name": "Cefpodoxime",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Ceftum",
+      "generic_name": "Cefuroxime",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Oflox",
+      "generic_name": "Ofloxacin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Ciplox",
+      "generic_name": "Ciprofloxacin",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Flagyl",
+      "generic_name": "Metronidazole",
+      "common_use": "Prescription anti-infective; bacterial/protozoal infections"
+    },
+    {
+      "brand_name": "Norflox-TZ",
+      "generic_name": "Norfloxacin + Tinidazole",
+      "common_use": "Prescription anti-infective; diarrhea only if doctor advises"
+    },
+    {
+      "brand_name": "Doxy-1",
+      "generic_name": "Doxycycline",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Bactrim",
+      "generic_name": "Sulfamethoxazole + Trimethoprim",
+      "common_use": "Prescription antibiotic; bacterial infections only"
+    },
+    {
+      "brand_name": "Betadine",
+      "generic_name": "Povidone-Iodine",
+      "common_use": "Antiseptic for minor wounds"
+    },
+    {
+      "brand_name": "Soframycin",
+      "generic_name": "Framycetin",
+      "common_use": "Topical antibiotic for skin wounds; prescription/label use"
+    },
+    {
+      "brand_name": "Candid",
+      "generic_name": "Clotrimazole",
+      "common_use": "Fungal skin infection"
+    },
+    {
+      "brand_name": "Itch Guard",
+      "generic_name": "Clotrimazole",
+      "common_use": "Fungal skin infection"
+    },
+    {
+      "brand_name": "Lulifin",
+      "generic_name": "Luliconazole",
+      "common_use": "Fungal skin infection; prescription use"
+    },
+    {
+      "brand_name": "Quadriderm",
+      "generic_name": "Beclometasone + Clotrimazole + Gentamicin",
+      "common_use": "Skin infection/inflammation; prescription use"
+    },
+    {
+      "brand_name": "Betnovate",
+      "generic_name": "Betamethasone",
+      "common_use": "Steroid skin cream; prescription use"
+    },
+    {
+      "brand_name": "Fucidin",
+      "generic_name": "Fusidic Acid",
+      "common_use": "Topical antibiotic; prescription use"
+    },
+    {
+      "brand_name": "Silverex",
+      "generic_name": "Silver Sulfadiazine",
+      "common_use": "Burn/wound cream; medical supervision recommended"
+    },
+    {
+      "brand_name": "Burnol",
+      "generic_name": "Antiseptic burn cream; composition varies",
+      "common_use": "Minor burn/wound care; check label"
+    },
+    {
+      "brand_name": "Asthalin",
+      "generic_name": "Salbutamol",
+      "common_use": "Asthma/COPD bronchodilator; prescription use"
+    },
+    {
+      "brand_name": "Ventorlin",
+      "generic_name": "Salbutamol",
+      "common_use": "Asthma/COPD bronchodilator; prescription use"
+    },
+    {
+      "brand_name": "Budecort",
+      "generic_name": "Budesonide",
+      "common_use": "Asthma/COPD controller steroid; prescription use"
+    },
+    {
+      "brand_name": "Duolin",
+      "generic_name": "Levosalbutamol/Salbutamol + Ipratropium",
+      "common_use": "Bronchodilator combination; prescription use"
+    },
+    {
+      "brand_name": "Foracort",
+      "generic_name": "Budesonide + Formoterol",
+      "common_use": "Asthma/COPD controller inhaler; prescription use"
+    },
+    {
+      "brand_name": "Seroflo",
+      "generic_name": "Salmeterol + Fluticasone",
+      "common_use": "Asthma/COPD controller inhaler; prescription use"
+    },
+    {
+      "brand_name": "Deriphyllin",
+      "generic_name": "Etofylline + Theophylline",
+      "common_use": "Asthma/COPD breathing difficulty; prescription use"
+    },
+    {
+      "brand_name": "Mucolite",
+      "generic_name": "Ambroxol",
+      "common_use": "Cough with mucus"
+    },
+    {
+      "brand_name": "Mucomix",
+      "generic_name": "Acetylcysteine",
+      "common_use": "Mucus thinning; medical supervision recommended"
+    },
+    {
+      "brand_name": "Glycomet",
+      "generic_name": "Metformin",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Gluconorm",
+      "generic_name": "Glimepiride-based formulation",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Amaryl",
+      "generic_name": "Glimepiride",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Galvus Met",
+      "generic_name": "Vildagliptin + Metformin",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Janumet",
+      "generic_name": "Sitagliptin + Metformin",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Januvia",
+      "generic_name": "Sitagliptin",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Trajenta",
+      "generic_name": "Linagliptin",
+      "common_use": "Diabetes control; prescription use"
+    },
+    {
+      "brand_name": "Human Mixtard",
+      "generic_name": "Human Insulin 30/70",
+      "common_use": "Diabetes insulin therapy; prescription use"
+    },
+    {
+      "brand_name": "Lantus",
+      "generic_name": "Insulin Glargine",
+      "common_use": "Long-acting insulin; prescription use"
+    },
+    {
+      "brand_name": "Humalog",
+      "generic_name": "Insulin Lispro",
+      "common_use": "Rapid-acting insulin; prescription use"
+    },
+    {
+      "brand_name": "Amlong",
+      "generic_name": "Amlodipine",
+      "common_use": "High blood pressure/angina; prescription use"
+    },
+    {
+      "brand_name": "Stamlo",
+      "generic_name": "Amlodipine",
+      "common_use": "High blood pressure/angina; prescription use"
+    },
+    {
+      "brand_name": "Telma",
+      "generic_name": "Telmisartan",
+      "common_use": "High blood pressure; prescription use"
+    },
+    {
+      "brand_name": "Telma H",
+      "generic_name": "Telmisartan + Hydrochlorothiazide",
+      "common_use": "High blood pressure; prescription use"
+    },
+    {
+      "brand_name": "Losar",
+      "generic_name": "Losartan",
+      "common_use": "High blood pressure; prescription use"
+    },
+    {
+      "brand_name": "Cardace",
+      "generic_name": "Ramipril",
+      "common_use": "High blood pressure/heart protection; prescription use"
+    },
+    {
+      "brand_name": "Concor",
+      "generic_name": "Bisoprolol",
+      "common_use": "High blood pressure/heart rate control; prescription use"
+    },
+    {
+      "brand_name": "Betaloc",
+      "generic_name": "Metoprolol",
+      "common_use": "High blood pressure/heart rate control; prescription use"
+    },
+    {
+      "brand_name": "Atorva",
+      "generic_name": "Atorvastatin",
+      "common_use": "Cholesterol control; prescription use"
+    },
+    {
+      "brand_name": "Rosuvas",
+      "generic_name": "Rosuvastatin",
+      "common_use": "Cholesterol control; prescription use"
+    },
+    {
+      "brand_name": "Ecosprin AV",
+      "generic_name": "Aspirin + Atorvastatin",
+      "common_use": "Heart/stroke prevention; prescription use"
+    },
+    {
+      "brand_name": "Clopilet",
+      "generic_name": "Clopidogrel",
+      "common_use": "Antiplatelet blood thinner; prescription use"
+    },
+    {
+      "brand_name": "Lasix",
+      "generic_name": "Furosemide",
+      "common_use": "Fluid overload/edema; prescription use"
+    },
+    {
+      "brand_name": "Aldactone",
+      "generic_name": "Spironolactone",
+      "common_use": "Fluid overload/heart conditions; prescription use"
+    },
+    {
+      "brand_name": "Thyronorm",
+      "generic_name": "Levothyroxine",
+      "common_use": "Hypothyroidism; prescription use"
+    },
+    {
+      "brand_name": "Eltroxin",
+      "generic_name": "Levothyroxine",
+      "common_use": "Hypothyroidism; prescription use"
+    },
+    {
+      "brand_name": "Neo-Mercazole",
+      "generic_name": "Carbimazole",
+      "common_use": "Hyperthyroidism; prescription use"
+    },
+    {
+      "brand_name": "Shelcal",
+      "generic_name": "Calcium + Vitamin D3",
+      "common_use": "Calcium/vitamin D supplementation"
+    },
+    {
+      "brand_name": "Calcirol",
+      "generic_name": "Cholecalciferol Vitamin D3",
+      "common_use": "Vitamin D supplementation"
+    },
+    {
+      "brand_name": "Becosules",
+      "generic_name": "Vitamin B-Complex",
+      "common_use": "Vitamin B supplementation"
+    },
+    {
+      "brand_name": "Neurobion Forte",
+      "generic_name": "Vitamin B-Complex",
+      "common_use": "Vitamin B supplementation"
+    },
+    {
+      "brand_name": "Evion",
+      "generic_name": "Vitamin E",
+      "common_use": "Vitamin E supplementation"
+    },
+    {
+      "brand_name": "Limcee",
+      "generic_name": "Vitamin C",
+      "common_use": "Vitamin C supplementation"
+    },
+    {
+      "brand_name": "Zincovit",
+      "generic_name": "Multivitamin + Minerals",
+      "common_use": "Vitamin/mineral supplementation"
+    },
+    {
+      "brand_name": "Supradyn",
+      "generic_name": "Multivitamin + Minerals",
+      "common_use": "Vitamin/mineral supplementation"
+    },
+    {
+      "brand_name": "Folvite",
+      "generic_name": "Folic Acid",
+      "common_use": "Folic acid supplementation"
+    },
+    {
+      "brand_name": "Orofer XT",
+      "generic_name": "Iron + Folic Acid",
+      "common_use": "Iron/folate supplementation; medical advice recommended"
+    },
+    {
+      "brand_name": "Pregaba",
+      "generic_name": "Pregabalin",
+      "common_use": "Nerve pain/seizures; prescription use"
+    },
+    {
+      "brand_name": "Gabapin",
+      "generic_name": "Gabapentin",
+      "common_use": "Nerve pain/seizures; prescription use"
+    },
+    {
+      "brand_name": "Myoril",
+      "generic_name": "Thiocolchicoside",
+      "common_use": "Muscle spasm; prescription use"
+    },
+    {
+      "brand_name": "Sompraz",
+      "generic_name": "Esomeprazole",
+      "common_use": "Acidity/GERD; often prescription use"
+    },
+    {
+      "brand_name": "Drotin",
+      "generic_name": "Drotaverine",
+      "common_use": "Abdominal cramps/spasm; prescription use"
+    },
+    {
+      "brand_name": "Cyclopam",
+      "generic_name": "Dicyclomine + Paracetamol",
+      "common_use": "Abdominal cramps; prescription use"
+    },
+    {
+      "brand_name": "Avomine",
+      "generic_name": "Promethazine",
+      "common_use": "Motion sickness/nausea; may cause drowsiness"
+    },
+    {
+      "brand_name": "Vertin",
+      "generic_name": "Betahistine",
+      "common_use": "Vertigo; prescription use"
+    },
+    {
+      "brand_name": "Refresh Tears",
+      "generic_name": "Carboxymethylcellulose",
+      "common_use": "Dry eyes/lubricant eye drops"
+    },
+    {
+      "brand_name": "Tears Naturale",
+      "generic_name": "Lubricant eye drops",
+      "common_use": "Dry eyes"
+    },
+    {
+      "brand_name": "Nasivion",
+      "generic_name": "Oxymetazoline",
+      "common_use": "Nasal congestion; short-term use only"
+    },
+    {
+      "brand_name": "Otrivin",
+      "generic_name": "Xylometazoline",
+      "common_use": "Nasal congestion; short-term use only"
+    },
+    {
+      "brand_name": "Ciplox-D",
+      "generic_name": "Ciprofloxacin + Dexamethasone",
+      "common_use": "Eye/ear infection/inflammation; prescription use"
+    },
+    {
+      "brand_name": "EpiPen",
+      "generic_name": "Epinephrine/Adrenaline Auto-Injector",
+      "common_use": "Severe allergic reaction emergency; prescribed device"
+    },
+    {
+      "brand_name": "Glucagon",
+      "generic_name": "Glucagon",
+      "common_use": "Severe low blood sugar emergency; trained/prescribed use"
+    },
+    {
+      "brand_name": "Narcan",
+      "generic_name": "Naloxone",
+      "common_use": "Opioid overdose reversal; emergency use"
+    },
+    {
+      "brand_name": "Atropine",
+      "generic_name": "Atropine",
+      "common_use": "Poisoning/heart emergency medicine; medical professional use"
+    },
+    {
+      "brand_name": "Adrenaline",
+      "generic_name": "Epinephrine/Adrenaline",
+      "common_use": "Emergency medicine for anaphylaxis/cardiac arrest; professional use"
+    }
+  ]
+}

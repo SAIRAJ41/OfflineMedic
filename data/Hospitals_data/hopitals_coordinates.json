@@ -1,0 +1,155 @@
+{
+  "state": "Goa",
+  "hospitals": [
+    {
+      "name": "Goa Medical College & Hospital",
+      "type": "Government Hospital",
+      "city": "Bambolim",
+      "district": "North Goa",
+      "phone": "0832-2458700",
+      "lat": 15.4589,
+      "lng": 73.8478,
+      "pincode": "403202"
+    },
+    {
+      "name": "Hospicio Hospital",
+      "type": "Government Hospital",
+      "city": "Margao",
+      "district": "South Goa",
+      "phone": "0832-2733601",
+      "lat": 15.2748,
+      "lng": 73.9573,
+      "pincode": "403601"
+    },
+    {
+      "name": "South Goa District Hospital",
+      "type": "Government Hospital",
+      "city": "Margao",
+      "district": "South Goa",
+      "phone": "0832-2715100",
+      "lat": 15.2760,
+      "lng": 73.9580,
+      "pincode": "403601"
+    },
+    {
+      "name": "Asilo Hospital",
+      "type": "Government Hospital",
+      "city": "Mapusa",
+      "district": "North Goa",
+      "phone": "0832-2262372",
+      "lat": 15.5929,
+      "lng": 73.8091,
+      "pincode": "403507"
+    },
+    {
+      "name": "North Goa District Hospital",
+      "type": "Government Hospital",
+      "city": "Panaji",
+      "district": "North Goa",
+      "phone": "0832-2225540",
+      "lat": 15.4989,
+      "lng": 73.8278,
+      "pincode": "403001"
+    },
+    {
+      "name": "Primary Health Centre Panaji",
+      "type": "Primary Health Centre",
+      "city": "Panaji",
+      "district": "North Goa",
+      "phone": "0832-2224737",
+      "lat": 15.4980,
+      "lng": 73.8302,
+      "pincode": "403001"
+    },
+    {
+      "name": "Community Health Centre Valpoi",
+      "type": "Community Health Centre",
+      "city": "Valpoi",
+      "district": "North Goa",
+      "phone": "0832-2374233",
+      "lat": 15.5332,
+      "lng": 74.1334,
+      "pincode": "403506"
+    },
+    {
+      "name": "Sub District Hospital Ponda",
+      "type": "Government Hospital",
+      "city": "Ponda",
+      "district": "North Goa",
+      "phone": "0832-2312204",
+      "lat": 15.4027,
+      "lng": 74.0142,
+      "pincode": "403401"
+    },
+    {
+      "name": "Rural Hospital Bicholim",
+      "type": "Rural Hospital",
+      "city": "Bicholim",
+      "district": "North Goa",
+      "phone": "0832-2360233",
+      "lat": 15.5931,
+      "lng": 73.9595,
+      "pincode": "403504"
+    },
+    {
+      "name": "ESI Hospital Margao",
+      "type": "Government Hospital",
+      "city": "Margao",
+      "district": "South Goa",
+      "phone": "9822588424",
+      "lat": 15.2732,
+      "lng": 73.9585,
+      "pincode": "403601"
+    },
+    {
+      "name": "Goa Dental College & Hospital",
+      "type": "Government Hospital",
+      "city": "Panaji",
+      "district": "North Goa",
+      "phone": "0832-2458728",
+      "lat": 15.4601,
+      "lng": 73.8489,
+      "pincode": "403202"
+    },
+    {
+      "name": "Rural Hospital Canacona",
+      "type": "Rural Hospital",
+      "city": "Canacona",
+      "district": "South Goa",
+      "phone": "0832-2643223",
+      "lat": 15.0147,
+      "lng": 74.0436,
+      "pincode": "403702"
+    },
+    {
+      "name": "Sub District Hospital Quepem",
+      "type": "Government Hospital",
+      "city": "Quepem",
+      "district": "South Goa",
+      "phone": "0832-2662231",
+      "lat": 15.2124,
+      "lng": 74.0709,
+      "pincode": "403705"
+    },
+    {
+      "name": "Apollo Victor Hospital",
+      "type": "Private Hospital",
+      "city": "Margao",
+      "district": "South Goa",
+      "phone": "0832-2705000",
+      "lat": 15.2756,
+      "lng": 73.9561,
+      "pincode": "403601"
+    },
+    {
+      "name": "Manipal Hospital Goa",
+      "type": "Private Hospital",
+      "city": "Panaji",
+      "district": "North Goa",
+      "phone": "0832-2220000",
+      "lat": 15.4934,
+      "lng": 73.8223,
+      "pincode": "403001"
+    }
+  ]
+}

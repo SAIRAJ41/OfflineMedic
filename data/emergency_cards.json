@@ -1,0 +1,916 @@
+{
+  "cards": [
+    {
+      "id": "heart_attack",
+      "title": "Heart Attack",
+      "icon": "heart",
+      "do_now": [
+        "Call emergency services immediately",
+        "Help patient sit or lie in a comfortable half-sitting position",
+        "Loosen tight clothing around chest and neck",
+        "Keep patient calm, warm, and still",
+        "If alert and not allergic, give aspirin only if advised by emergency operator or local protocol",
+        "Start CPR if patient becomes unresponsive and is not breathing normally"
+      ],
+      "do_not": [
+        "Do not let patient walk or move around",
+        "Do not give food, alcohol, or unnecessary medicine",
+        "Do not give aspirin if allergic, bleeding, very young, or advised not to take it",
+        "Do not give someone else's nitroglycerin",
+        "Do not delay calling emergency services"
+      ],
+      "red_flags": [
+        "Chest pain or pressure lasting more than 10-15 minutes",
+        "Pain spreads to arm, jaw, back, neck, or upper belly",
+        "Severe sweating, nausea, dizziness, or shortness of breath",
+        "Patient collapses, loses consciousness, or stops breathing"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "cpr",
+      "title": "CPR",
+      "icon": "cpr",
+      "do_now": [
+        "Check if patient is responsive and breathing normally",
+        "Call emergency services and ask someone to bring an AED",
+        "Place patient flat on their back on a firm surface",
+        "Place hands in the centre of the chest",
+        "Push hard and fast 5-6cm deep at 100-120 compressions per minute",
+        "If trained, give 30 compressions followed by 2 rescue breaths",
+        "Use AED as soon as available and follow its voice instructions"
+      ],
+      "do_not": [
+        "Do not delay CPR if patient is not breathing normally",
+        "Do not give rescue breaths if you are not trained or it is unsafe",
+        "Do not press on ribs, stomach, or lower end of breastbone",
+        "Do not stop until help arrives, AED tells you, patient breathes normally, or you are exhausted"
+      ],
+      "red_flags": [
+        "Patient is unresponsive",
+        "Patient is not breathing normally or only gasping",
+        "No signs of life"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "snake_bite",
+      "title": "Snake Bite",
+      "icon": "snake",
+      "do_now": [
+        "Call emergency services immediately",
+        "Keep patient calm, still, and lying down",
+        "Immobilize the bitten limb with a splint or cloth support",
+        "Remove rings, watches, and tight clothing near the bite",
+        "Keep the bite area below heart level if possible",
+        "Note the time of bite and describe the snake from a safe distance if possible"
+      ],
+      "do_not": [
+        "Do not cut or suck the wound",
+        "Do not apply a tourniquet",
+        "Do not apply ice or heat",
+        "Do not give alcohol or unnecessary medicine",
+        "Do not wash the bite if local doctors may use venom residue for identification",
+        "Do not try to catch or kill the snake"
+      ],
+      "red_flags": [
+        "Rapidly spreading swelling or severe pain",
+        "Difficulty breathing or swallowing",
+        "Vomiting, dizziness, fainting, or confusion",
+        "Bleeding from gums, nose, urine, or wound",
+        "Weakness, drooping eyelids, or paralysis"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "choking",
+      "title": "Choking",
+      "icon": "choking",
+      "do_now": [
+        "Ask patient if they can speak, cough, or breathe",
+        "If they can cough, encourage coughing",
+        "If they cannot breathe or speak, give up to 5 firm back blows",
+        "If still choking, give up to 5 abdominal thrusts",
+        "Alternate back blows and abdominal thrusts until blockage clears",
+        "Call emergency services if choking continues or patient becomes weak"
+      ],
+      "do_not": [
+        "Do not do blind finger sweeps in the mouth",
+        "Do not give water or food",
+        "Do not use abdominal thrusts on babies under 1 year",
+        "Do not delay emergency help if patient turns blue or collapses"
+      ],
+      "red_flags": [
+        "Patient cannot speak, cough, cry, or breathe",
+        "Patient turns blue or grey",
+        "Patient becomes weak or unconscious"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "severe_bleeding",
+      "title": "Severe Bleeding",
+      "icon": "bleeding",
+      "do_now": [
+        "Call emergency services for heavy bleeding",
+        "Press firmly on the wound with clean cloth or dressing",
+        "Keep steady pressure until bleeding stops or help arrives",
+        "Add more cloth on top if blood soaks through",
+        "Raise injured area above heart level if possible",
+        "Help patient lie down and keep them warm"
+      ],
+      "do_not": [
+        "Do not remove the first soaked cloth; add more on top",
+        "Do not probe the wound",
+        "Do not remove an embedded object",
+        "Do not apply a tourniquet unless trained or instructed by emergency services",
+        "Do not give food or drink if surgery may be needed"
+      ],
+      "red_flags": [
+        "Bleeding spurts or does not slow with pressure",
+        "Patient becomes pale, cold, weak, or confused",
+        "Large wound or amputated body part",
+        "Object embedded in wound"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "burns",
+      "title": "Burns",
+      "icon": "burns",
+      "do_now": [
+        "Move patient away from the heat source safely",
+        "Cool the burn with cool running water for at least 20 minutes",
+        "Remove jewellery or tight clothing near the burn unless stuck",
+        "Cover loosely with clean cling film or a clean non-fluffy cloth",
+        "Keep patient warm while cooling the burned area",
+        "Seek medical help for serious burns"
+      ],
+      "do_not": [
+        "Do not use ice or very cold water",
+        "Do not apply butter, oil, toothpaste, cream, or powder",
+        "Do not burst blisters",
+        "Do not remove clothing stuck to the skin",
+        "Do not wrap the burn tightly"
+      ],
+      "red_flags": [
+        "Burn larger than patient's palm",
+        "Burn on face, hands, feet, genitals, or across a joint",
+        "Burn appears white, leathery, black, or charred",
+        "Chemical or electrical burn",
+        "Trouble breathing after smoke exposure"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "seizure",
+      "title": "Seizure",
+      "icon": "seizure",
+      "do_now": [
+        "Clear nearby hard or sharp objects",
+        "Protect the head with soft clothing or a cushion",
+        "Time how long the seizure lasts",
+        "Loosen tight clothing around the neck",
+        "After movements stop, turn patient on their side if breathing",
+        "Stay with patient until fully awake"
+      ],
+      "do_not": [
+        "Do not hold patient down",
+        "Do not put anything in the mouth",
+        "Do not give food, water, or medicine until fully alert",
+        "Do not move patient unless they are in danger"
+      ],
+      "red_flags": [
+        "First seizure",
+        "Seizure lasts more than 5 minutes",
+        "Second seizure follows immediately",
+        "Patient is injured, pregnant, diabetic, or in water",
+        "Patient does not regain consciousness"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "stroke",
+      "title": "Stroke",
+      "icon": "brain",
+      "do_now": [
+        "Use FAST: check Face drooping, Arm weakness, Speech difficulty",
+        "Call emergency services immediately if any FAST sign is present",
+        "Note the exact time symptoms started or when patient was last normal",
+        "Help patient sit or lie safely with head slightly raised",
+        "Keep patient calm and monitor breathing",
+        "If trained and available, check blood glucose without delaying the emergency call"
+      ],
+      "do_not": [
+        "Do not give food, water, or tablets",
+        "Do not let patient sleep it off",
+        "Do not drive patient yourself unless ambulance is unavailable",
+        "Do not delay because symptoms improve"
+      ],
+      "red_flags": [
+        "Face drooping on one side",
+        "Weakness or numbness in one arm or one side of body",
+        "Slurred speech or trouble understanding",
+        "Sudden severe headache, dizziness, balance loss, or vision trouble",
+        "Confusion or loss of consciousness"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "asthma_attack",
+      "title": "Asthma Attack",
+      "icon": "lungs",
+      "do_now": [
+        "Help patient sit upright and stay calm",
+        "Help them use their prescribed reliever inhaler",
+        "Use a spacer if available",
+        "Loosen tight clothing around neck and chest",
+        "Call emergency services if inhaler is not helping or symptoms are severe",
+        "Start CPR if patient stops breathing"
+      ],
+      "do_not": [
+        "Do not make patient lie flat",
+        "Do not give someone else's inhaler unless directed by emergency services",
+        "Do not leave patient alone",
+        "Do not delay help if patient cannot speak properly"
+      ],
+      "red_flags": [
+        "First asthma attack",
+        "Severe breathlessness or unable to speak full sentences",
+        "Blue or grey lips, nails, or earlobes",
+        "Inhaler gives no relief",
+        "Patient becomes exhausted, confused, or stops breathing"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "anaphylaxis",
+      "title": "Severe Allergic Reaction",
+      "icon": "allergy",
+      "do_now": [
+        "Call emergency services immediately",
+        "Help patient use their prescribed adrenaline/epinephrine auto-injector",
+        "Lay patient flat if breathing allows; raise legs if possible",
+        "If breathing is difficult, help patient sit upright",
+        "Remove trigger if safe, such as brushing off a visible sting",
+        "Monitor breathing and prepare for CPR"
+      ],
+      "do_not": [
+        "Do not make patient stand or walk",
+        "Do not give food or drink",
+        "Do not delay using prescribed auto-injector during severe symptoms",
+        "Do not leave patient alone",
+        "Do not ignore symptoms after they seem to improve"
+      ],
+      "red_flags": [
+        "Difficulty breathing or wheezing",
+        "Swelling of tongue, lips, throat, or face",
+        "Confusion, collapse, dizziness, or fainting",
+        "Widespread rash with breathing difficulty",
+        "Symptoms after food, medicine, insect sting, or latex exposure"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "diabetic_low_sugar",
+      "title": "Diabetic Low Blood Sugar",
+      "icon": "sugar",
+      "do_now": [
+        "Help patient sit or rest safely",
+        "If awake and able to swallow, give a sugary drink or glucose tablets",
+        "Wait 10-15 minutes and check if symptoms improve",
+        "Give a longer-lasting snack or meal after recovery",
+        "Call emergency services if patient does not improve or becomes unconscious"
+      ],
+      "do_not": [
+        "Do not give food or drink if patient is unconscious or unable to swallow",
+        "Do not give diet drinks because they do not contain sugar",
+        "Do not give insulin unless patient is managing it themselves",
+        "Do not leave patient alone"
+      ],
+      "red_flags": [
+        "Confusion, drowsiness, fainting, or seizure",
+        "Sweating, shaking, weakness, or pale clammy skin",
+        "Patient cannot swallow safely",
+        "Symptoms do not improve after sugar"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "poisoning",
+      "title": "Poisoning",
+      "icon": "poison",
+      "do_now": [
+        "Call emergency services or poison control immediately",
+        "Move patient away from danger if it is safe for you",
+        "Find out what was taken, how much, and when",
+        "Keep container, label, or sample for medical staff",
+        "If chemical is on skin, rinse with running water and remove contaminated clothing",
+        "Monitor breathing and consciousness"
+      ],
+      "do_not": [
+        "Do not make patient vomit",
+        "Do not give food, water, milk, or medicine unless told by professionals",
+        "Do not smell unknown chemicals closely",
+        "Do not wait for symptoms if a dangerous substance was swallowed",
+        "Do not enter a gas-filled area without protection"
+      ],
+      "red_flags": [
+        "Vomiting, stomach pain, burns around mouth, or chemical smell",
+        "Confusion, drowsiness, seizure, or unconsciousness",
+        "Difficulty breathing",
+        "Empty medicine, alcohol, pesticide, or cleaner containers nearby"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "heat_stroke",
+      "title": "Heat Stroke",
+      "icon": "heat",
+      "do_now": [
+        "Call emergency services immediately",
+        "Move patient to shade or a cool area",
+        "Remove unnecessary outer clothing",
+        "Cool rapidly with cold water, wet cloths, fan, or ice packs on neck, armpits, and groin",
+        "Keep cooling until help arrives",
+        "Monitor breathing and consciousness"
+      ],
+      "do_not": [
+        "Do not delay cooling while waiting for ambulance",
+        "Do not give drinks if patient is confused, unconscious, or vomiting",
+        "Do not give alcohol or caffeine",
+        "Do not leave patient alone",
+        "Do not use fever medicine as the main treatment"
+      ],
+      "red_flags": [
+        "Confusion, seizure, fainting, or unconsciousness",
+        "Very hot body or high temperature",
+        "Stopped sweating or heavy sweating with worsening condition",
+        "Fast breathing or fast pulse",
+        "Symptoms after heat exposure or hard exercise"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "heat_exhaustion",
+      "title": "Heat Exhaustion",
+      "icon": "sun",
+      "do_now": [
+        "Move patient to a cool or shaded place",
+        "Help patient lie down and raise legs slightly",
+        "Remove tight or heavy clothing",
+        "Give frequent sips of cool water or oral rehydration drink if fully awake",
+        "Cool with wet cloths, sponging, or fanning",
+        "Seek medical help if not improving"
+      ],
+      "do_not": [
+        "Do not give alcohol or caffeine",
+        "Do not let patient return to heat or exercise quickly",
+        "Do not give fluids if vomiting repeatedly or not fully alert",
+        "Do not ignore worsening confusion or fainting"
+      ],
+      "red_flags": [
+        "Symptoms do not improve after cooling",
+        "Confusion, fainting, seizure, or unconsciousness",
+        "Repeated vomiting",
+        "Very high temperature or hot dry skin",
+        "Severe weakness, dizziness, or headache"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "dehydration",
+      "title": "Dehydration",
+      "icon": "water",
+      "do_now": [
+        "Move patient to a cool place and let them rest",
+        "Give small frequent sips of water or oral rehydration solution",
+        "Use oral rehydration solution especially after vomiting or diarrhoea",
+        "Loosen tight clothing",
+        "Monitor urine, dizziness, and alertness",
+        "Seek medical help if severe or not improving"
+      ],
+      "do_not": [
+        "Do not give alcohol",
+        "Do not give energy drinks as treatment",
+        "Do not force large amounts of fluid quickly",
+        "Do not give drink if patient is unconscious or cannot swallow safely"
+      ],
+      "red_flags": [
+        "Confusion, fainting, extreme weakness, or drowsiness",
+        "Very little or no urine",
+        "Sunken eyes, very dry mouth, or cold hands and feet",
+        "Repeated vomiting or severe diarrhoea",
+        "Baby, elderly person, or pregnant patient with dehydration signs"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "hypothermia",
+      "title": "Hypothermia",
+      "icon": "cold",
+      "do_now": [
+        "Call emergency services for moderate or severe symptoms",
+        "Move patient indoors or out of wind and cold",
+        "Remove wet clothing carefully",
+        "Wrap patient in dry blankets or clothing",
+        "Warm the centre of the body first: chest, neck, head, and groin",
+        "Give warm sweet drinks only if fully awake and able to swallow"
+      ],
+      "do_not": [
+        "Do not rub or massage the body",
+        "Do not use direct high heat like hot water, heating pad, or fire",
+        "Do not give alcohol",
+        "Do not give drinks if drowsy or unconscious",
+        "Do not move patient roughly"
+      ],
+      "red_flags": [
+        "Confusion, drowsiness, or slurred speech",
+        "Shivering stops despite cold exposure",
+        "Slow breathing or weak pulse",
+        "Unconsciousness",
+        "Baby or elderly person exposed to cold"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "drowning",
+      "title": "Drowning",
+      "icon": "water_rescue",
+      "do_now": [
+        "Call emergency services immediately",
+        "Rescue only if it is safe for you; use a rope, stick, or float if possible",
+        "Once out of water, check breathing",
+        "If not breathing normally, start CPR",
+        "If breathing, place patient on side and keep warm",
+        "Monitor continuously until help arrives"
+      ],
+      "do_not": [
+        "Do not enter unsafe water unless trained",
+        "Do not assume patient is fine after coughing water",
+        "Do not delay CPR to remove water from lungs",
+        "Do not give food or drink immediately",
+        "Do not leave patient alone"
+      ],
+      "red_flags": [
+        "Not breathing normally",
+        "Unconsciousness or severe drowsiness",
+        "Persistent coughing, breathing difficulty, or chest pain after water incident",
+        "Blue or grey lips",
+        "Confusion or vomiting after drowning event"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "electric_shock",
+      "title": "Electric Shock",
+      "icon": "electric",
+      "do_now": [
+        "Turn off power source before touching patient",
+        "Call emergency services for serious shock or high voltage exposure",
+        "Use a dry non-metal object to separate patient only if power cannot be turned off",
+        "Check breathing and responsiveness",
+        "Start CPR if not breathing normally",
+        "Cool and cover burns with clean dressing"
+      ],
+      "do_not": [
+        "Do not touch patient while they are still connected to electricity",
+        "Do not use wet hands or metal objects",
+        "Do not move patient unnecessarily after a fall",
+        "Do not apply ointment or ice to electrical burns",
+        "Do not ignore even small-looking entry and exit burns"
+      ],
+      "red_flags": [
+        "Unconsciousness or not breathing normally",
+        "High-voltage shock or lightning strike",
+        "Chest pain, irregular heartbeat, or seizure",
+        "Burns, numbness, weakness, or confusion",
+        "Pregnancy or known heart disease"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "fracture",
+      "title": "Broken Bone / Fracture",
+      "icon": "bone",
+      "do_now": [
+        "Keep injured part still",
+        "Support the limb with padding, sling, or splint if available",
+        "Apply cold pack wrapped in cloth to reduce swelling",
+        "Control bleeding with gentle pressure around the wound",
+        "Call emergency services for major injury or deformity",
+        "Check circulation below the injury: warmth, color, and feeling"
+      ],
+      "do_not": [
+        "Do not try to straighten the bone",
+        "Do not push exposed bone back in",
+        "Do not move patient if neck, back, hip, or leg injury is suspected",
+        "Do not give food or drink if surgery may be needed",
+        "Do not tie splints too tightly"
+      ],
+      "red_flags": [
+        "Bone visible or limb looks deformed",
+        "Severe pain, swelling, or inability to move",
+        "Numbness, blue fingers/toes, or cold limb",
+        "Injury to head, neck, spine, hip, or thigh",
+        "Heavy bleeding"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "sprain_strain",
+      "title": "Sprain or Strain",
+      "icon": "ankle",
+      "do_now": [
+        "Rest the injured area",
+        "Apply a cold pack wrapped in cloth for 15-20 minutes",
+        "Compress with an elastic bandage if available",
+        "Elevate the injured part above heart level if possible",
+        "Avoid weight-bearing if painful",
+        "Seek medical help if severe pain or deformity is present"
+      ],
+      "do_not": [
+        "Do not apply ice directly to skin",
+        "Do not massage strongly in the first 24-48 hours",
+        "Do not continue sports or walking through severe pain",
+        "Do not wrap bandage so tight that fingers or toes become cold or numb"
+      ],
+      "red_flags": [
+        "Severe pain or swelling",
+        "Unable to bear weight",
+        "Visible deformity",
+        "Numbness, tingling, or cold limb",
+        "No improvement after 1-2 days"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "head_injury",
+      "title": "Head Injury",
+      "icon": "head",
+      "do_now": [
+        "Ask patient to rest and stay still",
+        "Apply a cold pack wrapped in cloth for up to 20 minutes",
+        "Check for confusion, vomiting, sleepiness, or worsening headache",
+        "Call emergency services if serious symptoms appear",
+        "Keep patient under observation",
+        "If unconscious but breathing, place on side unless spine injury is suspected"
+      ],
+      "do_not": [
+        "Do not let patient return to sports or driving immediately",
+        "Do not give alcohol or sedatives",
+        "Do not move patient if neck or spine injury is suspected",
+        "Do not apply ice directly to skin",
+        "Do not ignore symptoms that appear later"
+      ],
+      "red_flags": [
+        "Loss of consciousness",
+        "Repeated vomiting",
+        "Severe or worsening headache",
+        "Confusion, unusual behavior, or drowsiness",
+        "Seizure",
+        "Blood or clear fluid from nose or ears",
+        "Weakness, numbness, or vision changes"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "fainting",
+      "title": "Fainting",
+      "icon": "faint",
+      "do_now": [
+        "Help patient lie flat on their back",
+        "Raise legs slightly if no injury is suspected",
+        "Loosen tight clothing",
+        "Check breathing and responsiveness",
+        "Keep area cool and give fresh air",
+        "Call emergency services if patient does not wake quickly or has red flags"
+      ],
+      "do_not": [
+        "Do not slap or shake patient",
+        "Do not give food or drink until fully awake",
+        "Do not make patient stand up quickly",
+        "Do not ignore fainting with chest pain or breathlessness"
+      ],
+      "red_flags": [
+        "Does not regain consciousness quickly",
+        "Chest pain, shortness of breath, or irregular heartbeat",
+        "Fainting during exercise",
+        "Pregnancy, diabetes, or known heart disease",
+        "Head injury from fall",
+        "Repeated fainting"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "shock",
+      "title": "Shock",
+      "icon": "shock",
+      "do_now": [
+        "Call emergency services immediately",
+        "Help patient lie down safely",
+        "Raise legs if no injury prevents it",
+        "Keep patient warm with a blanket",
+        "Control bleeding or treat obvious cause if safe",
+        "Monitor breathing and consciousness"
+      ],
+      "do_not": [
+        "Do not give food or drink",
+        "Do not move patient unnecessarily",
+        "Do not raise legs if head, chest, spine, hip, or leg injury is suspected",
+        "Do not leave patient alone",
+        "Do not warm with direct heat"
+      ],
+      "red_flags": [
+        "Pale, cold, clammy skin",
+        "Fast breathing or weak rapid pulse",
+        "Confusion, dizziness, or fainting",
+        "Severe bleeding, burns, allergic reaction, or major injury",
+        "Extreme weakness or unconsciousness"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "nosebleed",
+      "title": "Nosebleed",
+      "icon": "nose",
+      "do_now": [
+        "Sit patient upright and lean slightly forward",
+        "Pinch the soft part of the nose continuously",
+        "Keep pressure for 10-15 minutes",
+        "Ask patient to breathe through mouth",
+        "Apply cold pack to bridge of nose if available",
+        "Seek medical help if bleeding is heavy or does not stop"
+      ],
+      "do_not": [
+        "Do not tilt head backward",
+        "Do not lie flat",
+        "Do not stuff tissue deep into the nose",
+        "Do not blow or pick the nose after bleeding stops",
+        "Do not stop checking time while applying pressure"
+      ],
+      "red_flags": [
+        "Bleeding lasts more than 20 minutes",
+        "Bleeding after head injury",
+        "Very heavy bleeding or patient feels faint",
+        "Patient is on blood thinners or has bleeding disorder",
+        "Repeated nosebleeds"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "chemical_burn",
+      "title": "Chemical Burn",
+      "icon": "chemical",
+      "do_now": [
+        "Protect yourself first with gloves or cloth if available",
+        "Remove contaminated clothing carefully",
+        "Brush off dry chemicals before rinsing if safe",
+        "Rinse affected skin or eye with running water for at least 20 minutes",
+        "Call emergency services or poison control",
+        "Keep chemical container or label for medical staff"
+      ],
+      "do_not": [
+        "Do not touch chemical with bare hands",
+        "Do not apply neutralizing chemicals unless told by professionals",
+        "Do not delay rinsing",
+        "Do not apply creams, oils, or ointments",
+        "Do not reuse contaminated clothing"
+      ],
+      "red_flags": [
+        "Chemical in eye, mouth, face, genitals, or large area",
+        "Trouble breathing after fumes",
+        "Severe pain, blistering, or deep burn",
+        "Patient becomes dizzy, confused, or unconscious",
+        "Industrial acid, alkali, pesticide, or unknown chemical exposure"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "eye_injury",
+      "title": "Eye Injury",
+      "icon": "eye",
+      "do_now": [
+        "Ask patient not to rub the eye",
+        "For dust or small particles, rinse gently with clean water",
+        "For chemical exposure, flush eye with running water for at least 20 minutes",
+        "Cover injured eye loosely with clean dressing or shield",
+        "Seek urgent medical help for serious eye injury",
+        "Keep both eyes still if object is embedded"
+      ],
+      "do_not": [
+        "Do not rub or press the eye",
+        "Do not remove embedded objects",
+        "Do not use eye drops unless prescribed or advised",
+        "Do not delay flushing chemical exposure",
+        "Do not let patient drive themselves"
+      ],
+      "red_flags": [
+        "Chemical in eye",
+        "Object stuck in eye",
+        "Vision loss, severe pain, or bleeding",
+        "Eye hit by high-speed object",
+        "Unequal pupils or severe swelling"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "animal_bite",
+      "title": "Animal Bite",
+      "icon": "bite",
+      "do_now": [
+        "Move patient away from the animal safely",
+        "Wash wound under running water with soap if available",
+        "Apply gentle pressure with clean cloth for bleeding",
+        "Cover with clean dressing",
+        "Seek medical help for possible infection, tetanus, or rabies risk",
+        "Note animal type and whether it was stray or vaccinated"
+      ],
+      "do_not": [
+        "Do not ignore small deep puncture wounds",
+        "Do not close the wound tightly with tape",
+        "Do not apply irritants like chilli, soil, or chemicals",
+        "Do not try to catch a dangerous animal",
+        "Do not delay care for bites on face, hand, genitals, or near joints"
+      ],
+      "red_flags": [
+        "Bite from stray dog, bat, monkey, wild animal, or unknown animal",
+        "Deep wound, crushed tissue, or heavy bleeding",
+        "Bite on face, hand, neck, genitals, or near joint",
+        "Redness, swelling, pus, fever, or increasing pain",
+        "Patient has weak immunity or diabetes"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "insect_sting",
+      "title": "Insect Sting",
+      "icon": "sting",
+      "do_now": [
+        "Move patient away from insects safely",
+        "If sting is visible, scrape it sideways with a card or fingernail",
+        "Wash area with soap and water",
+        "Apply cold pack wrapped in cloth",
+        "Monitor for allergic reaction",
+        "Use prescribed auto-injector and call emergency services if severe allergy symptoms appear"
+      ],
+      "do_not": [
+        "Do not squeeze the sting with fingers or tweezers if avoidable",
+        "Do not scratch the area",
+        "Do not ignore breathing difficulty or swelling of face/throat",
+        "Do not give food or drink during severe allergic reaction"
+      ],
+      "red_flags": [
+        "Difficulty breathing or wheezing",
+        "Swelling of lips, tongue, throat, or face",
+        "Dizziness, fainting, confusion, or collapse",
+        "Widespread rash or repeated vomiting",
+        "Multiple stings or sting inside mouth/throat"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "meningitis_suspected",
+      "title": "Suspected Meningitis",
+      "icon": "meningitis",
+      "do_now": [
+        "Call emergency services immediately if meningitis is suspected",
+        "Keep patient comfortable in a quiet dim area",
+        "Check for fever, stiff neck, severe headache, vomiting, and light sensitivity",
+        "Check for rash but do not wait for rash to appear",
+        "Reassure patient and monitor breathing and consciousness",
+        "Keep patient separated from others if infection is suspected"
+      ],
+      "do_not": [
+        "Do not wait for all symptoms to appear",
+        "Do not delay emergency care because rash is absent",
+        "Do not give food or drink if patient is drowsy or vomiting",
+        "Do not leave patient alone",
+        "Do not send patient to school, college, or work"
+      ],
+      "red_flags": [
+        "Fever with stiff neck or severe headache",
+        "Confusion, drowsiness, seizure, or unconsciousness",
+        "Sensitivity to light",
+        "Non-blanching rash or purple spots",
+        "Baby with high-pitched cry, poor feeding, floppy body, or bulging soft spot"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "carbon_monoxide_poisoning",
+      "title": "Carbon Monoxide Poisoning",
+      "icon": "gas",
+      "do_now": [
+        "Move everyone to fresh air immediately if it is safe",
+        "Call emergency services and report possible carbon monoxide exposure",
+        "Turn off source only if safe to do so",
+        "Open doors and windows if safe",
+        "Check breathing and start CPR if needed",
+        "Seek medical evaluation even if symptoms improve"
+      ],
+      "do_not": [
+        "Do not re-enter the area until professionals say it is safe",
+        "Do not use flames, switches, or appliances if gas leak is also possible",
+        "Do not ignore mild headache or dizziness when multiple people are affected",
+        "Do not drive yourself if dizzy or confused"
+      ],
+      "red_flags": [
+        "Headache, dizziness, weakness, nausea, or confusion indoors",
+        "Multiple people or pets sick in same place",
+        "Unconsciousness or seizure",
+        "Chest pain or shortness of breath",
+        "Symptoms improve outdoors and return indoors"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "vomiting_diarrhoea",
+      "title": "Vomiting and Diarrhoea",
+      "icon": "stomach",
+      "do_now": [
+        "Let patient rest",
+        "Give small frequent sips of oral rehydration solution or clean water",
+        "Continue breastfeeding for infants if applicable",
+        "Use clean hands and safe food/water to prevent spread",
+        "Seek medical help if severe, persistent, or signs of dehydration appear",
+        "Keep track of urine output and alertness"
+      ],
+      "do_not": [
+        "Do not give large amounts of fluid at once",
+        "Do not give alcohol or very sugary drinks",
+        "Do not give anti-diarrhoea medicine to children unless prescribed",
+        "Do not ignore blood in stool or vomit",
+        "Do not force food if vomiting continues"
+      ],
+      "red_flags": [
+        "Blood in stool or vomit",
+        "Severe dehydration signs",
+        "Repeated vomiting and unable to keep fluids down",
+        "High fever, severe belly pain, or stiff abdomen",
+        "Baby, elderly person, pregnant patient, or weak immunity"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    },
+    {
+      "id": "panic_attack",
+      "title": "Panic Attack",
+      "icon": "panic",
+      "do_now": [
+        "Move patient to a calm and safe place",
+        "Speak slowly and reassure them that help is available",
+        "Encourage slow breathing without forcing it",
+        "Ask about chest pain, fainting, asthma, or known heart disease",
+        "Stay with patient until symptoms settle",
+        "Seek medical help if symptoms are new, severe, or unclear"
+      ],
+      "do_not": [
+        "Do not dismiss symptoms as fake",
+        "Do not crowd the patient",
+        "Do not force breathing into a paper bag",
+        "Do not assume it is panic if there is chest pain or breathing trouble",
+        "Do not leave patient alone if they feel unsafe"
+      ],
+      "red_flags": [
+        "Chest pain, fainting, blue lips, or severe breathlessness",
+        "First episode or symptoms different from usual",
+        "Patient talks about self-harm",
+        "Confusion, seizure, or loss of consciousness",
+        "Symptoms after drug use or injury"
+      ],
+      "call_number": "local_emergency",
+      "version": "2026"
+    }
+  ]
+}

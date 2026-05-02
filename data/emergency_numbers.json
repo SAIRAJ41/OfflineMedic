@@ -1,0 +1,1572 @@
+{
+  "countries": [
+    {
+      "country": "Afghanistan",
+      "code": "AF",
+      "ambulance": "119",
+      "police": "119",
+      "fire": "119",
+      "general": "119"
+    },
+    {
+      "country": "Albania",
+      "code": "AL",
+      "ambulance": "127",
+      "police": "129",
+      "fire": "128",
+      "general": "112"
+    },
+    {
+      "country": "Algeria",
+      "code": "DZ",
+      "ambulance": "14",
+      "police": "17",
+      "fire": "14",
+      "general": null
+    },
+    {
+      "country": "Andorra",
+      "code": "AD",
+      "ambulance": "118",
+      "police": "110",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Angola",
+      "code": "AO",
+      "ambulance": "112",
+      "police": "113",
+      "fire": "115",
+      "general": null
+    },
+    {
+      "country": "Antigua and Barbuda",
+      "code": "AG",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Argentina",
+      "code": "AR",
+      "ambulance": "107",
+      "police": "911",
+      "fire": "100",
+      "general": null
+    },
+    {
+      "country": "Armenia",
+      "code": "AM",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Australia",
+      "code": "AU",
+      "ambulance": "000",
+      "police": "000",
+      "fire": "000",
+      "general": "000"
+    },
+    {
+      "country": "Austria",
+      "code": "AT",
+      "ambulance": "144",
+      "police": "133",
+      "fire": "122",
+      "general": "112"
+    },
+    {
+      "country": "Azerbaijan",
+      "code": "AZ",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "112",
+      "general": null
+    },
+    {
+      "country": "Bahamas",
+      "code": "BS",
+      "ambulance": "919",
+      "police": "919",
+      "fire": "919",
+      "general": "919"
+    },
+    {
+      "country": "Bahrain",
+      "code": "BH",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Bangladesh",
+      "code": "BD",
+      "ambulance": "199",
+      "police": "999",
+      "fire": "199",
+      "general": null
+    },
+    {
+      "country": "Barbados",
+      "code": "BB",
+      "ambulance": "511",
+      "police": "211",
+      "fire": "311",
+      "general": null
+    },
+    {
+      "country": "Belarus",
+      "code": "BY",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Belgium",
+      "code": "BE",
+      "ambulance": "100",
+      "police": "101",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Belize",
+      "code": "BZ",
+      "ambulance": "90",
+      "police": "911",
+      "fire": "90",
+      "general": null
+    },
+    {
+      "country": "Benin",
+      "code": "BJ",
+      "ambulance": "112",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Bhutan",
+      "code": "BT",
+      "ambulance": "112",
+      "police": "113",
+      "fire": "110",
+      "general": null
+    },
+    {
+      "country": "Bolivia",
+      "code": "BO",
+      "ambulance": "118",
+      "police": "110",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "Bosnia and Herzegovina",
+      "code": "BA",
+      "ambulance": "124",
+      "police": "122",
+      "fire": "123",
+      "general": "112"
+    },
+    {
+      "country": "Botswana",
+      "code": "BW",
+      "ambulance": "997",
+      "police": "999",
+      "fire": "999",
+      "general": null
+    },
+    {
+      "country": "Brazil",
+      "code": "BR",
+      "ambulance": "192",
+      "police": "190",
+      "fire": "193",
+      "general": null
+    },
+    {
+      "country": "Brunei",
+      "code": "BN",
+      "ambulance": "991",
+      "police": "993",
+      "fire": "995",
+      "general": null
+    },
+    {
+      "country": "Bulgaria",
+      "code": "BG",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Burkina Faso",
+      "code": "BF",
+      "ambulance": "112",
+      "police": "17",
+      "fire": "18",
+      "general": null
+    },
+    {
+      "country": "Burundi",
+      "code": "BI",
+      "ambulance": "112",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Cabo Verde",
+      "code": "CV",
+      "ambulance": "132",
+      "police": "132",
+      "fire": "132",
+      "general": "132"
+    },
+    {
+      "country": "Cambodia",
+      "code": "KH",
+      "ambulance": "119",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Cameroon",
+      "code": "CM",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Canada",
+      "code": "CA",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Central African Republic",
+      "code": "CF",
+      "ambulance": "1220",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Chad",
+      "code": "TD",
+      "ambulance": "2251",
+      "police": "17",
+      "fire": "2251",
+      "general": null
+    },
+    {
+      "country": "Chile",
+      "code": "CL",
+      "ambulance": "131",
+      "police": "133",
+      "fire": "132",
+      "general": null
+    },
+    {
+      "country": "China",
+      "code": "CN",
+      "ambulance": "120",
+      "police": "110",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "Colombia",
+      "code": "CO",
+      "ambulance": "123",
+      "police": "112",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "Comoros",
+      "code": "KM",
+      "ambulance": "19",
+      "police": "17",
+      "fire": "18",
+      "general": null
+    },
+    {
+      "country": "Costa Rica",
+      "code": "CR",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Croatia",
+      "code": "HR",
+      "ambulance": "194",
+      "police": "192",
+      "fire": "193",
+      "general": "112"
+    },
+    {
+      "country": "Cuba",
+      "code": "CU",
+      "ambulance": "104",
+      "police": "106",
+      "fire": "105",
+      "general": null
+    },
+    {
+      "country": "Cyprus",
+      "code": "CY",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Czechia",
+      "code": "CZ",
+      "ambulance": "155",
+      "police": "158",
+      "fire": "150",
+      "general": "112"
+    },
+    {
+      "country": "Côte d'Ivoire",
+      "code": "CI",
+      "ambulance": "185",
+      "police": "111",
+      "fire": "180",
+      "general": null
+    },
+    {
+      "country": "Democratic Republic of the Congo",
+      "code": "CD",
+      "ambulance": "112",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Denmark",
+      "code": "DK",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Djibouti",
+      "code": "DJ",
+      "ambulance": "3510",
+      "police": "17",
+      "fire": "3510",
+      "general": null
+    },
+    {
+      "country": "Dominica",
+      "code": "DM",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Dominican Republic",
+      "code": "DO",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Ecuador",
+      "code": "EC",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Egypt",
+      "code": "EG",
+      "ambulance": "123",
+      "police": "122",
+      "fire": "180",
+      "general": null
+    },
+    {
+      "country": "El Salvador",
+      "code": "SV",
+      "ambulance": "132",
+      "police": "911",
+      "fire": "913",
+      "general": null
+    },
+    {
+      "country": "Equatorial Guinea",
+      "code": "GQ",
+      "ambulance": "112",
+      "police": "114",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Eritrea",
+      "code": "ER",
+      "ambulance": "119",
+      "police": "119",
+      "fire": "119",
+      "general": "119"
+    },
+    {
+      "country": "Estonia",
+      "code": "EE",
+      "ambulance": "112",
+      "police": "110",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Eswatini",
+      "code": "SZ",
+      "ambulance": "977",
+      "police": "999",
+      "fire": "999",
+      "general": null
+    },
+    {
+      "country": "Ethiopia",
+      "code": "ET",
+      "ambulance": "907",
+      "police": "911",
+      "fire": "939",
+      "general": null
+    },
+    {
+      "country": "Fiji",
+      "code": "FJ",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Finland",
+      "code": "FI",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "France",
+      "code": "FR",
+      "ambulance": "15",
+      "police": "17",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Gabon",
+      "code": "GA",
+      "ambulance": "1300",
+      "police": "1730",
+      "fire": "18",
+      "general": null
+    },
+    {
+      "country": "Gambia",
+      "code": "GM",
+      "ambulance": "116",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Georgia",
+      "code": "GE",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Germany",
+      "code": "DE",
+      "ambulance": "112",
+      "police": "110",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Ghana",
+      "code": "GH",
+      "ambulance": "193",
+      "police": "191",
+      "fire": "192",
+      "general": null
+    },
+    {
+      "country": "Greece",
+      "code": "GR",
+      "ambulance": "166",
+      "police": "100",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Grenada",
+      "code": "GD",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Guatemala",
+      "code": "GT",
+      "ambulance": "128",
+      "police": "110",
+      "fire": "123",
+      "general": null
+    },
+    {
+      "country": "Guinea",
+      "code": "GN",
+      "ambulance": "2245050",
+      "police": "117",
+      "fire": "18",
+      "general": null
+    },
+    {
+      "country": "Guinea-Bissau",
+      "code": "GW",
+      "ambulance": "119",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Guyana",
+      "code": "GY",
+      "ambulance": "913",
+      "police": "911",
+      "fire": "912",
+      "general": null
+    },
+    {
+      "country": "Haiti",
+      "code": "HT",
+      "ambulance": "116",
+      "police": "114",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Honduras",
+      "code": "HN",
+      "ambulance": "195",
+      "police": "199",
+      "fire": "198",
+      "general": null
+    },
+    {
+      "country": "Hungary",
+      "code": "HU",
+      "ambulance": "104",
+      "police": "107",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Iceland",
+      "code": "IS",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "India",
+      "code": "IN",
+      "ambulance": "108",
+      "police": "100",
+      "fire": "101",
+      "general": "112"
+    },
+    {
+      "country": "Indonesia",
+      "code": "ID",
+      "ambulance": "118",
+      "police": "110",
+      "fire": "113",
+      "general": null
+    },
+    {
+      "country": "Iran",
+      "code": "IR",
+      "ambulance": "115",
+      "police": "110",
+      "fire": "125",
+      "general": null
+    },
+    {
+      "country": "Iraq",
+      "code": "IQ",
+      "ambulance": "122",
+      "police": "104",
+      "fire": "115",
+      "general": null
+    },
+    {
+      "country": "Ireland",
+      "code": "IE",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Israel",
+      "code": "IL",
+      "ambulance": "101",
+      "police": "100",
+      "fire": "102",
+      "general": null
+    },
+    {
+      "country": "Italy",
+      "code": "IT",
+      "ambulance": "118",
+      "police": "113",
+      "fire": "115",
+      "general": "112"
+    },
+    {
+      "country": "Jamaica",
+      "code": "JM",
+      "ambulance": "110",
+      "police": "119",
+      "fire": "110",
+      "general": null
+    },
+    {
+      "country": "Japan",
+      "code": "JP",
+      "ambulance": "119",
+      "police": "110",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "Jordan",
+      "code": "JO",
+      "ambulance": "193",
+      "police": "191",
+      "fire": "199",
+      "general": null
+    },
+    {
+      "country": "Kazakhstan",
+      "code": "KZ",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": "112"
+    },
+    {
+      "country": "Kenya",
+      "code": "KE",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Kiribati",
+      "code": "KI",
+      "ambulance": "193",
+      "police": "194",
+      "fire": "192",
+      "general": null
+    },
+    {
+      "country": "Kosovo",
+      "code": "XK",
+      "ambulance": "194",
+      "police": "192",
+      "fire": "193",
+      "general": "112"
+    },
+    {
+      "country": "Kuwait",
+      "code": "KW",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Kyrgyzstan",
+      "code": "KG",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Laos",
+      "code": "LA",
+      "ambulance": "195",
+      "police": "191",
+      "fire": "190",
+      "general": null
+    },
+    {
+      "country": "Latvia",
+      "code": "LV",
+      "ambulance": "113",
+      "police": "110",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Lebanon",
+      "code": "LB",
+      "ambulance": "140",
+      "police": "112",
+      "fire": "175",
+      "general": null
+    },
+    {
+      "country": "Lesotho",
+      "code": "LS",
+      "ambulance": "123",
+      "police": "122",
+      "fire": "121",
+      "general": null
+    },
+    {
+      "country": "Liberia",
+      "code": "LR",
+      "ambulance": "4455",
+      "police": "102",
+      "fire": "113",
+      "general": null
+    },
+    {
+      "country": "Libya",
+      "code": "LY",
+      "ambulance": "1515",
+      "police": "1515",
+      "fire": "1515",
+      "general": "1515"
+    },
+    {
+      "country": "Liechtenstein",
+      "code": "LI",
+      "ambulance": "144",
+      "police": "117",
+      "fire": "118",
+      "general": "112"
+    },
+    {
+      "country": "Lithuania",
+      "code": "LT",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Luxembourg",
+      "code": "LU",
+      "ambulance": "112",
+      "police": "113",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Madagascar",
+      "code": "MG",
+      "ambulance": "117",
+      "police": "117",
+      "fire": "117",
+      "general": "117"
+    },
+    {
+      "country": "Malawi",
+      "code": "MW",
+      "ambulance": "999",
+      "police": "997",
+      "fire": "998",
+      "general": null
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "994",
+      "general": null
+    },
+    {
+      "country": "Maldives",
+      "code": "MV",
+      "ambulance": "102",
+      "police": "119",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Mali",
+      "code": "ML",
+      "ambulance": "15",
+      "police": "17",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Malta",
+      "code": "MT",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Marshall Islands",
+      "code": "MH",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Mauritania",
+      "code": "MR",
+      "ambulance": "116",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Mauritius",
+      "code": "MU",
+      "ambulance": "114",
+      "police": "112",
+      "fire": "115",
+      "general": null
+    },
+    {
+      "country": "Mexico",
+      "code": "MX",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Micronesia",
+      "code": "FM",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Moldova",
+      "code": "MD",
+      "ambulance": "903",
+      "police": "902",
+      "fire": "901",
+      "general": "112"
+    },
+    {
+      "country": "Monaco",
+      "code": "MC",
+      "ambulance": "15",
+      "police": "17",
+      "fire": "112",
+      "general": null
+    },
+    {
+      "country": "Mongolia",
+      "code": "MN",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Montenegro",
+      "code": "ME",
+      "ambulance": "124",
+      "police": "122",
+      "fire": "123",
+      "general": "112"
+    },
+    {
+      "country": "Morocco",
+      "code": "MA",
+      "ambulance": "150",
+      "police": "190",
+      "fire": "150",
+      "general": null
+    },
+    {
+      "country": "Mozambique",
+      "code": "MZ",
+      "ambulance": "117",
+      "police": "119",
+      "fire": "198",
+      "general": null
+    },
+    {
+      "country": "Myanmar",
+      "code": "MM",
+      "ambulance": "192",
+      "police": "199",
+      "fire": "191",
+      "general": null
+    },
+    {
+      "country": "Namibia",
+      "code": "NA",
+      "ambulance": "112",
+      "police": "10111",
+      "fire": "112",
+      "general": null
+    },
+    {
+      "country": "Nauru",
+      "code": "NR",
+      "ambulance": "110",
+      "police": "110",
+      "fire": "110",
+      "general": "110"
+    },
+    {
+      "country": "Nepal",
+      "code": "NP",
+      "ambulance": "102",
+      "police": "100",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Netherlands",
+      "code": "NL",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "New Zealand",
+      "code": "NZ",
+      "ambulance": "111",
+      "police": "111",
+      "fire": "111",
+      "general": "111"
+    },
+    {
+      "country": "Nicaragua",
+      "code": "NI",
+      "ambulance": "128",
+      "police": "118",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Niger",
+      "code": "NE",
+      "ambulance": "15",
+      "police": "17",
+      "fire": "18",
+      "general": null
+    },
+    {
+      "country": "Nigeria",
+      "code": "NG",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "North Korea",
+      "code": "KP",
+      "ambulance": "119",
+      "police": "112",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "North Macedonia",
+      "code": "MK",
+      "ambulance": "194",
+      "police": "192",
+      "fire": "193",
+      "general": "112"
+    },
+    {
+      "country": "Norway",
+      "code": "NO",
+      "ambulance": "113",
+      "police": "112",
+      "fire": "110",
+      "general": "112"
+    },
+    {
+      "country": "Oman",
+      "code": "OM",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Pakistan",
+      "code": "PK",
+      "ambulance": "115",
+      "police": "15",
+      "fire": "16",
+      "general": null
+    },
+    {
+      "country": "Palau",
+      "code": "PW",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Palestine",
+      "code": "PS",
+      "ambulance": "101",
+      "police": "100",
+      "fire": "102",
+      "general": null
+    },
+    {
+      "country": "Panama",
+      "code": "PA",
+      "ambulance": "911",
+      "police": "104",
+      "fire": "103",
+      "general": null
+    },
+    {
+      "country": "Papua New Guinea",
+      "code": "PG",
+      "ambulance": null,
+      "police": "112",
+      "fire": null,
+      "general": null
+    },
+    {
+      "country": "Paraguay",
+      "code": "PY",
+      "ambulance": "141",
+      "police": "911",
+      "fire": "132",
+      "general": null
+    },
+    {
+      "country": "Peru",
+      "code": "PE",
+      "ambulance": "117",
+      "police": "105",
+      "fire": "116",
+      "general": null
+    },
+    {
+      "country": "Philippines",
+      "code": "PH",
+      "ambulance": "117",
+      "police": "117",
+      "fire": "117",
+      "general": "117"
+    },
+    {
+      "country": "Poland",
+      "code": "PL",
+      "ambulance": "999",
+      "police": "997",
+      "fire": "998",
+      "general": "112"
+    },
+    {
+      "country": "Portugal",
+      "code": "PT",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Qatar",
+      "code": "QA",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Republic of the Congo",
+      "code": "CG",
+      "ambulance": "112",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Romania",
+      "code": "RO",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Russia",
+      "code": "RU",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Rwanda",
+      "code": "RW",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Saint Kitts and Nevis",
+      "code": "KN",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Saint Lucia",
+      "code": "LC",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Saint Vincent and the Grenadines",
+      "code": "VC",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Samoa",
+      "code": "WS",
+      "ambulance": "996",
+      "police": "995",
+      "fire": "994",
+      "general": null
+    },
+    {
+      "country": "San Marino",
+      "code": "SM",
+      "ambulance": "118",
+      "police": "113",
+      "fire": "115",
+      "general": null
+    },
+    {
+      "country": "Sao Tome and Principe",
+      "code": "ST",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Saudi Arabia",
+      "code": "SA",
+      "ambulance": "997",
+      "police": "999",
+      "fire": "998",
+      "general": null
+    },
+    {
+      "country": "Senegal",
+      "code": "SN",
+      "ambulance": "15",
+      "police": "17",
+      "fire": "18",
+      "general": null
+    },
+    {
+      "country": "Serbia",
+      "code": "RS",
+      "ambulance": "194",
+      "police": "192",
+      "fire": "193",
+      "general": "112"
+    },
+    {
+      "country": "Seychelles",
+      "code": "SC",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Sierra Leone",
+      "code": "SL",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Singapore",
+      "code": "SG",
+      "ambulance": "995",
+      "police": "999",
+      "fire": "995",
+      "general": null
+    },
+    {
+      "country": "Slovakia",
+      "code": "SK",
+      "ambulance": "155",
+      "police": "158",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Slovenia",
+      "code": "SI",
+      "ambulance": "112",
+      "police": "113",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Solomon Islands",
+      "code": "SB",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Somalia",
+      "code": "SO",
+      "ambulance": "555",
+      "police": "555",
+      "fire": "555",
+      "general": "555"
+    },
+    {
+      "country": "South Africa",
+      "code": "ZA",
+      "ambulance": "10177",
+      "police": "10111",
+      "fire": "10177",
+      "general": null
+    },
+    {
+      "country": "South Korea",
+      "code": "KR",
+      "ambulance": "119",
+      "police": "112",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "South Sudan",
+      "code": "SS",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Spain",
+      "code": "ES",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Sri Lanka",
+      "code": "LK",
+      "ambulance": "110",
+      "police": "119",
+      "fire": "110",
+      "general": null
+    },
+    {
+      "country": "Sudan",
+      "code": "SD",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "999"
+    },
+    {
+      "country": "Suriname",
+      "code": "SR",
+      "ambulance": "113",
+      "police": "115",
+      "fire": "110",
+      "general": null
+    },
+    {
+      "country": "Sweden",
+      "code": "SE",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Switzerland",
+      "code": "CH",
+      "ambulance": "144",
+      "police": "117",
+      "fire": "118",
+      "general": "112"
+    },
+    {
+      "country": "Syria",
+      "code": "SY",
+      "ambulance": "110",
+      "police": "112",
+      "fire": "113",
+      "general": null
+    },
+    {
+      "country": "Taiwan",
+      "code": "TW",
+      "ambulance": "119",
+      "police": "110",
+      "fire": "119",
+      "general": null
+    },
+    {
+      "country": "Tajikistan",
+      "code": "TJ",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Tanzania",
+      "code": "TZ",
+      "ambulance": "115",
+      "police": "112",
+      "fire": "114",
+      "general": null
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "ambulance": "1669",
+      "police": "191",
+      "fire": "199",
+      "general": null
+    },
+    {
+      "country": "Timor-Leste",
+      "code": "TL",
+      "ambulance": "114",
+      "police": "112",
+      "fire": "115",
+      "general": null
+    },
+    {
+      "country": "Togo",
+      "code": "TG",
+      "ambulance": "111",
+      "police": "117",
+      "fire": "118",
+      "general": null
+    },
+    {
+      "country": "Tonga",
+      "code": "TO",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Trinidad and Tobago",
+      "code": "TT",
+      "ambulance": "990",
+      "police": "999",
+      "fire": "990",
+      "general": null
+    },
+    {
+      "country": "Tunisia",
+      "code": "TN",
+      "ambulance": "190",
+      "police": "197",
+      "fire": "198",
+      "general": null
+    },
+    {
+      "country": "Turkmenistan",
+      "code": "TM",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Türkiye",
+      "code": "TR",
+      "ambulance": "112",
+      "police": "155",
+      "fire": "110",
+      "general": "112"
+    },
+    {
+      "country": "Uganda",
+      "code": "UG",
+      "ambulance": "112",
+      "police": "999",
+      "fire": "112",
+      "general": null
+    },
+    {
+      "country": "Ukraine",
+      "code": "UA",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": "112"
+    },
+    {
+      "country": "United Arab Emirates",
+      "code": "AE",
+      "ambulance": "998",
+      "police": "999",
+      "fire": "997",
+      "general": null
+    },
+    {
+      "country": "United Kingdom",
+      "code": "GB",
+      "ambulance": "999",
+      "police": "999",
+      "fire": "999",
+      "general": "112"
+    },
+    {
+      "country": "United States",
+      "code": "US",
+      "ambulance": "911",
+      "police": "911",
+      "fire": "911",
+      "general": "911"
+    },
+    {
+      "country": "Uruguay",
+      "code": "UY",
+      "ambulance": "105",
+      "police": "911",
+      "fire": "104",
+      "general": null
+    },
+    {
+      "country": "Uzbekistan",
+      "code": "UZ",
+      "ambulance": "103",
+      "police": "102",
+      "fire": "101",
+      "general": null
+    },
+    {
+      "country": "Vanuatu",
+      "code": "VU",
+      "ambulance": "112",
+      "police": "112",
+      "fire": "112",
+      "general": "112"
+    },
+    {
+      "country": "Vatican City",
+      "code": "VA",
+      "ambulance": "118",
+      "police": "06 69882350",
+      "fire": "115",
+      "general": "112"
+    },
+    {
+      "country": "Venezuela",
+      "code": "VE",
+      "ambulance": "161",
+      "police": "911",
+      "fire": "171",
+      "general": null
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "ambulance": "115",
+      "police": "113",
+      "fire": "114",
+      "general": null
+    },
+    {
+      "country": "Yemen",
+      "code": "YE",
+      "ambulance": "191",
+      "police": "194",
+      "fire": "191",
+      "general": null
+    },
+    {
+      "country": "Zambia",
+      "code": "ZM",
+      "ambulance": "992",
+      "police": "991",
+      "fire": "993",
+      "general": null
+    },
+    {
+      "country": "Zimbabwe",
+      "code": "ZW",
+      "ambulance": "994",
+      "police": "995",
+      "fire": "993",
+      "general": null
+    }
+  ]
+}
