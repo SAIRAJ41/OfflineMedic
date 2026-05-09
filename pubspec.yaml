@@ -9,6 +9,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  whisper_flutter_new: 1.0.1   # ← add this
+                # for recording audio
+  
+
+   # GGUF inference — replaces tflite
+  llama_cpp_dart: ^0.2.2
+ 
+   # SQLite for RAG database
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.1.1
+
+   # Audio recording for Whisper voice input
+  record: ^5.0.4
+  permission_handler: ^11.1.0
+ 
+  http: ^1.1.0
+  flutter_markdown: ^0.6.18
 
   cupertino_icons: ^1.0.6
 
@@ -29,3 +47,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/models/
+    - assets/db/
+    - assets/images/
