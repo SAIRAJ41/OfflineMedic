@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'screens/input/input_screen.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'screens/map/map_screen.dart';
+import 'services/gemma_service.dart';
+import 'services/voice_input_service.dart';
 
-void main() {
+void main() async {
+  // ← must be async and must call this first
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Init AI model and voice BEFORE running the app
+  await GemmaService().initialize();
+  await VoiceInputService().initialize();
+
   runApp(const OfflineMedicApp());
 }
 
@@ -19,14 +28,12 @@ class OfflineMedicApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
 
-      /// 🔁 ROUTES FOR DRAWER NAVIGATION
       routes: {
-        '/input': (context) => const InputScreen(),
+        '/input':     (context) => const InputScreen(),
         '/dashboard': (context) => const DashboardScreen(),
-        '/map': (context) => const MapScreen(),
+        '/map':       (context) => const MapScreen(),
       },
 
-      /// 🏠 DEFAULT SCREEN
       home: const InputScreen(),
     );
   }

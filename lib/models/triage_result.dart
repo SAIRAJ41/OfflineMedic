@@ -1,3 +1,4 @@
+import 'dart:convert';
 class TriageResult {
   final String triageLevel;
   final String condition;
@@ -30,5 +31,33 @@ class TriageResult {
       callNow: json['emergency']['call_now'],
       emergencyNumber: json['emergency']['number'],
     );
+    
   }
+  factory TriageResult.fromModelOutput(String output) {
+  try {
+    final first = output.indexOf('{');
+    final last = output.lastIndexOf('}');
+
+    if (first == -1 || last == -1) {
+      throw Exception('No JSON found');
+    }
+
+    final jsonString = output.substring(first, last + 1);
+
+    final Map<String, dynamic> decoded = jsonDecode(jsonString);
+
+    return TriageResult.fromJson(decoded);
+  } catch (e) {
+    return TriageResult(
+      triageLevel: 'GREEN',
+      condition: 'Unable to analyze symptoms',
+      confidence: 'low',
+      doNow: ['Consult a doctor if symptoms continue'],
+      doNot: [],
+      redFlags: [],
+      callNow: false,
+      emergencyNumber: '108',
+    );
+  }
+}
 }
