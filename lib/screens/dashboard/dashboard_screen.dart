@@ -25,7 +25,7 @@ class DashboardScreen extends StatelessWidget {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Text("OfflineMedic Report",
-                style: pw.TextStyle(fontSize: 20)),
+                style: const pw.TextStyle(fontSize: 20)),
             pw.SizedBox(height: 10),
             pw.Text("Total Cases: 47"),
             pw.Text("Urgent: 12"),
@@ -180,16 +180,16 @@ class DashboardScreen extends StatelessWidget {
               height: 200,
               child: BarChart(
                 BarChartData(
-                  gridData: FlGridData(show: false),
+                  gridData: const FlGridData(show: false),
                   borderData: FlBorderData(show: false),
 
                   titlesData: FlTitlesData(
                     topTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     rightTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     leftTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: true)),
+                        const AxisTitles(sideTitles: SideTitles(showTitles: true)),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -226,7 +226,7 @@ class DashboardScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFE5E7EB)),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Text("Fever"),
