@@ -18,15 +18,11 @@ class OfflineMedicApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
       ),
-
-      /// 🔁 ROUTES FOR DRAWER NAVIGATION
       routes: {
         '/input': (context) => const InputScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/map': (context) => const MapScreen(),
       },
-
-      /// 🏠 DEFAULT SCREEN
       home: const InputScreen(),
     );
   }

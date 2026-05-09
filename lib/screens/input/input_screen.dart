@@ -30,8 +30,7 @@ class _InputScreenState extends State<InputScreen> {
   final ImagePicker picker = ImagePicker();
 
   Future<void> pickImage() async {
-    final XFile? image =
-        await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       setState(() {
@@ -77,7 +76,6 @@ class _InputScreenState extends State<InputScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: _drawer(context),
-
       body: SafeArea(
         child: Builder(
           builder: (context) => SingleChildScrollView(
@@ -85,7 +83,6 @@ class _InputScreenState extends State<InputScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 /// HEADER
                 Row(
                   children: [
@@ -95,7 +92,6 @@ class _InputScreenState extends State<InputScreen> {
                         Scaffold.of(context).openDrawer();
                       },
                     ),
-
                     const Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +112,6 @@ class _InputScreenState extends State<InputScreen> {
                         ],
                       ),
                     ),
-
                     const SizedBox(width: 48),
                   ],
                 ),
@@ -125,8 +120,7 @@ class _InputScreenState extends State<InputScreen> {
 
                 /// INPUT MODE BUTTONS
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _inputCard(
                       0,
@@ -134,14 +128,12 @@ class _InputScreenState extends State<InputScreen> {
                       "Upload",
                       "Upload image",
                     ),
-
                     _inputCard(
                       1,
                       Icons.mic,
                       "Speak",
                       "Tap to record",
                     ),
-
                     _inputCard(
                       2,
                       Icons.keyboard,
@@ -156,7 +148,7 @@ class _InputScreenState extends State<InputScreen> {
                 /// TYPE INPUT
                 if (selectedInput == 2) _inputBox(),
 
-                /// 🎤 VOICE UI
+                /// VOICE UI
                 if (selectedInput == 1)
                   Container(
                     width: double.infinity,
@@ -169,7 +161,6 @@ class _InputScreenState extends State<InputScreen> {
                     ),
                     child: Column(
                       children: [
-
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -187,83 +178,58 @@ class _InputScreenState extends State<InputScreen> {
                                 : const Color(0xFF003F87),
                             child: isListening
                                 ? Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-
                                       AnimatedContainer(
-                                        duration:
-                                            const Duration(
+                                        duration: const Duration(
                                           milliseconds: 300,
                                         ),
                                         width: 4,
-                                        height: isListening
-                                            ? 14
-                                            : 6,
+                                        height: isListening ? 14 : 6,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                              BorderRadius
-                                                  .circular(4),
+                                              BorderRadius.circular(4),
                                         ),
                                       ),
-
                                       const SizedBox(width: 3),
-
                                       AnimatedContainer(
-                                        duration:
-                                            const Duration(
+                                        duration: const Duration(
                                           milliseconds: 500,
                                         ),
                                         width: 4,
-                                        height: isListening
-                                            ? 24
-                                            : 8,
+                                        height: isListening ? 24 : 8,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                              BorderRadius
-                                                  .circular(4),
+                                              BorderRadius.circular(4),
                                         ),
                                       ),
-
                                       const SizedBox(width: 3),
-
                                       AnimatedContainer(
-                                        duration:
-                                            const Duration(
+                                        duration: const Duration(
                                           milliseconds: 400,
                                         ),
                                         width: 4,
-                                        height: isListening
-                                            ? 18
-                                            : 7,
+                                        height: isListening ? 18 : 7,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                              BorderRadius
-                                                  .circular(4),
+                                              BorderRadius.circular(4),
                                         ),
                                       ),
-
                                       const SizedBox(width: 3),
-
                                       AnimatedContainer(
-                                        duration:
-                                            const Duration(
+                                        duration: const Duration(
                                           milliseconds: 350,
                                         ),
                                         width: 4,
-                                        height: isListening
-                                            ? 26
-                                            : 9,
+                                        height: isListening ? 26 : 9,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                              BorderRadius
-                                                  .circular(4),
+                                              BorderRadius.circular(4),
                                         ),
                                       ),
                                     ],
@@ -275,13 +241,9 @@ class _InputScreenState extends State<InputScreen> {
                                   ),
                           ),
                         ),
-
                         const SizedBox(height: 16),
-
                         Text(
-                          isListening
-                              ? "Listening..."
-                              : voiceText,
+                          isListening ? "Listening..." : voiceText,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.grey,
@@ -291,7 +253,7 @@ class _InputScreenState extends State<InputScreen> {
                     ),
                   ),
 
-                /// 🖼 IMAGE UI
+                /// IMAGE UI
                 if (selectedInput == 0)
                   GestureDetector(
                     onTap: pickImage,
@@ -306,11 +268,9 @@ class _InputScreenState extends State<InputScreen> {
                       ),
                       child: Column(
                         children: [
-
                           if (selectedImage != null)
                             ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12),
                               child: Image.file(
                                 selectedImage!,
                                 height: 140,
@@ -324,18 +284,14 @@ class _InputScreenState extends State<InputScreen> {
                               size: 48,
                               color: Color(0xFF003F87),
                             ),
-
                           const SizedBox(height: 12),
-
                           const Text(
                             "Tap to upload image",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-
                           const SizedBox(height: 8),
-
                           Text(
                             selectedImageName,
                             style: const TextStyle(
@@ -379,17 +335,14 @@ class _InputScreenState extends State<InputScreen> {
 
                 if (result != null && !isLoading) ...[
                   _resultCard(),
-
                   const SizedBox(height: 24),
-
                   if (result!.callNow)
                     Container(
                       height: 72,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: const Color(0xFFB6152E),
-                        borderRadius:
-                            BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Center(
                         child: Text(
@@ -440,8 +393,7 @@ class _InputScreenState extends State<InputScreen> {
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             result!.triageLevel,
@@ -449,46 +401,32 @@ class _InputScreenState extends State<InputScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 8),
-
           Text(result!.condition),
-
           const SizedBox(height: 12),
-
           const Text(
             "Do Now:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-
-          ...result!.doNow
-              .map((e) => Text("• $e")),
-
+          ...result!.doNow.map((e) => Text("• $e")),
           const SizedBox(height: 10),
-
           const Text(
             "Do NOT:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-
-          ...result!.doNot
-              .map((e) => Text("• $e")),
-
+          ...result!.doNot.map((e) => Text("• $e")),
           const SizedBox(height: 10),
-
           const Text(
             "Red Flags:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-
-          ...result!.redFlags
-              .map((e) => Text("⚠ $e")),
+          ...result!.redFlags.map((e) => Text("⚠ $e")),
         ],
       ),
     );
@@ -499,8 +437,7 @@ class _InputScreenState extends State<InputScreen> {
       child: ListView(
         children: [
           const DrawerHeader(
-            decoration:
-                BoxDecoration(color: Colors.blue),
+            decoration: BoxDecoration(color: Colors.blue),
             child: Text(
               "OfflineMedic",
               style: TextStyle(
@@ -508,29 +445,23 @@ class _InputScreenState extends State<InputScreen> {
               ),
             ),
           ),
-
           ListTile(
             title: const Text("Input"),
-            onTap: () =>
-                Navigator.pushReplacementNamed(
+            onTap: () => Navigator.pushReplacementNamed(
               context,
               '/input',
             ),
           ),
-
           ListTile(
             title: const Text("Dashboard"),
-            onTap: () =>
-                Navigator.pushReplacementNamed(
+            onTap: () => Navigator.pushReplacementNamed(
               context,
               '/dashboard',
             ),
           ),
-
           ListTile(
             title: const Text("Map"),
-            onTap: () =>
-                Navigator.pushReplacementNamed(
+            onTap: () => Navigator.pushReplacementNamed(
               context,
               '/map',
             ),
@@ -553,7 +484,6 @@ class _InputScreenState extends State<InputScreen> {
         setState(() {
           selectedInput = index;
 
-          /// ✅ Reset voice state
           if (index != 1) {
             isListening = false;
           }
@@ -565,11 +495,9 @@ class _InputScreenState extends State<InputScreen> {
             height: 100,
             width: 100,
             decoration: BoxDecoration(
-              color: isActive
-                  ? const Color(0xFF003F87)
-                  : const Color(0xFFF1F5F9),
-              borderRadius:
-                  BorderRadius.circular(12),
+              color:
+                  isActive ? const Color(0xFF003F87) : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: const Color(0xFFE5E7EB),
               ),
@@ -577,16 +505,11 @@ class _InputScreenState extends State<InputScreen> {
             child: Icon(
               icon,
               size: 28,
-              color: isActive
-                  ? Colors.white
-                  : Colors.blue,
+              color: isActive ? Colors.white : Colors.blue,
             ),
           ),
-
           const SizedBox(height: 6),
-
           Text(title),
-
           Text(
             subtitle,
             style: const TextStyle(
