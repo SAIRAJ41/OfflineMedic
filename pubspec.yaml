@@ -1,10 +1,42 @@
+# name: offline_medic
+# description: An offline medical triage and first-aid assistant.
+# publish_to: "none"
+# version: 1.0.0+1
+
+# environment:
+#   sdk: ">=3.0.0 <4.0.0"
+
+# dependencies:
+#   flutter:
+#     sdk: flutter
+
+#   cupertino_icons: ^1.0.6
+
+#   # 📊 Charts (Dashboard)
+#   fl_chart: ^0.66.0
+
+#   # 📄 PDF Export
+#   pdf: ^3.10.7
+#   printing: ^5.11.0
+
+#   # 🖼 Gallery Upload
+#   image_picker: ^1.1.2
+
+# dev_dependencies:
+#   flutter_test:
+#     sdk: flutter
+#   flutter_lints: ^3.0.0
+
+# flutter:
+#   uses-material-design: true
+
 name: offline_medic
-description: An offline medical triage and first-aid assistant.
-publish_to: "none"
+description: Offline medical triage app
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
