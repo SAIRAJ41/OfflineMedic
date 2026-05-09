@@ -117,3 +117,14 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Add these to your .gitignore
+# Model files are too large for GitHub
+android/app/src/main/assets/models/*.gguf
+android/app/src/main/assets/models/*.bin
+android/app/src/main/assets/models/*.tflite
+ 
+# Build artifacts
+build/
+.dart_tool/
+ 

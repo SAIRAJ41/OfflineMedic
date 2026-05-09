@@ -1,10 +1,12 @@
+// lib/screens/input/input_screen.dart
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../services/gemma_service.dart';
 import '../../models/triage_result.dart';
+import '../../services/gemma_service.dart';
 
 class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
@@ -20,54 +22,72 @@ class _InputScreenState extends State<InputScreen> {
   bool isListening = false;
 
   TriageResult? result;
-  int selectedInput = 2;
 
-  String selectedImageName = "No image selected";
-  String voiceText = "Tap microphone to start speaking";
+  int selectedInput = 2;
 
   File? selectedImage;
 
-  final ImagePicker picker = ImagePicker();
+  String selectedImageName = "No image selected";
 
-  Future<void> pickImage() async {
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  String voiceText = "Tap microphone to speak";
 
-    if (image != null) {
-      setState(() {
-        selectedImage = File(image.path);
-        selectedImageName = image.name;
-      });
+  // ------------------------------------------------------------
+  // Analyze symptoms
+  // ------------------------------------------------------------
 
-      /// TODO (TEAMMATE - GEMMA VISION):
-      /// Send selected image for AI analysis
-    }
-  }
-
-  void analyze() async {
-    if (selectedInput == 2 && controller.text.trim().isEmpty) return;
-
-    setState(() => isLoading = true);
-
-    final res = await GemmaService.analyze(
-      selectedInput == 2
-          ? controller.text
-          : selectedInput == 1
-              ? voiceText
-              : selectedImageName,
-    );
-
-    /// TODO (TEAMMATE - DATABASE):
-    /// Save analyzed case automatically
+  Future<void> assess() async {
+    if (controller.text.trim().isEmpty) return;
 
     setState(() {
-      result = res;
+      isLoading = true;
+    });
+
+    try {
+      final res = await GemmaService().assess(
+        controller.text,
+      );
+
+      setState(() {
+        result = res;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Error: $e',
+          ),
+        ),
+      );
+    }
+
+    setState(() {
       isLoading = false;
+    });
+  }
+
+  // ------------------------------------------------------------
+  // Pick image
+  // ------------------------------------------------------------
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (picked == null) return;
+
+    setState(() {
+      selectedImage = File(picked.path);
+      selectedImageName = picked.name;
     });
   }
 
   @override
   void dispose() {
     controller.dispose();
+
     super.dispose();
   }
 
@@ -79,11 +99,19 @@ class _InputScreenState extends State<InputScreen> {
       body: SafeArea(
         child: Builder(
           builder: (context) => SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
+            padding: const EdgeInsets.fromLTRB(
+              20,
+              16,
+              20,
+              40,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// HEADER
+                // ------------------------------------------------
+                // HEADER
+                // ------------------------------------------------
+
                 Row(
                   children: [
                     IconButton(
@@ -118,7 +146,10 @@ class _InputScreenState extends State<InputScreen> {
 
                 const SizedBox(height: 28),
 
-                /// INPUT MODE BUTTONS
+                // ------------------------------------------------
+                // INPUT OPTIONS
+                // ------------------------------------------------
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -145,10 +176,16 @@ class _InputScreenState extends State<InputScreen> {
 
                 const SizedBox(height: 28),
 
-                /// TYPE INPUT
+                // ------------------------------------------------
+                // TYPE INPUT
+                // ------------------------------------------------
+
                 if (selectedInput == 2) _inputBox(),
 
-                /// VOICE UI
+                // ------------------------------------------------
+                // VOICE INPUT
+                // ------------------------------------------------
+
                 if (selectedInput == 1)
                   Container(
                     width: double.infinity,
@@ -165,80 +202,20 @@ class _InputScreenState extends State<InputScreen> {
                           onTap: () {
                             setState(() {
                               isListening = !isListening;
-
-                              /// TODO (TEAMMATE - WHISPER):
-                              /// Start / stop recording
-                              /// Convert speech to text
                             });
                           },
                           child: CircleAvatar(
                             radius: 36,
                             backgroundColor: isListening
                                 ? Colors.red
-                                : const Color(0xFF003F87),
-                            child: isListening
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      AnimatedContainer(
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        width: 4,
-                                        height: isListening ? 14 : 6,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 3),
-                                      AnimatedContainer(
-                                        duration: const Duration(
-                                          milliseconds: 500,
-                                        ),
-                                        width: 4,
-                                        height: isListening ? 24 : 8,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 3),
-                                      AnimatedContainer(
-                                        duration: const Duration(
-                                          milliseconds: 400,
-                                        ),
-                                        width: 4,
-                                        height: isListening ? 18 : 7,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 3),
-                                      AnimatedContainer(
-                                        duration: const Duration(
-                                          milliseconds: 350,
-                                        ),
-                                        width: 4,
-                                        height: isListening ? 26 : 9,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : const Icon(
-                                    Icons.mic,
-                                    color: Colors.white,
-                                    size: 30,
+                                : const Color(
+                                    0xFF003F87,
                                   ),
+                            child: Icon(
+                              Icons.mic,
+                              color: Colors.white,
+                              size: 30,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -253,7 +230,10 @@ class _InputScreenState extends State<InputScreen> {
                     ),
                   ),
 
-                /// IMAGE UI
+                // ------------------------------------------------
+                // IMAGE INPUT
+                // ------------------------------------------------
+
                 if (selectedInput == 0)
                   GestureDetector(
                     onTap: pickImage,
@@ -270,7 +250,9 @@ class _InputScreenState extends State<InputScreen> {
                         children: [
                           if (selectedImage != null)
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(
+                                12,
+                              ),
                               child: Image.file(
                                 selectedImage!,
                                 height: 140,
@@ -306,32 +288,39 @@ class _InputScreenState extends State<InputScreen> {
 
                 const SizedBox(height: 28),
 
-                /// ANALYZE BUTTON
+                // ------------------------------------------------
+                // ANALYZE BUTTON
+                // ------------------------------------------------
+
                 GestureDetector(
-                  onTap: isLoading ? null : analyze,
+                  onTap: isLoading ? null : assess,
                   child: Container(
                     height: 72,
                     decoration: BoxDecoration(
                       color: const Color(0xFF003F87),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "Analyze Now",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
+                    child: Center(
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text(
+                              "Analyze Now",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 28),
 
-                if (isLoading)
-                  const Center(
-                    child: Text("Analyzing..."),
-                  ),
+                // ------------------------------------------------
+                // RESULT
+                // ------------------------------------------------
 
                 if (result != null && !isLoading) ...[
                   _resultCard(),
@@ -342,7 +331,9 @@ class _InputScreenState extends State<InputScreen> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: const Color(0xFFB6152E),
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(
+                          14,
+                        ),
                       ),
                       child: const Center(
                         child: Text(
@@ -362,6 +353,10 @@ class _InputScreenState extends State<InputScreen> {
       ),
     );
   }
+
+  // ------------------------------------------------------------
+  // Input box
+  // ------------------------------------------------------------
 
   Widget _inputBox() {
     return Container(
@@ -383,6 +378,10 @@ class _InputScreenState extends State<InputScreen> {
     );
   }
 
+  // ------------------------------------------------------------
+  // Result card
+  // ------------------------------------------------------------
+
   Widget _resultCard() {
     return Container(
       padding: const EdgeInsets.all(18),
@@ -399,49 +398,68 @@ class _InputScreenState extends State<InputScreen> {
             result!.triageLevel,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
           ),
           const SizedBox(height: 8),
           Text(result!.condition),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           const Text(
             "Do Now:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          ...result!.doNow.map((e) => Text("• $e")),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
+          ...result!.doNow.map(
+            (e) => Text("• $e"),
+          ),
+          const SizedBox(height: 16),
           const Text(
             "Do NOT:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          ...result!.doNot.map((e) => Text("• $e")),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
+          ...result!.doNot.map(
+            (e) => Text("• $e"),
+          ),
+          const SizedBox(height: 16),
           const Text(
             "Red Flags:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          ...result!.redFlags.map((e) => Text("⚠ $e")),
+          const SizedBox(height: 8),
+          ...result!.redFlags.map(
+            (e) => Text("⚠ $e"),
+          ),
         ],
       ),
     );
   }
 
-  static Widget _drawer(BuildContext context) {
+  // ------------------------------------------------------------
+  // Drawer
+  // ------------------------------------------------------------
+
+  static Widget _drawer(
+    BuildContext context,
+  ) {
     return Drawer(
       child: ListView(
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
             child: Text(
               "OfflineMedic",
               style: TextStyle(
                 color: Colors.white,
+                fontSize: 20,
               ),
             ),
           ),
@@ -470,6 +488,10 @@ class _InputScreenState extends State<InputScreen> {
       ),
     );
   }
+
+  // ------------------------------------------------------------
+  // Input mode card
+  // ------------------------------------------------------------
 
   Widget _inputCard(
     int index,
