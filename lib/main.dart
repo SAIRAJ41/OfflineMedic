@@ -27,13 +27,11 @@ class OfflineMedicApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
       ),
-
       routes: {
-        '/input':     (context) => const InputScreen(),
+        '/input': (context) => const InputScreen(),
         '/dashboard': (context) => const DashboardScreen(),
-        '/map':       (context) => const MapScreen(),
+        '/map': (context) => const MapScreen(),
       },
-
       home: const InputScreen(),
     );
   }
