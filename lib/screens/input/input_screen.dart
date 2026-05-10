@@ -1,5 +1,3 @@
-// lib/screens/input/input_screen.dart
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../models/triage_result.dart';
 import '../../services/gemma_service.dart';
+import '../../services/database_service.dart';
 
 class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
@@ -43,21 +42,44 @@ class _InputScreenState extends State<InputScreen> {
     });
 
     try {
-      final res = await GemmaService().assess(
+      final res = await GemmaService.instance.assess(
         controller.text,
       );
 
       setState(() {
         result = res;
       });
+
+      // Auto-save case to SQLite — never let DB error block the result
+      try {
+        final inputType = selectedInput == 0
+            ? 'image'
+            : selectedInput == 1
+                ? 'voice'
+                : 'text';
+        await DatabaseService.instance.saveCase(
+          res,
+          controller.text,
+          inputType,
+          imagePath: selectedImage?.path,
+        );
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Case not saved to history')),
+          );
+        }
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Error: $e',
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error: $e',
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     setState(() {
