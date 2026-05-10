@@ -11,27 +11,29 @@ import '../models/triage_result.dart';
 import 'rag_service.dart';
 
 class GemmaService {
-  static final GemmaService _instance = GemmaService._internal();
-
-  factory GemmaService() => _instance;
-
   GemmaService._internal();
+  static final GemmaService instance = GemmaService._internal();
 
   Llama? _llama;
 
   bool _isLoaded = false;
 
-  final _ragService = RagService();
+  final _ragService = RagService.instance;
 
   static const _modelFileName = 'gemma4_offlinemedic.gguf';
 
-  static const _systemPrompt =
+  /// Loaded from ai/system_prompt.txt at runtime.
+  String _systemPrompt = _fallbackPrompt;
+
+  /// Hardcoded safety net — used only if the asset file is missing.
+  static const _fallbackPrompt =
       'You are OfflineMedic, an offline emergency triage assistant used in India. '
       'Given a patient description, respond ONLY with a valid JSON object: '
-      '{"triage_level":"RED|YELLOW|GREEN","condition":"...","action":"...",'
-      '"medicines":[],"call_emergency":true,"emergency_number":"108",'
-      '"dispatcher_script":"...","warning_signs":[],"do_not_do":[]}. '
-      'RED=life threatening. YELLOW=urgent. GREEN=minor. '
+      '{"triage_level":"URGENT|MODERATE|MILD","condition":"...","confidence":"high|medium|low",'
+      '"do_now":[],"do_not":[],"red_flags":[],'
+      '"emergency":{"action_required":false,"call_now":false,"number":"108","dispatcher_script":""},'
+      '"disclaimer":"This is first-aid guidance only, not a medical diagnosis."}. '
+      'URGENT=life threatening. MODERATE=needs care within hours. MILD=home care sufficient. '
       'Respond ONLY in JSON. No other text.';
 
   // ------------------------------------------------------------
@@ -40,6 +42,15 @@ class GemmaService {
 
   Future<bool> initialize() async {
     try {
+      // Load system prompt from bundled asset
+      try {
+        _systemPrompt = await rootBundle.loadString('ai/system_prompt.txt');
+        print('✅ System prompt loaded from ai/system_prompt.txt');
+      } catch (e) {
+        print('⚠️ System prompt file missing, using fallback');
+        _systemPrompt = _fallbackPrompt;
+      }
+
       final modelPath = await _getModelPath();
 
       await _copyModelIfNeeded(modelPath);

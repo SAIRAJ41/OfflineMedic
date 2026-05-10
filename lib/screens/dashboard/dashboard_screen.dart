@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+
+
+import '../../services/database_service.dart';
+import '../../services/ai_test_service.dart';
+import '../../models/case_history.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -13,52 +17,51 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _touchedPieIndex = -1;
+  bool _isLoading = true;
 
-  // --- MOCK DATA ---
-  final Map<String, int> summary = {
-    'total': 47,
-    'urgent': 12,
-    'moderate': 18,
-    'mild': 17,
-  };
-
-  final List<double> weekly = [5, 8, 3, 7, 6, 12, 6];
+  // --- DATA (loaded from SQLite) ---
+  Map<String, int> summary = {'total': 0, 'urgent': 0, 'moderate': 0, 'mild': 0};
+  List<double> weekly = List.filled(7, 0);
   final List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  List<CaseHistory> recentCases = [];
 
-  final List<Map<String, dynamic>> recentCases = [
-    {
-      'title': 'Dengue fever',
-      'time': '2 hr ago',
-      'level': 'Urgent',
-      'color': Colors.red,
-      'condition': 'Suspected dengue with high fever and rash.',
-      'do_now': [
-        'Administer IV fluids',
-        'Monitor fever closely',
-        'Check platelet count',
-      ],
-    },
-    {
-      'title': 'Severe Burns',
-      'time': '6 hr ago',
-      'level': 'Moderate',
-      'color': Colors.orange,
-      'condition': 'Second degree burn on left forearm.',
-      'do_now': [
-        'Apply cool water',
-        'Cover with sterile dressing',
-        'Administer pain relief',
-      ],
-    },
-    {
-      'title': 'Viral Cold',
-      'time': 'Yesterday',
-      'level': 'Mild',
-      'color': Colors.green,
-      'condition': 'Upper respiratory tract infection.',
-      'do_now': ['Rest', 'Hydrate', 'Prescribe mild antipyretic'],
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final s = await DatabaseService.instance.getDashboardSummary();
+      final w = await DatabaseService.instance.getWeeklyCounts();
+      final c = await DatabaseService.instance.getCases(limit: 5);
+
+      if (mounted) {
+        setState(() {
+          summary = s;
+          weekly = w;
+          recentCases = c;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Dashboard load error: $e');
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  /// Map day-of-week labels starting from 6 days ago.
+  List<String> get _weekLabels {
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final now = DateTime.now();
+    return List.generate(7, (i) {
+      final d = now.subtract(Duration(days: 6 - i));
+      return dayNames[d.weekday - 1];
+    });
+  }
 
   Future<void> exportReport(BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -109,42 +112,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 style:
                     pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: 10),
-            pw.TableHelper.fromTextArray(
-              context: context,
-              headerDecoration:
-                  const pw.BoxDecoration(color: PdfColors.blue100),
-              headerHeight: 28,
-              cellHeight: 34,
-              cellAlignments: {
-                0: pw.Alignment.centerLeft,
-                1: pw.Alignment.center,
-                2: pw.Alignment.centerLeft,
-                3: pw.Alignment.centerLeft,
-              },
-              headers: [
-                'Condition',
-                'Status',
-                'Time Logged',
-                'Immediate Action Required',
-              ],
-              data: recentCases
-                  .map((c) => [
-                        c['title'],
-                        c['level'],
-                        c['time'],
-                        (c['do_now'] as List).first.toString(),
-                      ])
-                  .toList(),
-            ),
+            if (recentCases.isNotEmpty)
+              pw.TableHelper.fromTextArray(
+                context: context,
+                headerDecoration:
+                    const pw.BoxDecoration(color: PdfColors.blue100),
+                headerHeight: 28,
+                cellHeight: 34,
+                cellAlignments: {
+                  0: pw.Alignment.centerLeft,
+                  1: pw.Alignment.center,
+                  2: pw.Alignment.centerLeft,
+                  3: pw.Alignment.centerLeft,
+                },
+                headers: [
+                  'Condition',
+                  'Status',
+                  'Time Logged',
+                  'Immediate Action Required',
+                ],
+                data: recentCases
+                    .map((c) => [
+                          c.result.condition,
+                          c.result.triageLevel,
+                          _timeAgo(c.createdAt),
+                          c.result.doNow.isNotEmpty
+                              ? c.result.doNow.first
+                              : '-',
+                        ])
+                    .toList(),
+              ),
           ],
         ),
       ),
     );
 
-    await Printing.layoutPdf(
-      onLayout: (format) async => pdf.save(),
-      name: 'OfflineMedic_Report_${DateTime.now().millisecondsSinceEpoch}.pdf',
-    );
+    // await Printing.layoutPdf(
+    //   onLayout: (format) async => pdf.save(),
+    //   name: 'OfflineMedic_Report_${DateTime.now().millisecondsSinceEpoch}.pdf',
+    // );
   }
 
   pw.Widget _buildPdfStatBox(String label, String value, PdfColor color) {
@@ -169,6 +175,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final weekLabels = _weekLabels;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F6),
       drawer: _buildDrawer(context),
@@ -193,77 +201,114 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                _buildStatCard('Total', summary['total'].toString(),
-                    Colors.blue, Icons.people_alt),
-                const SizedBox(width: 12),
-                _buildStatCard('Urgent', summary['urgent'].toString(),
-                    Colors.red, Icons.warning_rounded),
-                const SizedBox(width: 12),
-                _buildStatCard('Moderate', summary['moderate'].toString(),
-                    Colors.orange, Icons.healing),
-                const SizedBox(width: 12),
-                _buildStatCard('Mild', summary['mild'].toString(), Colors.green,
-                    Icons.check_circle),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Analytics Overview',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: _cardDecoration(),
-              child: Column(
-                children: [
-                  const Text(
-                    'Triage Distribution',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(height: 220, child: _buildInteractivePieChart()),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: _cardDecoration(),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Cases This Week',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  Row(
+                    children: [
+                      _buildStatCard('Total', summary['total'].toString(),
+                          Colors.blue, Icons.people_alt),
+                      const SizedBox(width: 12),
+                      _buildStatCard('Urgent', summary['urgent'].toString(),
+                          Colors.red, Icons.warning_rounded),
+                      const SizedBox(width: 12),
+                      _buildStatCard(
+                          'Moderate',
+                          summary['moderate'].toString(),
+                          Colors.orange,
+                          Icons.healing),
+                      const SizedBox(width: 12),
+                      _buildStatCard('Mild', summary['mild'].toString(),
+                          Colors.green, Icons.check_circle),
+                    ],
                   ),
-                  const SizedBox(height: 30),
-                  SizedBox(height: 200, child: _buildPremiumBarChart()),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Analytics Overview',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: _cardDecoration(),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Triage Distribution',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                            height: 220, child: _buildInteractivePieChart()),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: _cardDecoration(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Cases This Week',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                            height: 200,
+                            child: _buildPremiumBarChart(weekLabels)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Recent Patient Logs',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+                  if (recentCases.isEmpty)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(32),
+                      decoration: _cardDecoration(),
+                      child: const Column(
+                        children: [
+                          Icon(Icons.inbox_rounded,
+                              size: 48, color: Colors.grey),
+                          SizedBox(height: 12),
+                          Text(
+                            'No cases recorded yet',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Assessments will appear here after triage',
+                            style: TextStyle(color: Colors.grey, fontSize: 13),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Column(
+                      children: recentCases
+                          .map((c) => _ExpandableCaseCard(caseData: c))
+                          .toList(),
+                    ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'Recent Patient Logs',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 16),
-            Column(
-              children:
-                  recentCases.map((c) => ExpandableCase(data: c)).toList(),
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
-      ),
     );
   }
 
@@ -320,6 +365,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildInteractivePieChart() {
+    final urgent = (summary['urgent'] ?? 0).toDouble();
+    final moderate = (summary['moderate'] ?? 0).toDouble();
+    final mild = (summary['mild'] ?? 0).toDouble();
+
+    if (urgent == 0 && moderate == 0 && mild == 0) {
+      return const Center(
+        child: Text('No data yet',
+            style: TextStyle(color: Colors.grey, fontSize: 14)),
+      );
+    }
+
     return PieChart(
       PieChartData(
         pieTouchData: PieTouchData(
@@ -339,9 +395,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         sectionsSpace: 2,
         centerSpaceRadius: 50,
         sections: [
-          _buildPieSection(0, 12, Colors.red, 'Urgent'),
-          _buildPieSection(1, 18, Colors.orange, 'Moderate'),
-          _buildPieSection(2, 17, Colors.green, 'Mild'),
+          _buildPieSection(0, urgent, Colors.red, 'Urgent'),
+          _buildPieSection(1, moderate, Colors.orange, 'Moderate'),
+          _buildPieSection(2, mild, Colors.green, 'Mild'),
         ],
       ),
     );
@@ -387,13 +443,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildPremiumBarChart() {
-    // IMPORTANT: fl_chart 0.68.0 does not support the newer tooltip named params used earlier.
-    // Keep this simple to guarantee compilation.
+  Widget _buildPremiumBarChart(List<String> weekLabels) {
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        maxY: 15,
+        maxY: (weekly.reduce((a, b) => a > b ? a : b) + 3).ceilToDouble(),
         barTouchData: BarTouchData(enabled: false),
         titlesData: FlTitlesData(
           show: true,
@@ -407,10 +461,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (double value, TitleMeta meta) {
+                final idx = value.toInt();
+                if (idx < 0 || idx >= weekLabels.length) {
+                  return const SizedBox.shrink();
+                }
                 return Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
-                    days[value.toInt()],
+                    weekLabels[idx],
                     style: const TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -463,7 +521,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 backDrawRodData: BackgroundBarChartRodData(
                   show: true,
-                  toY: 15,
+                  toY: (weekly.reduce((a, b) => a > b ? a : b) + 3)
+                      .ceilToDouble(),
                   color: Colors.blue.shade50,
                 ),
               ),
@@ -475,6 +534,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   static Widget _buildDrawer(BuildContext context) {
+    final passRate = AiTestService.instance.getPassRate();
+
     return Drawer(
       child: Column(
         children: [
@@ -486,12 +547,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 colors: [Colors.blue.shade800, Colors.blue.shade500],
               ),
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.health_and_safety, color: Colors.white, size: 40),
-                SizedBox(height: 12),
-                Text(
+                const Icon(Icons.health_and_safety,
+                    color: Colors.white, size: 40),
+                const SizedBox(height: 12),
+                const Text(
                   'OfflineMedic',
                   style: TextStyle(
                     color: Colors.white,
@@ -499,10 +561,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                const Text(
                   'v1.0.0',
                   style: TextStyle(color: Colors.white70),
                 ),
+                if (passRate != null) ...[
+                  const SizedBox(height: 4),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'AI: $passRate ✓',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -529,17 +610,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  String _timeAgo(DateTime dt) {
+    final diff = DateTime.now().difference(dt);
+    if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
+    if (diff.inHours < 24) return '${diff.inHours} hr ago';
+    if (diff.inDays == 1) return 'Yesterday';
+    return '${diff.inDays} days ago';
+  }
 }
 
-class ExpandableCase extends StatefulWidget {
-  final Map<String, dynamic> data;
-  const ExpandableCase({super.key, required this.data});
+// ══════════════════════════════════════════════════════════════
+//  Expandable case card — built from CaseHistory
+// ══════════════════════════════════════════════════════════════
+
+class _ExpandableCaseCard extends StatefulWidget {
+  final CaseHistory caseData;
+  const _ExpandableCaseCard({required this.caseData});
 
   @override
-  State<ExpandableCase> createState() => _ExpandableCaseState();
+  State<_ExpandableCaseCard> createState() => _ExpandableCaseCardState();
 }
 
-class _ExpandableCaseState extends State<ExpandableCase>
+class _ExpandableCaseCardState extends State<_ExpandableCaseCard>
     with SingleTickerProviderStateMixin {
   bool expanded = false;
   late AnimationController _controller;
@@ -566,9 +659,29 @@ class _ExpandableCaseState extends State<ExpandableCase>
     });
   }
 
+  Color get _statusColor {
+    switch (widget.caseData.result.triageLevel) {
+      case 'URGENT':
+        return Colors.red;
+      case 'MODERATE':
+        return Colors.orange;
+      default:
+        return Colors.green;
+    }
+  }
+
+  String _timeAgo(DateTime dt) {
+    final diff = DateTime.now().difference(dt);
+    if (diff.inMinutes < 60) return '${diff.inMinutes} min ago';
+    if (diff.inHours < 24) return '${diff.inHours} hr ago';
+    if (diff.inDays == 1) return 'Yesterday';
+    return '${diff.inDays} days ago';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Color statusColor = widget.data['color'] as Color;
+    final c = widget.caseData;
+    final statusColor = _statusColor;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -606,7 +719,7 @@ class _ExpandableCaseState extends State<ExpandableCase>
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          widget.data['level'].toString(),
+                          c.result.triageLevel,
                           style: TextStyle(
                             color: statusColor,
                             fontWeight: FontWeight.bold,
@@ -617,17 +730,19 @@ class _ExpandableCaseState extends State<ExpandableCase>
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          widget.data['title'].toString(),
+                          c.result.condition,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Text(
-                        widget.data['time'].toString(),
-                        style: TextStyle(
-                            color: Colors.grey.shade500, fontSize: 12),
+                        _timeAgo(c.createdAt),
+                        style:
+                            TextStyle(color: Colors.grey.shade500, fontSize: 12),
                       ),
                       const SizedBox(width: 8),
                       RotationTransition(
@@ -648,7 +763,7 @@ class _ExpandableCaseState extends State<ExpandableCase>
                           child: Divider(height: 1),
                         ),
                         Text(
-                          'Notes:',
+                          'Input:',
                           style: TextStyle(
                             color: Colors.grey.shade700,
                             fontSize: 12,
@@ -656,62 +771,63 @@ class _ExpandableCaseState extends State<ExpandableCase>
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(widget.data['condition'].toString(),
+                        Text(c.inputText,
                             style: const TextStyle(fontSize: 14)),
                         const SizedBox(height: 12),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade50,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Row(
-                                children: [
-                                  Icon(Icons.assignment_late,
-                                      size: 16, color: Colors.blue),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    'Immediate Actions:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
+                        if (c.result.doNow.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade50,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  children: [
+                                    Icon(Icons.assignment_late,
+                                        size: 16, color: Colors.blue),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      'Immediate Actions:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              ...((widget.data['do_now'] as List)
-                                  .map<Widget>((e) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 4),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              '• ',
-                                              style: TextStyle(
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.bold,
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                ...(c.result.doNow.map<Widget>(
+                                    (e) => Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 4),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                '• ',
+                                                style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                e.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 13,
-                                                    color: Colors.black87),
+                                              Expanded(
+                                                child: Text(
+                                                  e,
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.black87),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ))),
-                            ],
+                                            ],
+                                          ),
+                                        ))),
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     crossFadeState: expanded
