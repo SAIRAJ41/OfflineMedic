@@ -1,0 +1,67 @@
+{
+  "test_results": [
+    {
+      "name": "Heart Attack",
+      "expected": "URGENT",
+      "got": "URGENT",
+      "passed": true
+    },
+    {
+      "name": "Child Fever",
+      "expected": "MODERATE",
+      "got": "MODERATE",
+      "passed": true
+    },
+    {
+      "name": "Snake Bite",
+      "expected": "URGENT",
+      "got": "URGENT",
+      "passed": true
+    },
+    {
+      "name": "Common Cold",
+      "expected": "MILD",
+      "got": "MODERATE",
+      "passed": false
+    },
+    {
+      "name": "Infected Wound",
+      "expected": "URGENT",
+      "got": "MODERATE",
+      "passed": false
+    },
+    {
+      "name": "Severe Bleeding",
+      "expected": "URGENT",
+      "got": "URGENT",
+      "passed": true
+    },
+    {
+      "name": "Hindi Input",
+      "expected": "MODERATE",
+      "got": "MODERATE",
+      "passed": true
+    },
+    {
+      "name": "Drug Question",
+      "expected": "MODERATE",
+      "got": "MODERATE",
+      "passed": true
+    },
+    {
+      "name": "Panic Input",
+      "expected": "URGENT",
+      "got": "URGENT",
+      "passed": true
+    },
+    {
+      "name": "Burns",
+      "expected": "URGENT",
+      "got": "URGENT",
+      "passed": true
+    }
+  ],
+  "pass_rate": "80%",
+  "total_passed": 8,
+  "total_tests": 10
+}
