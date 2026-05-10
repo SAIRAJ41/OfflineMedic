@@ -1,5 +1,3 @@
-// lib/screens/input/input_screen.dart
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../models/triage_result.dart';
 import '../../services/gemma_service.dart';
+import '../../services/database_service.dart';
 
 class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
@@ -43,21 +42,44 @@ class _InputScreenState extends State<InputScreen> {
     });
 
     try {
-      final res = await GemmaService().assess(
+      final res = await GemmaService.instance.assess(
         controller.text,
       );
 
       setState(() {
         result = res;
       });
+
+      // Auto-save case to SQLite — never let DB error block the result
+      try {
+        final inputType = selectedInput == 0
+            ? 'image'
+            : selectedInput == 1
+                ? 'voice'
+                : 'text';
+        await DatabaseService.instance.saveCase(
+          res,
+          controller.text,
+          inputType,
+          imagePath: selectedImage?.path,
+        );
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Case not saved to history')),
+          );
+        }
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Error: $e',
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error: $e',
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     setState(() {
@@ -95,9 +117,7 @@ class _InputScreenState extends State<InputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       drawer: _drawer(context),
-
       body: SafeArea(
         child: Builder(
           builder: (context) => SingleChildScrollView(
@@ -108,55 +128,40 @@ class _InputScreenState extends State<InputScreen> {
               40,
             ),
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // ------------------------------------------------
                 // HEADER
                 // ------------------------------------------------
 
                 Row(
                   children: [
-
                     IconButton(
                       icon: const Icon(Icons.menu),
-
                       onPressed: () {
-                        Scaffold.of(context)
-                            .openDrawer();
+                        Scaffold.of(context).openDrawer();
                       },
                     ),
-
                     const Expanded(
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
                           Icon(
                             Icons.medical_services,
                             color: Colors.blue,
                           ),
-
                           SizedBox(width: 8),
-
                           Text(
                             "Medical Assistant",
-
                             style: TextStyle(
-                              fontWeight:
-                                  FontWeight.bold,
-
+                              fontWeight: FontWeight.bold,
                               fontSize: 18,
-
                               color: Colors.blue,
                             ),
                           ),
                         ],
                       ),
                     ),
-
                     const SizedBox(width: 48),
                   ],
                 ),
@@ -168,25 +173,20 @@ class _InputScreenState extends State<InputScreen> {
                 // ------------------------------------------------
 
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     _inputCard(
                       0,
                       Icons.upload_file,
                       "Upload",
                       "Upload image",
                     ),
-
                     _inputCard(
                       1,
                       Icons.mic,
                       "Speak",
                       "Tap to record",
                     ),
-
                     _inputCard(
                       2,
                       Icons.keyboard,
@@ -202,8 +202,7 @@ class _InputScreenState extends State<InputScreen> {
                 // TYPE INPUT
                 // ------------------------------------------------
 
-                if (selectedInput == 2)
-                  _inputBox(),
+                if (selectedInput == 2) _inputBox(),
 
                 // ------------------------------------------------
                 // VOICE INPUT
@@ -212,60 +211,39 @@ class _InputScreenState extends State<InputScreen> {
                 if (selectedInput == 1)
                   Container(
                     width: double.infinity,
-
-                    padding:
-                        const EdgeInsets.all(24),
-
+                    padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color:
-                            const Color(0xFFC2C6D4),
+                        color: const Color(0xFFC2C6D4),
                       ),
-
-                      borderRadius:
-                          BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(14),
                     ),
-
                     child: Column(
                       children: [
-
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              isListening =
-                                  !isListening;
+                              isListening = !isListening;
                             });
                           },
-
                           child: CircleAvatar(
                             radius: 36,
-
-                            backgroundColor:
-                                isListening
-                                    ? Colors.red
-                                    : const Color(
-                                        0xFF003F87,
-                                      ),
-
+                            backgroundColor: isListening
+                                ? Colors.red
+                                : const Color(
+                                    0xFF003F87,
+                                  ),
                             child: Icon(
                               Icons.mic,
-
                               color: Colors.white,
-
                               size: 30,
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 16),
-
                         Text(
-                          isListening
-                              ? "Listening..."
-                              : voiceText,
-
+                          isListening ? "Listening..." : voiceText,
                           textAlign: TextAlign.center,
-
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -281,74 +259,47 @@ class _InputScreenState extends State<InputScreen> {
                 if (selectedInput == 0)
                   GestureDetector(
                     onTap: pickImage,
-
                     child: Container(
                       width: double.infinity,
-
-                      padding:
-                          const EdgeInsets.all(24),
-
+                      padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color:
-                              const Color(0xFFC2C6D4),
+                          color: const Color(0xFFC2C6D4),
                         ),
-
-                        borderRadius:
-                            BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(14),
                       ),
-
                       child: Column(
                         children: [
-
                           if (selectedImage != null)
                             ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(
+                              borderRadius: BorderRadius.circular(
                                 12,
                               ),
-
                               child: Image.file(
                                 selectedImage!,
-
                                 height: 140,
-
-                                width:
-                                    double.infinity,
-
+                                width: double.infinity,
                                 fit: BoxFit.cover,
                               ),
                             )
                           else
                             const Icon(
-                              Icons
-                                  .add_photo_alternate,
-
+                              Icons.add_photo_alternate,
                               size: 48,
-
-                              color:
-                                  Color(0xFF003F87),
+                              color: Color(0xFF003F87),
                             ),
-
                           const SizedBox(height: 12),
-
                           const Text(
                             "Tap to upload image",
-
                             style: TextStyle(
-                              fontWeight:
-                                  FontWeight.w500,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-
                           const SizedBox(height: 8),
-
                           Text(
                             selectedImageName,
-
                             style: const TextStyle(
                               color: Colors.grey,
-
                               fontSize: 12,
                             ),
                           ),
@@ -364,20 +315,13 @@ class _InputScreenState extends State<InputScreen> {
                 // ------------------------------------------------
 
                 GestureDetector(
-                  onTap:
-                      isLoading ? null : assess,
-
+                  onTap: isLoading ? null : assess,
                   child: Container(
                     height: 72,
-
                     decoration: BoxDecoration(
-                      color:
-                          const Color(0xFF003F87),
-
-                      borderRadius:
-                          BorderRadius.circular(14),
+                      color: const Color(0xFF003F87),
+                      borderRadius: BorderRadius.circular(14),
                     ),
-
                     child: Center(
                       child: isLoading
                           ? const CircularProgressIndicator(
@@ -385,12 +329,9 @@ class _InputScreenState extends State<InputScreen> {
                             )
                           : const Text(
                               "Analyze Now",
-
                               style: TextStyle(
                                 color: Colors.white,
-
-                                fontWeight:
-                                    FontWeight.bold,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                     ),
@@ -403,37 +344,25 @@ class _InputScreenState extends State<InputScreen> {
                 // RESULT
                 // ------------------------------------------------
 
-                if (result != null &&
-                    !isLoading) ...[
+                if (result != null && !isLoading) ...[
                   _resultCard(),
-
                   const SizedBox(height: 24),
-
                   if (result!.callNow)
                     Container(
                       height: 72,
-
                       width: double.infinity,
-
                       decoration: BoxDecoration(
-                        color:
-                            const Color(0xFFB6152E),
-
-                        borderRadius:
-                            BorderRadius.circular(
+                        color: const Color(0xFFB6152E),
+                        borderRadius: BorderRadius.circular(
                           14,
                         ),
                       ),
-
                       child: const Center(
                         child: Text(
                           "CALL EMERGENCY",
-
                           style: TextStyle(
                             color: Colors.white,
-
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -457,23 +386,15 @@ class _InputScreenState extends State<InputScreen> {
         border: Border.all(
           color: const Color(0xFFC2C6D4),
         ),
-
-        borderRadius:
-            BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(14),
       ),
-
       child: TextField(
         controller: controller,
-
         maxLines: 6,
-
         decoration: const InputDecoration(
           hintText: "Enter symptoms...",
-
           border: InputBorder.none,
-
-          contentPadding:
-              EdgeInsets.all(18),
+          contentPadding: EdgeInsets.all(18),
         ),
       ),
     );
@@ -486,80 +407,54 @@ class _InputScreenState extends State<InputScreen> {
   Widget _resultCard() {
     return Container(
       padding: const EdgeInsets.all(18),
-
       decoration: BoxDecoration(
         border: Border.all(
           color: const Color(0xFFE5E7EB),
         ),
-
-        borderRadius:
-            BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(14),
       ),
-
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Text(
             result!.triageLevel,
-
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-
               fontSize: 18,
             ),
           ),
-
           const SizedBox(height: 8),
-
           Text(result!.condition),
-
           const SizedBox(height: 16),
-
           const Text(
             "Do Now:",
-
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 8),
-
           ...result!.doNow.map(
             (e) => Text("• $e"),
           ),
-
           const SizedBox(height: 16),
-
           const Text(
             "Do NOT:",
-
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 8),
-
           ...result!.doNot.map(
             (e) => Text("• $e"),
           ),
-
           const SizedBox(height: 16),
-
           const Text(
             "Red Flags:",
-
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 8),
-
           ...result!.redFlags.map(
             (e) => Text("⚠ $e"),
           ),
@@ -578,49 +473,35 @@ class _InputScreenState extends State<InputScreen> {
     return Drawer(
       child: ListView(
         children: [
-
           const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
-
             child: Text(
               "OfflineMedic",
-
               style: TextStyle(
                 color: Colors.white,
-
                 fontSize: 20,
               ),
             ),
           ),
-
           ListTile(
             title: const Text("Input"),
-
-            onTap: () =>
-                Navigator.pushReplacementNamed(
+            onTap: () => Navigator.pushReplacementNamed(
               context,
               '/input',
             ),
           ),
-
           ListTile(
-            title:
-                const Text("Dashboard"),
-
-            onTap: () =>
-                Navigator.pushReplacementNamed(
+            title: const Text("Dashboard"),
+            onTap: () => Navigator.pushReplacementNamed(
               context,
               '/dashboard',
             ),
           ),
-
           ListTile(
             title: const Text("Map"),
-
-            onTap: () =>
-                Navigator.pushReplacementNamed(
+            onTap: () => Navigator.pushReplacementNamed(
               context,
               '/map',
             ),
@@ -640,8 +521,7 @@ class _InputScreenState extends State<InputScreen> {
     String title,
     String subtitle,
   ) {
-    final isActive =
-        selectedInput == index;
+    final isActive = selectedInput == index;
 
     return GestureDetector(
       onTap: () {
@@ -653,53 +533,33 @@ class _InputScreenState extends State<InputScreen> {
           }
         });
       },
-
       child: Column(
         children: [
-
           Container(
             height: 100,
-
             width: 100,
-
             decoration: BoxDecoration(
-              color: isActive
-                  ? const Color(0xFF003F87)
-                  : const Color(0xFFF1F5F9),
-
-              borderRadius:
-                  BorderRadius.circular(12),
-
+              color:
+                  isActive ? const Color(0xFF003F87) : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color:
-                    const Color(0xFFE5E7EB),
+                color: const Color(0xFFE5E7EB),
               ),
             ),
-
             child: Icon(
               icon,
-
               size: 28,
-
-              color: isActive
-                  ? Colors.white
-                  : Colors.blue,
+              color: isActive ? Colors.white : Colors.blue,
             ),
           ),
-
           const SizedBox(height: 6),
-
           Text(title),
-
           Text(
             subtitle,
-
             style: const TextStyle(
               fontSize: 10,
-
               color: Colors.grey,
             ),
-
             textAlign: TextAlign.center,
           ),
         ],

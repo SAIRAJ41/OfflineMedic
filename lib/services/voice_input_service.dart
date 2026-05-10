@@ -2,16 +2,14 @@
 // Records voice → saves as WAV → transcribes with Whisper offline
 
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:whisper_flutter_new/whisper_flutter_new.dart';
 
 class VoiceInputService {
-  static final VoiceInputService _instance = VoiceInputService._internal();
-  factory VoiceInputService() => _instance;
   VoiceInputService._internal();
+  static final VoiceInputService instance = VoiceInputService._internal();
 
   final _recorder = AudioRecorder();
   bool _isRecording = false;
@@ -25,7 +23,6 @@ class VoiceInputService {
       await Permission.microphone.request();
 
       // Pre-initialize Whisper model so first transcription is fast
-      final dir = await getApplicationDocumentsDirectory();
       final whisper = Whisper(
         model: WhisperModel.base,
         downloadHost: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main",
@@ -109,7 +106,7 @@ class VoiceInputService {
         ),
       );
 
-      final text = result?.text?.trim() ?? '';
+      final text = result.text.trim();
       print('✅ Transcribed: $text');
       return text;
 

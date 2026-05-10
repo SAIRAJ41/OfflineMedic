@@ -1,23 +1,15 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // Flutter Gradle Plugin
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-<<<<<<< HEAD
-    ndkVersion = "27.0.12077973"
-    namespace = "com.example.offline_medic"
-    compileSdk = flutter.compileSdkVersion
-    
-=======
     namespace = "com.offlinemedic.app"
 
-    // Updated SDK + NDK settings
-    compileSdk = 34
-    ndkVersion = "25.2.9519653"
->>>>>>> 5c4ad7a (hello)
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -31,14 +23,13 @@ android {
     defaultConfig {
         applicationId = "com.offlinemedic.app"
 
-        // Raised minSdk for llama.cpp support
+        // Needed for AI / llama.cpp support
         minSdk = 26
         targetSdk = 34
 
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
 
-        // Only build for ARM64
         ndk {
             abiFilters += listOf("arm64-v8a")
         }
@@ -49,6 +40,7 @@ android {
             // Using debug signing temporarily
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 
