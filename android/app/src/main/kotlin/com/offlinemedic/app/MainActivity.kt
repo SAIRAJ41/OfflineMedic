@@ -1,4 +1,4 @@
-package com.example.offline_medic
+package com.offlinemedic.app
 
 import io.flutter.embedding.android.FlutterActivity
 

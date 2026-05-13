@@ -13,7 +13,7 @@ import 'package:offline_medic/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const OfflineMedicApp());
+    await tester.pumpWidget(const OfflineMedicApp(modelDownloaded: true));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
