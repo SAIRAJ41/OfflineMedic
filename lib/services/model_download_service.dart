@@ -23,7 +23,8 @@ class ModelDownloadService {
 
   Future<bool> isModelDownloaded() async {
     final file = await getModelFile();
-    return file.existsSync() && file.lengthSync() >= ModelConfig.expectedMinModelSizeBytes;
+    return file.existsSync() &&
+        file.lengthSync() >= ModelConfig.expectedMinModelSizeBytes;
   }
 
   Future<String> getModelPath() async {
@@ -70,7 +71,8 @@ class ModelDownloadService {
   }
 
   Future<bool> downloadModel({
-    required Function(double progress, String downloadedSize, String totalSize) onProgress,
+    required Function(double progress, String downloadedSize, String totalSize)
+        onProgress,
     required Function() onComplete,
     required Function(String error) onError,
   }) async {
@@ -85,16 +87,18 @@ class ModelDownloadService {
 
       final dio = Dio();
       dio.options.connectTimeout = const Duration(seconds: 30);
-      dio.options.receiveTimeout = const Duration(hours: 2); // It's a large file
+      dio.options.receiveTimeout =
+          const Duration(hours: 2); // It's a large file
 
       String primaryUrl = ModelConfig.modelDownloadUrl;
       String fallbackUrl = ModelConfig.huggingFaceFallbackUrl;
 
       try {
-        await _tryDownloadWithGoogleDriveBypass(dio, primaryUrl, partFile, onProgress);
+        await _tryDownloadWithGoogleDriveBypass(
+            dio, primaryUrl, partFile, onProgress);
       } catch (e) {
         if (_isNetworkError(e)) {
-          throw e; // Do not attempt fallback if it's a network issue
+          rethrow; // Do not attempt fallback if it's a network issue
         }
         if (fallbackUrl.isNotEmpty) {
           debugPrint("Primary URL failed, trying fallback URL...");
@@ -112,7 +116,8 @@ class ModelDownloadService {
       final size = partFile.lengthSync();
       if (size < ModelConfig.expectedMinModelSizeBytes) {
         partFile.deleteSync();
-        throw Exception("Download failed: File is too small. Validation failed.");
+        throw Exception(
+            "Download failed: File is too small. Validation failed.");
       }
 
       // Rename to final .gguf file
@@ -126,23 +131,24 @@ class ModelDownloadService {
     }
   }
 
-  Future<void> _tryDownloadWithGoogleDriveBypass(
-      Dio dio, String url, File destFile, Function(double, String, String) onProgress) async {
-    
+  Future<void> _tryDownloadWithGoogleDriveBypass(Dio dio, String url,
+      File destFile, Function(double, String, String) onProgress) async {
     await _tryDownload(dio, url, destFile, onProgress);
 
     // If download completes but it's too small, it might be an HTML warning page
-    if (destFile.existsSync() && destFile.lengthSync() < ModelConfig.expectedMinModelSizeBytes) {
+    if (destFile.existsSync() &&
+        destFile.lengthSync() < ModelConfig.expectedMinModelSizeBytes) {
       try {
         final content = await destFile.readAsString();
         final match = RegExp(r'confirm=([a-zA-Z0-9_-]+)').firstMatch(content);
         if (match != null) {
           final token = match.group(1);
           debugPrint("Found Google Drive confirm token: $token. Retrying...");
-          
+
           destFile.deleteSync();
-          
-          final retryUrl = url.contains('?') ? "$url&confirm=$token" : "$url?confirm=$token";
+
+          final retryUrl =
+              url.contains('?') ? "$url&confirm=$token" : "$url?confirm=$token";
           await _tryDownload(dio, retryUrl, destFile, onProgress);
         } else {
           destFile.deleteSync();
@@ -152,36 +158,42 @@ class ModelDownloadService {
         if (destFile.existsSync()) {
           destFile.deleteSync();
         }
-        throw Exception("Invalid file downloaded. Expected complete GGUF model.");
+        throw Exception(
+            "Invalid file downloaded. Expected complete GGUF model.");
       }
     }
   }
 
-  Future<void> _tryDownload(Dio dio, String url, File destFile, Function(double, String, String) onProgress) async {
+  Future<void> _tryDownload(Dio dio, String url, File destFile,
+      Function(double, String, String) onProgress) async {
     await dio.download(
       url,
       destFile.path,
       onReceiveProgress: (received, total) {
         if (total > 0) {
           final double progress = received / total;
-          
+
           String totalSizeStr = "";
           if (total > 1024 * 1024 * 1024) {
-            totalSizeStr = (total / (1024 * 1024 * 1024)).toStringAsFixed(2) + " GB";
+            totalSizeStr =
+                "${(total / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB";
           } else {
-            totalSizeStr = (total / (1024 * 1024)).toStringAsFixed(1) + " MB";
+            totalSizeStr = "${(total / (1024 * 1024)).toStringAsFixed(1)} MB";
           }
 
           String downloadedSizeStr = "";
           if (received > 1024 * 1024 * 1024) {
-            downloadedSizeStr = (received / (1024 * 1024 * 1024)).toStringAsFixed(2) + " GB";
+            downloadedSizeStr =
+                "${(received / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB";
           } else {
-            downloadedSizeStr = (received / (1024 * 1024)).toStringAsFixed(1) + " MB";
+            downloadedSizeStr =
+                "${(received / (1024 * 1024)).toStringAsFixed(1)} MB";
           }
 
           onProgress(progress, downloadedSizeStr, totalSizeStr);
         } else {
-          final String downloadedStr = (received / (1024 * 1024)).toStringAsFixed(1) + " MB";
+          final String downloadedStr =
+              "${(received / (1024 * 1024)).toStringAsFixed(1)} MB";
           onProgress(0.0, downloadedStr, "Unknown");
         }
       },

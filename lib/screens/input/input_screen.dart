@@ -243,7 +243,7 @@ class _InputScreenState extends State<InputScreen> {
                                 : const Color(
                                     0xFF003F87,
                                   ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.mic,
                               color: Colors.white,
                               size: 30,

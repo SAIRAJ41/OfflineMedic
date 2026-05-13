@@ -16,29 +16,13 @@ class VoiceInputService {
   String? _recordingPath;
 
   // ── Call once at startup ─────────────────────────────────────
-  // Downloads the Whisper base model (~150MB) on first launch
+  /// Only requests mic permission. Whisper (~150MB) downloads on first real
+  /// [stopAndTranscribe] — never block [runApp] or you get a long blank screen.
   Future<void> initialize() async {
     try {
-      // Request microphone permission
       await Permission.microphone.request();
-
-      // Pre-initialize Whisper model so first transcription is fast
-      final whisper = Whisper(
-        model: WhisperModel.base,
-        downloadHost: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main",
-      );
-
-      // This downloads the model if not already on device
-      await whisper.transcribe(
-        transcribeRequest: TranscribeRequest(
-          audio: '',        // empty — just triggers model download
-          language: 'auto',
-        ),
-      );
-
-      print('✅ VoiceInputService ready');
+      print('✅ VoiceInputService ready (Whisper loads on first use)');
     } catch (e) {
-      // Ignore — model will download on first real use
       print('VoiceInputService init: $e');
     }
   }
@@ -62,10 +46,10 @@ class VoiceInputService {
 
     // Start recording as WAV — Whisper needs 16kHz mono WAV
     await _recorder.start(
-      RecordConfig(
+      const RecordConfig(
         encoder: AudioEncoder.wav,
-        sampleRate: 16000,     // ← must be 16kHz for Whisper
-        numChannels: 1,         // ← mono
+        sampleRate: 16000, // ← must be 16kHz for Whisper
+        numChannels: 1, // ← mono
         bitRate: 256000,
       ),
       path: _recordingPath!,
@@ -93,23 +77,23 @@ class VoiceInputService {
 
     try {
       // Transcribe with Whisper — fully offline
-      final whisper = Whisper(
+      const whisper = Whisper(
         model: WhisperModel.base,
-        downloadHost: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main",
+        downloadHost:
+            "https://huggingface.co/ggerganov/whisper.cpp/resolve/main",
       );
 
       final result = await whisper.transcribe(
         transcribeRequest: TranscribeRequest(
           audio: _recordingPath!,
-          language: 'auto',      // auto-detect Hindi, English, etc.
-          isTranslate: false,    // set true to force translate to English
+          language: 'auto', // auto-detect Hindi, English, etc.
+          isTranslate: false, // set true to force translate to English
         ),
       );
 
       final text = result.text.trim();
       print('✅ Transcribed: $text');
       return text;
-
     } catch (e) {
       print('❌ Transcription failed: $e');
       return '';

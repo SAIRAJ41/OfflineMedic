@@ -49,7 +49,6 @@ android {
         noCompress += listOf("gguf", "bin")
     }
 
-    // Increase Gradle heap size
     packaging {
         jniLibs {
             useLegacyPackaging = true

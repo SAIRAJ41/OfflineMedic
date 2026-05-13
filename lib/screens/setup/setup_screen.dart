@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/model_download_service.dart';
 import '../input/input_screen.dart';
+import '../map/map_screen_new.dart';
 
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
@@ -78,7 +79,7 @@ class _SetupScreenState extends State<SetupScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Required Setup'),
+        title: const Text('AI model (optional)'),
         backgroundColor: Colors.white,
         elevation: 0,
         foregroundColor: Colors.black,
@@ -104,7 +105,7 @@ class _SetupScreenState extends State<SetupScreen> {
               ),
               const SizedBox(height: 16),
               const Text(
-                "OfflineMedic needs to download the medical AI model to work completely offline.",
+                "Download the medical AI model for offline triage, or skip and use the map now — you can download later from the map menu.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),
               ),
@@ -116,14 +117,16 @@ class _SetupScreenState extends State<SetupScreen> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.amber),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("⚠️ Important Information", style: TextStyle(fontWeight: FontWeight.bold)),
+                  children: [
+                    Text("⚠️ Important Information",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     SizedBox(height: 8),
                     Text("• Model size is 2.49 GB"),
                     Text("• A stable Wi-Fi connection is highly recommended"),
-                    Text("• Please ensure you have at least 4 GB of free storage"),
+                    Text(
+                        "• Please ensure you have at least 4 GB of free storage"),
                   ],
                 ),
               ),
@@ -132,7 +135,8 @@ class _SetupScreenState extends State<SetupScreen> {
                 Text(
                   errorMessage,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      color: Colors.red, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
               ],
@@ -148,7 +152,8 @@ class _SetupScreenState extends State<SetupScreen> {
                 Text(
                   "${(downloadProgress * 100).toStringAsFixed(1)}% Downloaded",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 if (downloadedStr.isNotEmpty && totalStr.isNotEmpty)
                   Text(
@@ -173,8 +178,29 @@ class _SetupScreenState extends State<SetupScreen> {
                     ),
                   ),
                   child: Text(
-                    errorMessage.isNotEmpty ? "Retry Download" : "Start Download",
+                    errorMessage.isNotEmpty
+                        ? "Retry Download"
+                        : "Start Download",
                     style: const TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: isDownloading
+                      ? null
+                      : () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => const MapScreenNew(),
+                            ),
+                          );
+                        },
+                  child: const Text(
+                    'Skip for now — open map',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
