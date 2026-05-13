@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'screens/input/input_screen.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'screens/map/map_screen.dart';
+import 'screens/setup/setup_screen.dart';
 import 'services/database_service.dart';
 import 'services/gemma_service.dart';
 import 'services/voice_input_service.dart';
 import 'services/ai_test_service.dart';
+import 'services/model_download_service.dart';
 
 void main() async {
   // ← must be async and must call this first
@@ -14,20 +16,26 @@ void main() async {
   // 1. Database first (other services may depend on it)
   await DatabaseService.instance.initialize();
 
-  // 2. Gemma second (reads system prompt from assets)
-  await GemmaService.instance.initialize();
-
-  // 3. Voice last (independent, no DB dependency)
+  // 2. Voice (independent, no DB dependency)
   await VoiceInputService.instance.initialize();
 
-  // 4. Load AI test results (non-blocking, for drawer badge)
+  // 3. Load AI test results (non-blocking, for drawer badge)
   await AiTestService.instance.load();
 
-  runApp(const OfflineMedicApp());
+  // 4. Check if model is downloaded
+  final modelDownloaded = await ModelDownloadService.instance.isModelDownloaded();
+
+  if (modelDownloaded) {
+    await GemmaService.instance.initialize();
+  }
+
+  runApp(OfflineMedicApp(modelDownloaded: modelDownloaded));
 }
 
 class OfflineMedicApp extends StatelessWidget {
-  const OfflineMedicApp({super.key});
+  final bool modelDownloaded;
+
+  const OfflineMedicApp({super.key, required this.modelDownloaded});
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +46,12 @@ class OfflineMedicApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
+        '/setup': (context) => const SetupScreen(),
         '/input': (context) => const InputScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/map': (context) => const MapScreen(),
       },
-      home: const InputScreen(),
+      home: modelDownloaded ? const InputScreen() : const SetupScreen(),
     );
   }
 }

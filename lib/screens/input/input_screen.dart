@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/triage_result.dart';
 import '../../services/gemma_service.dart';
 import '../../services/database_service.dart';
+import '../triage/triage_screen.dart';
 
 class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
@@ -69,6 +70,15 @@ class _InputScreenState extends State<InputScreen> {
             const SnackBar(content: Text('Case not saved to history')),
           );
         }
+      }
+
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => TriageScreen(result: res),
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {
