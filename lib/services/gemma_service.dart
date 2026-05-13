@@ -1,31 +1,22 @@
-// lib/services/gemma_service.dart
-
-import 'dart:io';
-
+import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:llama_cpp_dart/llama_cpp_dart.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 import '../models/triage_result.dart';
 import 'rag_service.dart';
+import 'llama_runtime_service.dart';
+import 'model_download_service.dart';
 
 class GemmaService {
   GemmaService._internal();
   static final GemmaService instance = GemmaService._internal();
 
-  Llama? _llama;
+  final _ragService = RagService.instance;
+  final _llamaRuntime = LlamaRuntimeService.instance;
 
   bool _isLoaded = false;
 
-  final _ragService = RagService.instance;
-
-  static const _modelFileName = 'gemma4_offlinemedic.gguf';
-
-  /// Loaded from ai/system_prompt.txt at runtime.
   String _systemPrompt = _fallbackPrompt;
 
-  /// Hardcoded safety net — used only if the asset file is missing.
   static const _fallbackPrompt =
       'You are OfflineMedic, an offline emergency triage assistant used in India. '
       'Given a patient description, respond ONLY with a valid JSON object: '
@@ -36,13 +27,10 @@ class GemmaService {
       'URGENT=life threatening. MODERATE=needs care within hours. MILD=home care sufficient. '
       'Respond ONLY in JSON. No other text.';
 
-  // ------------------------------------------------------------
-  // Initialize model
-  // ------------------------------------------------------------
-
   Future<bool> initialize() async {
+    if (_isLoaded) return true;
+
     try {
-      // Load system prompt from bundled asset
       try {
         _systemPrompt = await rootBundle.loadString('ai/system_prompt.txt');
         print('✅ System prompt loaded from ai/system_prompt.txt');
@@ -51,117 +39,40 @@ class GemmaService {
         _systemPrompt = _fallbackPrompt;
       }
 
-      final modelPath = await _getModelPath();
+      final modelPath = await ModelDownloadService.instance.getModelPath();
 
-      await _copyModelIfNeeded(modelPath);
-
-      _llama = Llama(
-        modelPath,
-
-        contextParams: ContextParams()
-          ..nCtx = 2048
-          ..nThreads = 4
-          ..nBatch = 512,
-
-        verbose: false,
-      );
+      await _llamaRuntime.initialize(modelPath);
 
       await _ragService.initialize();
 
       _isLoaded = true;
-
       print('✅ GemmaService ready!');
-
       return true;
     } catch (e) {
       print('❌ GemmaService init failed: $e');
-
       return false;
     }
   }
 
-  // ------------------------------------------------------------
-  // Main assessment function
-  // ------------------------------------------------------------
-
   Future<TriageResult> assess(String userInput) async {
-    if (!_isLoaded || _llama == null) {
+    if (!_isLoaded) {
       throw Exception('Call initialize() first');
     }
 
     final ragContext = await _ragService.getContext(userInput);
 
-    final prompt = _buildPrompt(
-      userInput,
-      ragContext,
-    );
+    final prompt = _buildPrompt(userInput, ragContext);
 
-    final buffer = StringBuffer();
-
-    _llama!.setPrompt(prompt);
-
-    await for (final token in _llama!.generateText()) {
-      buffer.write(token);
-
-      final text = buffer.toString();
-
-      final first = text.indexOf('{');
-      final last = text.lastIndexOf('}');
-
-      if (first != -1 && last > first) {
-        break;
-      }
-    }
-
-    return TriageResult.fromModelOutput(
-      buffer.toString(),
-    );
-  }
-
-  // ------------------------------------------------------------
-  // Streaming response
-  // ------------------------------------------------------------
-
-  Stream<String> assessStream(String userInput) async* {
-    if (!_isLoaded || _llama == null) {
-      throw Exception('Call initialize() first');
-    }
-
-    final ragContext = await _ragService.getContext(userInput);
-
-    final prompt = _buildPrompt(
-      userInput,
-      ragContext,
-    );
-
-    final buffer = StringBuffer();
-
-    _llama!.setPrompt(prompt);
-
-    await for (final token in _llama!.generateText()) {
-      buffer.write(token);
-
-      yield token;
-
-      final text = buffer.toString();
-
-      final first = text.indexOf('{');
-      final last = text.lastIndexOf('}');
-
-      if (first != -1 && last > first) {
-        break;
-      }
+    try {
+      final rawResponse = await _llamaRuntime.generate(prompt);
+      return _parseJson(rawResponse);
+    } catch (e) {
+      print('❌ Inference error: $e');
+      return _createFallback(e.toString());
     }
   }
 
-  // ------------------------------------------------------------
-  // Build prompt
-  // ------------------------------------------------------------
-
-  String _buildPrompt(
-    String userInput,
-    String ragContext,
-  ) {
+  String _buildPrompt(String userInput, String ragContext) {
     final userContent = ragContext.isNotEmpty
         ? 'Patient: $userInput\n\nRelevant context:\n$ragContext'
         : 'Patient: $userInput';
@@ -175,58 +86,49 @@ class GemmaService {
         '<start_of_turn>model\n';
   }
 
-  // ------------------------------------------------------------
-  // Get model path
-  // ------------------------------------------------------------
+  TriageResult _parseJson(String rawResponse) {
+    try {
+      String cleaned = rawResponse
+          .replaceAll("```json", "")
+          .replaceAll("```", "")
+          .trim();
 
-  Future<String> _getModelPath() async {
-    final dir = await getApplicationDocumentsDirectory();
+      final first = cleaned.indexOf('{');
+      final last = cleaned.lastIndexOf('}');
 
-    return p.join(
-      dir.path,
-      'models',
-      _modelFileName,
-    );
-  }
+      if (first != -1 && last != -1 && last > first) {
+        cleaned = cleaned.substring(first, last + 1);
+      } else {
+        throw Exception("No JSON found in response");
+      }
 
-  // ------------------------------------------------------------
-  // Copy model from assets
-  // ------------------------------------------------------------
-
-  Future<void> _copyModelIfNeeded(String destPath) async {
-    final file = File(destPath);
-
-    if (await file.exists()) {
-      return;
+      final Map<String, dynamic> json = jsonDecode(cleaned);
+      return TriageResult.fromJson(json, rawResponse: rawResponse);
+    } catch (e) {
+      print("❌ JSON parse failed: $e");
+      return _createFallback(rawResponse);
     }
-
-    await file.parent.create(
-      recursive: true,
-    );
-
-    print('First launch: copying model to device...');
-
-    final data = await rootBundle.load(
-      'assets/models/$_modelFileName',
-    );
-
-    final bytes = data.buffer.asUint8List();
-
-    await file.writeAsBytes(
-      bytes,
-      flush: true,
-    );
-
-    print('✅ Model copied');
   }
 
-  // ------------------------------------------------------------
-  // Dispose
-  // ------------------------------------------------------------
+  TriageResult _createFallback(String rawText) {
+    return TriageResult(
+      triageLevel: "MODERATE",
+      condition: "Analysis completed but format was unreadable.",
+      confidence: "low",
+      doNow: ["Review the raw response below if necessary.", "Consult a human doctor."],
+      doNot: [],
+      redFlags: [],
+      callNow: false,
+      emergencyNumber: "108",
+      dispatcherScript: "",
+      outputLanguage: "en",
+      disclaimer: "This is first-aid guidance only.",
+      rawResponse: rawText,
+    );
+  }
 
   void dispose() {
-    _llama?.dispose();
-
+    _llamaRuntime.dispose();
     _isLoaded = false;
   }
 }
