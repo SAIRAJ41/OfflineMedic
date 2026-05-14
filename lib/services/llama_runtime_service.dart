@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:llama_cpp_dart/llama_cpp_dart.dart';
 
 class LlamaRuntimeService {
@@ -10,6 +11,8 @@ class LlamaRuntimeService {
   Future<void> initialize(String modelPath) async {
     if (_isLoaded) return;
     try {
+      debugPrint('LlamaRuntime: initialize() started');
+      debugPrint('LlamaRuntime: Loading model from: $modelPath');
       _llama = Llama(
         modelPath,
         contextParams: ContextParams()
@@ -19,8 +22,9 @@ class LlamaRuntimeService {
         verbose: false,
       );
       _isLoaded = true;
-      print('✅ LlamaRuntimeService initialized');
+      debugPrint('LlamaRuntime: ✅ Model loaded successfully');
     } catch (e) {
+      debugPrint('LlamaRuntime: ❌ Initialization failed: $e');
       throw Exception('Llama runtime initialization failed: $e');
     }
   }

@@ -3,13 +3,12 @@ class ModelConfig {
 
   static const String modelDownloadUrl = String.fromEnvironment(
     "MODEL_DOWNLOAD_URL",
-    defaultValue: "https://drive.google.com/uc?export=download&id=1s0I-GxSD9U-8aig9O7O08deExQCP9-Gr",
-  );
-
-  static const String huggingFaceFallbackUrl = String.fromEnvironment(
-    "HF_MODEL_URL",
-    defaultValue: "",
+    defaultValue: "https://huggingface.co/Green123476/offlinemedic-gemma4-gguf/resolve/main/offlinemedic-q4_k_m.gguf",
   );
 
   static const int expectedMinModelSizeBytes = 2400000000;
+
+  static const int connectTimeoutSeconds = 60;
+  static const int sendTimeoutSeconds = 60;
+  static const int receiveTimeoutMinutes = 10;
 }

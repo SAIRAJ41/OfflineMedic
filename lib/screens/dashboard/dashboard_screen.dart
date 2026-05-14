@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+// TODO: Re-enable PDF export after hackathon.
+// import 'package:pdf/pdf.dart';
+// import 'package:pdf/widgets.dart' as pw;
+// import 'package:printing/printing.dart';
 
 
 import '../../services/database_service.dart';
@@ -63,6 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
+  /* TODO: Re-enable PDF export after hackathon.
   Future<void> exportReport(BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -147,10 +150,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
 
-    // await Printing.layoutPdf(
-    //   onLayout: (format) async => pdf.save(),
-    //   name: 'OfflineMedic_Report_${DateTime.now().millisecondsSinceEpoch}.pdf',
-    // );
+    await Printing.layoutPdf(
+      onLayout: (format) async => pdf.save(),
+      name: 'OfflineMedic_Report_${DateTime.now().millisecondsSinceEpoch}.pdf',
+    );
   }
 
   pw.Widget _buildPdfStatBox(String label, String value, PdfColor color) {
@@ -172,6 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -194,11 +198,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         centerTitle: true,
         actions: [
+          // TODO: Re-enable PDF export after hackathon.
+          /*
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_rounded, color: Colors.blue),
             tooltip: 'Export Report',
             onPressed: () => exportReport(context),
           ),
+          */
         ],
       ),
       body: _isLoading

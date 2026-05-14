@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter analyze *)",
+      "Bash(flutter doctor *)",
+      "Bash(Select-Object -First 30)"
+    ]
+  }
+}
