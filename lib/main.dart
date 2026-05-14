@@ -26,7 +26,9 @@ void main() async {
   final modelDownloaded = await ModelDownloadService.instance.isModelDownloaded();
 
   if (modelDownloaded) {
-    await GemmaService.instance.initialize();
+    // Fire and forget — do not block app startup.
+    // InputScreen will show "Loading AI Model..." and handle the loading state.
+    GemmaService.instance.initialize();
   }
 
   runApp(OfflineMedicApp(modelDownloaded: modelDownloaded));

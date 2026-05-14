@@ -156,11 +156,20 @@ class _SetupScreenState extends State<SetupScreen> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.grey, fontSize: 14),
                   ),
-                const SizedBox(height: 20),
                 const Text(
                   "Downloading... Please keep the app open.",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    ModelDownloadService.instance.cancelDownload();
+                  },
+                  child: const Text(
+                    "Cancel Download",
+                    style: TextStyle(color: Colors.red, fontSize: 16),
+                  ),
                 ),
               ] else ...[
                 ElevatedButton(
