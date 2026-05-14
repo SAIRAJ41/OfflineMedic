@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../models/hospital.dart';
 import '../../services/hospital_service.dart';
@@ -19,10 +20,12 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   Position? _currentPosition;
   bool _isLoading = true;
+  String _loadingMessage = 'Getting location...';
   bool _isUsingDemoLocation = false;
   bool _locationDenied = false;
   // ignore: unused_field
   bool _gpsFailed = false;
+  bool _mapTakingLonger = false;
   List<Hospital> _nearbyHospitals = const [];
   List<Hospital> _filteredHospitals = const [];
 
@@ -49,9 +52,11 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _init() async {
     setState(() {
       _isLoading = true;
+      _loadingMessage = 'Getting location...';
       _locationDenied = false;
       _gpsFailed = false;
       _isUsingDemoLocation = false;
+      _mapTakingLonger = false;
     });
 
     // Try to get real GPS location
@@ -69,10 +74,36 @@ class _MapScreenState extends State<MapScreen> {
       debugPrint('Map: GPS failed or denied, waiting for user action');
     }
 
+    setState(() {
+      _loadingMessage = 'Loading nearby hospitals...';
+    });
+
     // Always try to load hospital data from local DB
     await _loadNearby();
 
-    setState(() => _isLoading = false);
+    setState(() {
+      _loadingMessage = 'Loading map...';
+      _isLoading = false;
+    });
+
+    _checkConnectivityForMap();
+  }
+
+  Future<void> _checkConnectivityForMap() async {
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult.contains(ConnectivityResult.none)) {
+        if (mounted) setState(() => _mapTakingLonger = true);
+      } else {
+        Future.delayed(const Duration(seconds: 6), () {
+          if (mounted) setState(() => _mapTakingLonger = true);
+        });
+      }
+    } catch (e) {
+      Future.delayed(const Duration(seconds: 6), () {
+        if (mounted) setState(() => _mapTakingLonger = true);
+      });
+    }
   }
 
   Future<Position?> _tryGetGPS() async {
@@ -97,7 +128,9 @@ class _MapScreenState extends State<MapScreen> {
 
       final pos = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
-      );
+      ).timeout(const Duration(seconds: 10), onTimeout: () {
+        throw TimeoutException('GPS is taking longer than expected.');
+      });
 
       return pos;
     } catch (e) {
@@ -264,17 +297,17 @@ class _MapScreenState extends State<MapScreen> {
   Widget _buildLoadingState() {
     return Container(
       color: Colors.white,
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
-              'Getting location...',
-              style: TextStyle(color: Colors.grey, fontSize: 16),
+              _loadingMessage,
+              style: const TextStyle(color: Colors.grey, fontSize: 16),
             ),
           ],
         ),
@@ -327,9 +360,28 @@ class _MapScreenState extends State<MapScreen> {
         // Map (may fail to load tiles without internet, but hospitals list still works)
         Expanded(
           flex: 3,
-          child: Container(
-            color: const Color(0xFFD6EAF8),
-            child: _buildMapWidget(),
+          child: Stack(
+            children: [
+              Container(
+                color: const Color(0xFFD6EAF8),
+                child: _buildMapWidget(),
+              ),
+              if (_mapTakingLonger)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    color: Colors.orange.shade100.withOpacity(0.9),
+                    child: Text(
+                      'Map is taking longer to load. You can still view nearby hospitals below.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.orange.shade800, fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
         // Hospital List
@@ -503,7 +555,7 @@ class _MapScreenState extends State<MapScreen> {
             Text(
               _locationDenied
                   ? 'Please enable location permission to show nearby hospitals.'
-                  : 'GPS could not get your location. You can use demo location (Pune) to preview the app.',
+                  : 'Location is taking longer than expected. You can retry or use the demo location (Pune) to preview the app.',
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
@@ -515,6 +567,21 @@ class _MapScreenState extends State<MapScreen> {
                 },
                 icon: const Icon(Icons.settings),
                 label: const Text('Open Settings'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF003F87),
+                  foregroundColor: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+            if (!_locationDenied) ...[
+              ElevatedButton.icon(
+                onPressed: () {
+                  setState(() => _isLoading = true);
+                  _init();
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry Location'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF003F87),
                   foregroundColor: Colors.white,

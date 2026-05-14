@@ -13,14 +13,11 @@ class LlamaRuntimeService {
     try {
       debugPrint('LlamaRuntime: initialize() started');
       debugPrint('LlamaRuntime: Loading model from: $modelPath');
-      _llama = Llama(
-        modelPath,
-        contextParams: ContextParams()
-          ..nCtx = 2048
-          ..nThreads = 4
-          ..nBatch = 512,
-        verbose: false,
-      );
+      final contextParams = ContextParams()
+        ..nCtx = 2048
+        ..nThreads = 4
+        ..nBatch = 512;
+      _llama = Llama(modelPath, null, contextParams, null, false);
       _isLoaded = true;
       debugPrint('LlamaRuntime: ✅ Model loaded successfully');
     } catch (e) {

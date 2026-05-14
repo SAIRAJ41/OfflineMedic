@@ -118,7 +118,11 @@ class GemmaService {
       return true;
     } catch (e) {
       stopwatch.stop();
-      debugPrint('GemmaService: ❌ init failed after ${stopwatch.elapsed.inSeconds}s: $e');
+      debugPrint('GemmaService: ❌ init failed after ${stopwatch.elapsed.inSeconds}s');
+      debugPrint('GemmaService: Exact runtime exception: $e');
+      if (e.toString().contains('libmtmd.so')) {
+        debugPrint('GemmaService: Missing native library detected: libmtmd.so');
+      }
       _isLoading = false;
       _loadError = _classifyError(e);
       debugPrint('GemmaService: loadError = $_loadError');
@@ -137,6 +141,17 @@ class GemmaService {
       return 'AI model file looks incomplete. Please download it again from setup.';
     }
     final msg = e.toString().toLowerCase();
+    
+    // Check for native library packaging issues
+    if (msg.contains('libmtmd.so') ||
+        msg.contains('libllama.so') ||
+        msg.contains('libggml') ||
+        msg.contains('failed to load dynamic library') ||
+        msg.contains('dlopen failed') ||
+        msg.contains('native library not found')) {
+      return 'AI runtime could not start on this device. Please update or reinstall the app.';
+    }
+    
     if (msg.contains('out of memory') ||
         msg.contains('memory') ||
         msg.contains('mmap') ||

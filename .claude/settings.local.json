@@ -3,7 +3,11 @@
     "allow": [
       "Bash(flutter analyze *)",
       "Bash(flutter doctor *)",
-      "Bash(Select-Object -First 30)"
+      "Bash(Select-Object -First 30)",
+      "Bash(flutter clean *)",
+      "Bash(flutter pub *)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\saira\\\\Kaggle Hackathon\\\\OfflineMedic\" -Filter \".dart_tool\" -Recurse -Directory -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 1 -ExpandProperty FullName)"
     ]
   }
 }
