@@ -149,7 +149,7 @@ class GemmaService {
         msg.contains('failed to load dynamic library') ||
         msg.contains('dlopen failed') ||
         msg.contains('native library not found')) {
-      return 'AI runtime could not start on this device. Please update or reinstall the app.';
+      return 'AI runtime could not start on this device. The app build is missing required AI runtime files.';
     }
     
     if (msg.contains('out of memory') ||

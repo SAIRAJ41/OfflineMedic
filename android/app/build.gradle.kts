@@ -59,6 +59,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation(files("libs/llama-cpp-dart.aar"))
     // flutter_llama_cpp manages native dependencies itself
 }
 

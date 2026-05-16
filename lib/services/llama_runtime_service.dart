@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:llama_cpp_dart/llama_cpp_dart.dart';
 
@@ -5,7 +6,8 @@ class LlamaRuntimeService {
   LlamaRuntimeService._internal();
   static final LlamaRuntimeService instance = LlamaRuntimeService._internal();
 
-  Llama? _llama;
+  LlamaEngine? _engine;
+  EngineSession? _session;
   bool _isLoaded = false;
 
   Future<void> initialize(String modelPath) async {
@@ -13,11 +15,25 @@ class LlamaRuntimeService {
     try {
       debugPrint('LlamaRuntime: initialize() started');
       debugPrint('LlamaRuntime: Loading model from: $modelPath');
-      final contextParams = ContextParams()
-        ..nCtx = 2048
-        ..nThreads = 4
-        ..nBatch = 512;
-      _llama = Llama(modelPath, null, contextParams, null, false);
+
+      String libPath = 'libllama.so';
+      if (Platform.isIOS || Platform.isMacOS) {
+        libPath = '<process>';
+      } else if (Platform.isWindows) {
+        libPath = 'llama.dll';
+      }
+
+      _engine = await LlamaEngine.spawn(
+        libraryPath: libPath,
+        modelParams: ModelParams(path: modelPath),
+        contextParams: const ContextParams(
+          nCtx: 2048,
+          nThreads: 4,
+          nBatch: 512,
+        ),
+      );
+
+      _session = await _engine!.createSession();
       _isLoaded = true;
       debugPrint('LlamaRuntime: ✅ Model loaded successfully');
     } catch (e) {
@@ -27,31 +43,39 @@ class LlamaRuntimeService {
   }
 
   Future<String> generate(String prompt) async {
-    if (!_isLoaded || _llama == null) {
+    if (!_isLoaded || _engine == null || _session == null) {
       throw Exception('Llama runtime not initialized');
     }
 
     final buffer = StringBuffer();
-    _llama!.setPrompt(prompt);
 
-    await for (final token in _llama!.generateText()) {
-      buffer.write(token);
-
-      final text = buffer.toString();
-      final first = text.indexOf('{');
-      final last = text.lastIndexOf('}');
-
-      if (first != -1 && last > first) {
-        break; // Stop when JSON is closed
+    await for (final event in _session!.generate(
+      prompt: prompt,
+      maxTokens: 1024,
+    )) {
+      if (event is TokenEvent) {
+        buffer.write(event.text);
+        final text = buffer.toString();
+        final first = text.indexOf('{');
+        final last = text.lastIndexOf('}');
+        if (first != -1 && last > first) {
+          break; // Stop when JSON is closed
+        }
+      } else if (event is DoneEvent) {
+        if (event.trailingText.isNotEmpty) {
+          buffer.write(event.trailingText);
+        }
       }
     }
 
     return buffer.toString();
   }
 
-  void dispose() {
-    _llama?.dispose();
-    _llama = null;
+  Future<void> dispose() async {
+    await _session?.dispose();
+    await _engine?.dispose();
+    _session = null;
+    _engine = null;
     _isLoaded = false;
   }
 }
