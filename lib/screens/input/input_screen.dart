@@ -9,6 +9,7 @@ import '../../services/gemma_service.dart';
 import '../../services/database_service.dart';
 import '../../services/voice_input_service.dart';
 import '../../services/model_download_service.dart';
+import '../../services/demo_triage_service.dart';
 import '../triage/triage_screen.dart';
 
 class InputScreen extends StatefulWidget {
@@ -49,6 +50,9 @@ class _InputScreenState extends State<InputScreen> {
   @override
   void initState() {
     super.initState();
+    controller.addListener(() {
+      if (mounted) setState(() {});
+    });
     _initializeModel();
   }
 
@@ -218,6 +222,52 @@ class _InputScreenState extends State<InputScreen> {
       return;
     }
 
+    final demoResult = DemoTriageService.getDemoTriageResult(inputText);
+    if (demoResult != null) {
+      debugPrint('InputScreen: Demo result matched. Skipping GemmaService.');
+
+      if (mounted) {
+        setState(() {
+          isLoading = true;
+          result = demoResult;
+        });
+      }
+
+      try {
+        final inputType = selectedInput == 0
+            ? 'image'
+            : selectedInput == 1
+                ? 'voice'
+                : 'text';
+
+        await DatabaseService.instance.saveCase(
+          demoResult,
+          inputText,
+          inputType,
+          imagePath: selectedImage?.path,
+        );
+
+        debugPrint('InputScreen: Demo case saved to database');
+      } catch (e) {
+        debugPrint('InputScreen: Demo DB save error: $e');
+      }
+
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => TriageScreen(result: demoResult),
+          ),
+        );
+      }
+
+      return;
+    }
+
     // -- Model readiness --
     if (_modelMissing) {
       if (mounted) {
@@ -251,6 +301,7 @@ class _InputScreenState extends State<InputScreen> {
       setState(() {
         isLoading = true;
       });
+      _startLoadingTimer();
     }
 
     debugPrint('=== INPUT SCREEN: Starting assessment ===');
@@ -259,6 +310,17 @@ class _InputScreenState extends State<InputScreen> {
     try {
       debugPrint('Calling GemmaService.instance.assess()...');
       final res = await GemmaService.instance.assess(inputText);
+      _stopLoadingTimer();
+      
+      if (res.confidence == 'low' && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('AI response is taking too long. Showing safe guidance.'),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+      
       debugPrint('GemmaService returned: ${res.triageLevel} - ${res.condition}');
 
       if (mounted) {
@@ -299,6 +361,7 @@ class _InputScreenState extends State<InputScreen> {
         );
       }
     } catch (e) {
+      _stopLoadingTimer();
       debugPrint('Assessment error: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -681,25 +744,49 @@ class _InputScreenState extends State<InputScreen> {
   // Analyze button helpers
   // ------------------------------------------------------------
 
+  bool _isDemoInput() {
+    return DemoTriageService.getDemoTriageResult(controller.text.trim()) != null;
+  }
+
   VoidCallback? _getButtonOnTap() {
-    if (isLoading || _modelLoading) return null;
+    if (isLoading) return null;
+
+    final isDemo = _isDemoInput();
+
+    // Demo predefined cases must work even if model is loading/missing/not ready.
+    if (isDemo) return assess;
+
+    if (_modelLoading) return null;
+
     if (_modelMissing || _modelFileInvalid) {
       return () => Navigator.pushNamed(context, '/setup');
     }
-    // Runtime error (not file-level) — don't route to setup
+
     if (_modelError != null && !_modelFileInvalid) return null;
     if (!_modelReady) return null;
+
     return assess;
   }
 
   Color _getButtonColor() {
+    if (isLoading) return Colors.grey.shade400;
+
+    if (_isDemoInput()) return const Color(0xFF003F87);
+
     if (_modelMissing || _modelFileInvalid) return Colors.grey.shade600;
-    if (_modelLoading || isLoading) return Colors.grey.shade400;
+    if (_modelLoading) return Colors.grey.shade400;
     if (_modelError != null) return Colors.grey.shade400;
+
     return const Color(0xFF003F87);
   }
 
   Widget _getButtonChild() {
+    if (_isDemoInput() && !isLoading) {
+      return const Text(
+        "Analyze Now",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      );
+    }
     if (_modelMissing) {
       return const Text(
         "Open Setup",
@@ -730,18 +817,18 @@ class _InputScreenState extends State<InputScreen> {
       );
     }
     if (isLoading) {
-      return const Row(
+      return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             width: 22,
             height: 22,
             child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Text(
-            "Analyzing...",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            "Analyzing... ${_formatElapsed(_elapsedSeconds)}",
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ],
       );

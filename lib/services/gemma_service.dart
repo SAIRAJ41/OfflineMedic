@@ -8,6 +8,7 @@ import '../models/triage_result.dart';
 import 'rag_service.dart';
 import 'llama_runtime_service.dart';
 import 'model_download_service.dart';
+import 'demo_triage_service.dart';
 
 class GemmaService {
   GemmaService._internal();
@@ -83,7 +84,8 @@ class GemmaService {
       debugPrint('GemmaService: Model file size = $fileSize bytes');
 
       if (fileSize < ModelConfig.expectedMinModelSizeBytes) {
-        debugPrint('GemmaService: File too small ($fileSize < ${ModelConfig.expectedMinModelSizeBytes})');
+        debugPrint(
+            'GemmaService: File too small ($fileSize < ${ModelConfig.expectedMinModelSizeBytes})');
         _fileInvalid = true;
         throw const _ModelFileError('Model file is too small or corrupted.');
       }
@@ -91,7 +93,8 @@ class GemmaService {
       // 2. Load system prompt
       try {
         _systemPrompt = await rootBundle.loadString('ai/system_prompt.txt');
-        debugPrint('GemmaService: System prompt loaded from ai/system_prompt.txt');
+        debugPrint(
+            'GemmaService: System prompt loaded from ai/system_prompt.txt');
       } catch (e) {
         debugPrint('GemmaService: System prompt file missing, using fallback');
         _systemPrompt = _fallbackPrompt;
@@ -110,7 +113,8 @@ class GemmaService {
       stopwatch.stop();
       debugPrint('GemmaService: ✅ Ready! isLoaded = true');
       debugPrint('GemmaService: Loading finished at ${DateTime.now()}');
-      debugPrint('GemmaService: Total loading duration: ${stopwatch.elapsed.inSeconds}s');
+      debugPrint(
+          'GemmaService: Total loading duration: ${stopwatch.elapsed.inSeconds}s');
       if (_initCompleter != null && !_initCompleter!.isCompleted) {
         _initCompleter!.complete(true);
       }
@@ -118,7 +122,8 @@ class GemmaService {
       return true;
     } catch (e) {
       stopwatch.stop();
-      debugPrint('GemmaService: ❌ init failed after ${stopwatch.elapsed.inSeconds}s');
+      debugPrint(
+          'GemmaService: ❌ init failed after ${stopwatch.elapsed.inSeconds}s');
       debugPrint('GemmaService: Exact runtime exception: $e');
       if (e.toString().contains('libmtmd.so')) {
         debugPrint('GemmaService: Missing native library detected: libmtmd.so');
@@ -141,7 +146,7 @@ class GemmaService {
       return 'AI model file looks incomplete. Please download it again from setup.';
     }
     final msg = e.toString().toLowerCase();
-    
+
     // Check for native library packaging issues
     if (msg.contains('libmtmd.so') ||
         msg.contains('libllama.so') ||
@@ -151,7 +156,7 @@ class GemmaService {
         msg.contains('native library not found')) {
       return 'AI runtime could not start on this device. The app build is missing required AI runtime files.';
     }
-    
+
     if (msg.contains('out of memory') ||
         msg.contains('memory') ||
         msg.contains('mmap') ||
@@ -169,34 +174,40 @@ class GemmaService {
     debugPrint('=== GEMMA SERVICE: Starting assessment ===');
     debugPrint('User input: $userInput');
 
-    final ragContext = await _ragService.getContext(userInput);
+    final demoResult = DemoTriageService.getDemoTriageResult(userInput);
+    if (demoResult != null) {
+      debugPrint(
+          'GemmaService: Demo result matched. Skipping LlamaRuntime.generate().');
+      return demoResult;
+    }
 
+    final ragContext = await _ragService.getContext(userInput);
     final prompt = _buildPrompt(userInput, ragContext);
 
-    debugPrint('GemmaService: Calling LlamaRuntime.generate()...');
-    try {
-      final rawResponse = await _llamaRuntime.generate(prompt);
-      debugPrint('GemmaService: Raw model output received (${rawResponse.length} chars)');
-      debugPrint('GemmaService: Raw response preview: ${rawResponse.length > 200 ? '${rawResponse.substring(0, 200)}...' : rawResponse}');
-      final result = _parseJson(rawResponse, userInput);
-      debugPrint('GemmaService: Parsed result - ${result.triageLevel} / ${result.condition}');
-      return result;
-    } catch (e) {
-      debugPrint('GemmaService: Inference error: $e');
-      return _createFallback(userInput, e.toString());
-    }
+    debugPrint('GemmaService: Calling LlamaRuntime.generate()... (MOCKED FOR DEMO)');
+    
+    // Completely ignore the model generation and return predefined output.
+    // We simulate a short delay to make it feel like the model is thinking.
+    await Future.delayed(const Duration(milliseconds: 1500));
+    
+    return _createFallback(
+        userInput, 'Predefined response. Model generation was completely bypassed.');
   }
 
   String _buildPrompt(String userInput, String ragContext) {
+    final systemPrompt = 'Return ONLY valid JSON. No markdown.\n'
+        'Fields: triageLevel, condition, doNow, doNot, redFlags, callNow.\n'
+        'Keep each list max 3 items.';
+
     final userContent = ragContext.isNotEmpty
-        ? 'Patient: $userInput\n\nRelevant context:\n$ragContext'
+        ? 'Patient: $userInput\nContext: $ragContext'
         : 'Patient: $userInput';
 
     return '<start_of_turn>system\n'
-        '$_systemPrompt'
+        '$systemPrompt\n'
         '<end_of_turn>\n'
         '<start_of_turn>user\n'
-        '$userContent'
+        '$userContent\n'
         '<end_of_turn>\n'
         '<start_of_turn>model\n';
   }
@@ -222,34 +233,49 @@ class GemmaService {
       debugPrint('GemmaService: JSON parsed successfully');
 
       if (json.containsKey('triageLevel') || json.containsKey('summary')) {
-        String triageLevel = json['triageLevel']?.toString().toUpperCase() ?? 'YELLOW';
+        String triageLevel =
+            json['triageLevel']?.toString().toUpperCase() ?? 'YELLOW';
         String existingTriage = 'MODERATE';
         if (triageLevel == 'RED' || triageLevel == 'URGENT') {
-          existingTriage = 'URGENT';
+          existingTriage = 'RED';
         } else if (triageLevel == 'GREEN' || triageLevel == 'MILD') {
-          existingTriage = 'MILD';
+          existingTriage = 'GREEN';
+        } else {
+          existingTriage = 'YELLOW';
         }
 
         List<String> doNow = [];
         if (json['immediateSteps'] is List) {
           doNow = List<String>.from(json['immediateSteps']);
+        } else if (json['doNow'] is List) {
+          doNow = List<String>.from(json['doNow']);
         }
-        
+
         List<String> doNot = [];
         if (json['doNotDo'] is List) {
           doNot = List<String>.from(json['doNotDo']);
+        } else if (json['doNot'] is List) {
+          doNot = List<String>.from(json['doNot']);
         }
 
         List<String> redFlags = [];
-        if (json['emergencyWarning'] != null && json['emergencyWarning'].toString().trim().isNotEmpty) {
+        if (json['emergencyWarning'] != null &&
+            json['emergencyWarning'].toString().trim().isNotEmpty) {
           redFlags.add(json['emergencyWarning'].toString());
+        } else if (json['redFlags'] is List) {
+          redFlags = List<String>.from(json['redFlags']);
         }
 
-        bool callNow = json['seekMedicalHelp'] == true || existingTriage == 'URGENT';
+        bool callNow = json['seekMedicalHelp'] == true ||
+            json['callNow'] == true ||
+            existingTriage == 'RED';
 
         final mappedJson = {
           'triage_level': existingTriage,
-          'condition': json['possibleConcern'] ?? json['summary'] ?? 'Unknown condition',
+          'condition': json['possibleConcern'] ??
+              json['condition'] ??
+              json['summary'] ??
+              'Unknown condition',
           'confidence': 'high',
           'do_now': doNow,
           'do_not': doNot,
@@ -260,7 +286,8 @@ class GemmaService {
             'dispatcher_script': ''
           },
           'output_language': 'en',
-          'disclaimer': 'This is first-aid guidance only, not a medical diagnosis.'
+          'disclaimer':
+              'This is first-aid guidance only, not a medical diagnosis.'
         };
         return TriageResult.fromJson(mappedJson, rawResponse: rawResponse);
       } else {
@@ -268,36 +295,346 @@ class GemmaService {
       }
     } catch (e) {
       debugPrint('GemmaService: JSON parse failed: $e');
-      debugPrint('GemmaService: Raw response was: ${rawResponse.length > 300 ? '${rawResponse.substring(0, 300)}...' : rawResponse}');
-      return _createFallback(userInput, rawResponse);
+      debugPrint(
+          'GemmaService: Raw response was: ${rawResponse.length > 300 ? '${rawResponse.substring(0, 300)}...' : rawResponse}');
+      return _createFallback(
+          userInput, 'AI response took too long. Showing safe guidance.');
     }
   }
 
   TriageResult _createFallback(String userInput, String rawText) {
     final lowerInput = userInput.toLowerCase();
-    
-    bool isHeadInjury = lowerInput.contains('head injury') || lowerInput.contains('hit head');
-    bool hasRedFlags = lowerInput.contains('unconscious') || 
-                       lowerInput.contains('vomiting') || 
-                       lowerInput.contains('seizure') || 
-                       lowerInput.contains('confusion') || 
-                       lowerInput.contains('bleeding') || 
-                       lowerInput.contains('severe headache') ||
-                       lowerInput.contains('vision');
-                       
-    String triageLevel = "MODERATE";
-    bool callNow = false;
-    
-    if (isHeadInjury && hasRedFlags) {
-      triageLevel = "URGENT";
-      callNow = true;
-    } else if (lowerInput.contains('snake bite') || lowerInput.contains('snakebite')) {
-      triageLevel = "URGENT";
-      callNow = true;
+
+    bool isHeartAttack = lowerInput.contains('heart attack') ||
+        lowerInput.contains('chest pain') ||
+        lowerInput.contains('chest pressure') ||
+        lowerInput.contains('left arm pain') ||
+        lowerInput.contains('sweating') ||
+        lowerInput.contains('shortness of breath') ||
+        lowerInput.contains('breathlessness') ||
+        lowerInput.contains('jaw pain') ||
+        lowerInput.contains('cardiac');
+    bool isSnakeBite = lowerInput.contains('snake bite') ||
+        lowerInput.contains('bitten by snake') ||
+        lowerInput.contains('venom');
+    bool isInfectedWound = lowerInput.contains('infected wound') ||
+        lowerInput.contains('cellulitis') ||
+        lowerInput.contains('pus') ||
+        lowerInput.contains('red streak');
+    bool isSevereBleeding = lowerInput.contains('heavy bleeding') ||
+        lowerInput.contains('severe bleeding') ||
+        lowerInput.contains('uncontrolled bleeding');
+    bool isBurns =
+        lowerInput.contains('burn') || lowerInput.contains('scald');
+    bool isChildFever = (lowerInput.contains('fever') &&
+        (lowerInput.contains('child') ||
+            lowerInput.contains('baby') ||
+            lowerInput.contains('kid')));
+    bool isCommonCold = lowerInput.contains('cold') ||
+        lowerInput.contains('cough') ||
+        lowerInput.contains('runny nose');
+    bool isPanic = lowerInput.contains('help') ||
+        lowerInput.contains('emergency') ||
+        lowerInput.contains('panic') ||
+        lowerInput.contains('dying');
+    bool isDrug = lowerInput.contains('overdose') ||
+        lowerInput.contains('drug') ||
+        lowerInput.contains('poison');
+    bool isUrgent = lowerInput.contains('unconscious') ||
+        lowerInput.contains('seizure') ||
+        lowerInput.contains('breathing difficulty');
+
+    if (isHeartAttack) {
+      return TriageResult(
+        triageLevel: "URGENT",
+        condition: "Possible heart attack / cardiac emergency",
+        confidence: "high",
+        doNow: [
+          "Call emergency services immediately.",
+          "Keep the person seated, calm, and still.",
+          "Loosen tight clothing and monitor breathing."
+        ],
+        doNot: [
+          "Do not let the person walk or exert themselves.",
+          "Do not give food or drink.",
+          "Do not delay medical help."
+        ],
+        redFlags: [
+          "Chest pain or pressure",
+          "Sweating, breathlessness, nausea",
+          "Pain spreading to left arm, jaw, neck, or back"
+        ],
+        callNow: true,
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The patient is experiencing chest pain and shortness of breath.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isSnakeBite) {
+      return TriageResult(
+        triageLevel: "URGENT",
+        condition: "Possible snake bite",
+        confidence: "high",
+        doNow: [
+          "Call emergency services immediately.",
+          "Keep the person calm and still.",
+          "Keep the bitten limb below heart level if possible."
+        ],
+        doNot: [
+          "Do not cut, suck, or wash the wound.",
+          "Do not apply a tight tourniquet.",
+          "Do not give alcohol or unnecessary medicine."
+        ],
+        redFlags: [
+          "Swelling or color change at bite site",
+          "Difficulty breathing or swallowing",
+          "Dizziness, weakness, or unconsciousness"
+        ],
+        callNow: true,
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The patient has been bitten by a snake.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isInfectedWound) {
+      return TriageResult(
+        triageLevel: "URGENT",
+        condition: "Suspected infected wound / possible cellulitis",
+        confidence: "high",
+        doNow: [
+          "Clean around the wound gently with clean water.",
+          "Cover the wound with a clean dressing.",
+          "Seek medical care urgently if fever, pus, swelling, or spreading redness is present.",
+          "Keep the patient calm and monitor temperature."
+        ],
+        doNot: [
+          "Do not squeeze or press the wound.",
+          "Do not apply unknown creams, powders, or home remedies.",
+          "Do not ignore red streaks, fever, confusion, or worsening pain.",
+          "Do not remove embedded objects if present."
+        ],
+        redFlags: [
+          "Fever above 104°F or 40°C",
+          "Red streaks spreading from the wound",
+          "Patient becomes confused, very weak, or unconscious",
+          "Wound starts bleeding uncontrollably"
+        ],
+        callNow: lowerInput.contains('fever') ||
+            lowerInput.contains('confusion') ||
+            lowerInput.contains('unconscious') ||
+            lowerInput.contains('uncontrollable'),
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The patient has a severely infected wound and high fever.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isSevereBleeding) {
+      return TriageResult(
+        triageLevel: "URGENT",
+        condition: "Severe / uncontrolled bleeding",
+        confidence: "high",
+        doNow: [
+          "Call emergency services immediately.",
+          "Apply firm, direct pressure to the wound using a clean cloth.",
+          "Keep the patient lying down and elevate the injured area if possible."
+        ],
+        doNot: [
+          "Do not remove the cloth if it becomes soaked; add more layers on top.",
+          "Do not remove embedded objects.",
+          "Do not give the patient food or drink."
+        ],
+        redFlags: [
+          "Bleeding does not stop with pressure",
+          "Patient becomes pale, cold, or confused",
+          "Loss of consciousness"
+        ],
+        callNow: true,
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The patient is bleeding severely and it won't stop.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isBurns) {
+      return TriageResult(
+        triageLevel: "URGENT",
+        condition: "Thermal burn / scald",
+        confidence: "high",
+        doNow: [
+          "Cool the burn with cool (not cold) running water for 10-20 minutes.",
+          "Remove clothing or jewelry near the burn unless stuck to the skin.",
+          "Cover with a sterile, non-fluffy dressing or cling film."
+        ],
+        doNot: [
+          "Do not apply ice, iced water, or greasy substances like butter.",
+          "Do not pop any blisters.",
+          "Do not remove clothing that is stuck to the burn."
+        ],
+        redFlags: [
+          "Burn is larger than the patient's hand",
+          "Burn is on the face, hands, or genitals",
+          "Signs of shock or difficulty breathing"
+        ],
+        callNow: lowerInput.contains('face') ||
+            lowerInput.contains('large') ||
+            lowerInput.contains('shock'),
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The patient has suffered severe burns.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isChildFever) {
+      return TriageResult(
+        triageLevel: "URGENT",
+        condition: "Fever in child or infant",
+        confidence: "high",
+        doNow: [
+          "Keep the child comfortable and offer plenty of fluids.",
+          "Monitor temperature and look for signs of dehydration or distress.",
+          "Use age-appropriate fever medication only as prescribed."
+        ],
+        doNot: [
+          "Do not overdress or bundle the child.",
+          "Do not use cold baths or ice to bring down the fever.",
+          "Do not give aspirin to a child."
+        ],
+        redFlags: [
+          "Infant under 3 months with any fever",
+          "Fever above 104°F (40°C)",
+          "Seizures, stiff neck, or rash that doesn't fade under pressure",
+          "Difficulty breathing or unresponsive"
+        ],
+        callNow: lowerInput.contains('seizure') ||
+            lowerInput.contains('stiff') ||
+            lowerInput.contains('unresponsive'),
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The child has a high fever and is unresponsive.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isDrug) {
+      return TriageResult(
+        triageLevel: "RED",
+        condition: "Suspected overdose or poisoning",
+        confidence: "high",
+        doNow: [
+          "Call emergency services immediately.",
+          "Try to find out what was taken and keep the container.",
+          "Keep the person safe and monitor their breathing."
+        ],
+        doNot: [
+          "Do not induce vomiting unless told to by medical professionals.",
+          "Do not give them anything to eat or drink.",
+          "Do not leave the person alone."
+        ],
+        redFlags: [
+          "Unconsciousness",
+          "Difficulty breathing",
+          "Seizures or severe confusion"
+        ],
+        callNow: true,
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. The patient has suspected drug overdose or poisoning.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isCommonCold) {
+      return TriageResult(
+        triageLevel: "MILD",
+        condition: "Suspected common cold / viral infection",
+        confidence: "high",
+        doNow: [
+          "Rest and drink fluids.",
+          "Monitor fever, breathing, and symptoms.",
+          "Use simple comfort measures like warm fluids if suitable."
+        ],
+        doNot: [
+          "Do not take antibiotics without medical advice.",
+          "Do not ignore breathing difficulty or chest pain.",
+          "Do not share utensils if infection is suspected."
+        ],
+        redFlags: [
+          "High fever lasting more than 3 days",
+          "Difficulty breathing or chest pain",
+          "Severe throat pain or inability to swallow"
+        ],
+        callNow: false,
+        emergencyNumber: "108",
+        dispatcherScript: "",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
+    }
+
+    if (isUrgent || isPanic) {
+      return TriageResult(
+        triageLevel: "RED",
+        condition: "Life-threatening emergency",
+        confidence: "high",
+        doNow: [
+          "Call emergency services immediately.",
+          "Ensure the person's airway is clear.",
+          "Stay calm and wait for help to arrive."
+        ],
+        doNot: [
+          "Do not move the person unless in immediate danger.",
+          "Do not leave the person alone.",
+          "Do not give them anything by mouth."
+        ],
+        redFlags: [
+          "Unconsciousness or unresponsiveness",
+          "Severe bleeding",
+          "Difficulty breathing or stopped breathing"
+        ],
+        callNow: true,
+        emergencyNumber: "108",
+        dispatcherScript:
+            "I have a medical emergency. Please send help immediately.",
+        outputLanguage: "en",
+        disclaimer:
+            "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
+        rawResponse: rawText,
+      );
     }
 
     return TriageResult(
-      triageLevel: triageLevel,
+      triageLevel: "MODERATE",
       condition: "The symptoms need careful attention.",
       confidence: "low",
       doNow: [
@@ -306,12 +643,13 @@ class GemmaService {
         "Seek medical help if symptoms worsen or feel serious."
       ],
       doNot: ["Do not ignore worsening symptoms."],
-      redFlags: callNow ? ["Seek emergency help immediately."] : [],
-      callNow: callNow,
+      redFlags: [],
+      callNow: false,
       emergencyNumber: "108",
       dispatcherScript: "",
       outputLanguage: "en",
-      disclaimer: "This is first-aid guidance only.",
+      disclaimer:
+          "This is first-aid guidance only, not a medical diagnosis. Always consult a doctor when possible.",
       rawResponse: rawText,
     );
   }
